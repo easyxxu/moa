@@ -6,7 +6,7 @@ import Navigation from "./common/Navigation";
 
 export default function Header() {
   return (
-    <header className="w-full border-b flex justify-center shadow-borderBottom">
+    <header className="w-full border-b border-border-grey flex justify-center shadow-borderBottom">
       <div className="flex w-5/6 py-5 justify-between">
         <div className="flex gap-9 items-center">
           <Link href="/">
