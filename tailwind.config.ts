@@ -12,9 +12,9 @@ module.exports = {
       colors: {
         black: "#1D1D1D",
         white: "#FFFFFF",
-        background: "var(--background)",
+        background: "#F3F3F3",
         btn: {
-          background: "var(--btn-background)",
+          background: "#F3F3F3",
         },
         "font-grey": "#818181",
         icon: "#505050",
