@@ -7,12 +7,12 @@ export default function Navigation() {
     <nav>
       <ul className="flex gap-5">
         <li>
-          <Button>
+          <Button custom="w-12 h-12">
             <Image src={CartIcon} alt="장바구니" />
           </Button>
         </li>
         <li>
-          <Button>
+          <Button custom="w-12 h-12">
             <Image src={PersonIcon} alt="로그인" />
           </Button>
         </li>
