@@ -5,7 +5,7 @@ import SearchIcon from "@/public/assets/icon/icon-search.svg";
 export default function SearchInput() {
   return (
     <form className="flex gap-3">
-      <div className="w-80 h-12 p-3 rounded-xl input">
+      <div className="w-80 min-w-30 h-12 p-3 rounded-xl shadow-in">
         <label className="w-1/3">
           <input
             type="text"
@@ -14,7 +14,7 @@ export default function SearchInput() {
           />
         </label>
       </div>
-      <Button>
+      <Button custom="w-12 h-12">
         <Image src={SearchIcon} alt="검색" />
       </Button>
     </form>
