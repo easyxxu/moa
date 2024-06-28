@@ -11,15 +11,19 @@
   input::placeholder {
     @apply text-font-grey;
   }
-  .button {
-    @apply rounded-xl shadow-out hover:shadow-in w-12 h-12 flex items-center justify-center;
+  .outer-box {
+    @apply rounded-2xl shadow-out hover:shadow-in flex items-center justify-center;
   }
   .icon {
     @apply w-12 h-12 flex items-center justify-center;
   }
-  .input {
-    @apply shadow-in;
+  .inner-box {
+    @apply rounded-3xl shadow-in bg-background;
   }
+  .btn-active {
+    @apply shadow-in text-font-hover;
+  }
+
   @media (prefers-color-scheme: dark) {
     :root {
       --background: 200 50% 3%;
