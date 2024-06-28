@@ -1,4 +1,4 @@
-import MoaLogo from "../public/assets/moa-logo.png";
+import MoaLogo from "../public/assets/moa-logo.svg";
 import Image from "next/image";
 import Link from "next/link";
 import SearchInput from "./search/SearchInput";
