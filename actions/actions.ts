@@ -75,7 +75,7 @@ export async function joinAction(
     options: {
       data: {
         name,
-        userType,
+        user_type: userType,
         phone,
       },
     },
@@ -97,5 +97,6 @@ export async function joinAction(
     errorMsg.server = ERROR_MESSAGE.serverError;
     console.error(`SignUp Server Error(${error.status}): ${error.code}`);
   }
+
   return { errorMsg };
 }
