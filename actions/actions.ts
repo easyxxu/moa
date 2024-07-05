@@ -2,6 +2,9 @@
 
 import { UserType } from "@/types/user";
 import { createClient } from "@/utils/supabase/server";
+import { User, WeakPassword, Session } from "@supabase/supabase-js";
+
+import { redirect } from "next/navigation";
 
 export type ErrorMsg = {
   email?: string;
@@ -9,12 +12,19 @@ export type ErrorMsg = {
   name?: string;
   phone?: string;
   server?: string;
+  login?: string;
 };
 
 export type State = {
   errorMsg?: ErrorMsg;
 };
 
+export type loginState = {
+  errorMsg?: ErrorMsg;
+  userData?:
+    | { user: User; session: Session; weakPassword?: WeakPassword }
+    | { user: null; session: null; weakPassword?: null };
+};
 const emailRegex = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
@@ -29,6 +39,10 @@ const ERROR_MESSAGE = {
   serverError: "서버 에러가 발생했습니다. 잠시 후 다시 시도해 주세요.",
   tooManyRequests:
     "요청이 많아 에러가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+  loginInvalid: "이메일 또는 비밀번호가 잘못되었습니다. 다시 입력해주세요.",
+  loginUserType: "로그인 유형(판매자 또는 구매자)을 다시 확인해주세요.",
+  getUserError:
+    "로그인 정보를 가져오는 데 실패했습니다. 잠시 후 다시 시도해 주세요.",
 };
 
 export async function joinAction(
@@ -98,5 +112,55 @@ export async function joinAction(
     console.error(`SignUp Server Error(${error.status}): ${error.code}`);
   }
 
-  return { errorMsg };
+  if (Object.keys(errorMsg).length > 0) {
+    return { errorMsg };
+  }
+  return redirect("/login");
+}
+
+export async function loginAction(
+  prevState: State,
+  formData: FormData
+): Promise<loginState> {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const userType = formData.get("userType") as string;
+  const supabase = createClient();
+  const errorMsg: ErrorMsg = {};
+
+  if (!email || email.trim().length === 0) {
+    errorMsg.email = ERROR_MESSAGE.required;
+  }
+  if (!password || password.trim().length === 0) {
+    errorMsg.password = ERROR_MESSAGE.required;
+  }
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    errorMsg.login = ERROR_MESSAGE.loginInvalid;
+  }
+
+  const { data: userData, error: userError } = await supabase
+    .from("user")
+    .select()
+    .eq("id", data.user?.id)
+    .single();
+
+  if (userError) {
+    console.log("userError", userError);
+    errorMsg.login = ERROR_MESSAGE.getUserError;
+  }
+
+  if (userData?.user_type !== userType) {
+    errorMsg.login = ERROR_MESSAGE.loginUserType;
+  }
+
+  if (Object.keys(errorMsg).length > 0) {
+    return { errorMsg };
+  }
+
+  return redirect("/");
 }
