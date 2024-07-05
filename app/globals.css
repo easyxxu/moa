@@ -11,6 +11,13 @@
   input::placeholder {
     @apply text-font-grey;
   }
+  input:focus {
+    @apply outline-font-hover outline-2 outline-offset-1;
+  }
+  input[type="radio"] {
+    @apply appearance-none;
+  }
+
   .outer-box {
     @apply rounded-2xl shadow-out hover:shadow-in flex items-center justify-center;
   }
