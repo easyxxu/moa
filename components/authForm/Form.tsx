@@ -1,55 +1,74 @@
-"use client";
+import Link from "next/link";
 import Image from "next/image";
+
 import Button from "../common/Button";
 import MoaLogo from "@/public/assets/moa-logo.svg";
-import Link from "next/link";
-import { useState } from "react";
+
 interface FormProps {
   children: React.ReactNode;
   formType: "login" | "join";
+  onSubmit: (payload: FormData) => void;
 }
-const JOIN_TYPE = {
+
+export const USER_TYPE = {
   SELLER: "SELLER",
   BUYER: "BUYER",
 };
-export default function Form({ children, formType }: FormProps) {
-  const [joinType, setJoinType] = useState(JOIN_TYPE.BUYER);
+
+export default function Form({ children, formType, onSubmit }: FormProps) {
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center">
-      <h1 className="mb-5">
+    <div className="flex flex-col items-center justify-center mt-10">
+      <h1 className="top-0 z-10 -mb-8">
         <Link href="/">
           <Image src={MoaLogo} alt="모아 로고" className="w-64" />
         </Link>
       </h1>
-      <div className="rounded-xl shadow-out px-16 py-14 text-2xl w-4/5">
-        <h2 className="w-full text-center text-3xl text-font-grey-bold font-bold mb-6">
+      <div className="max-w-[550px] rounded-xl shadow-out px-16 py-14 text-2xl flex flex-col items-center justify-center">
+        <h2 className="text-center text-3xl text-font-grey-bold font-bold mb-6">
           {formType === "join" ? "회원가입" : "로그인"}
         </h2>
-        <div className="shadow-out rounded-3xl font-bold mb-4">
-          <button
-            type="button"
-            className={`w-1/2 px-2 py-1 rounded-tl-3xl rounded-bl-3xl ${
-              joinType === JOIN_TYPE.BUYER && "btn-active"
-            }`}
+        <form className="flex flex-col gap-4 w-96" action={onSubmit}>
+          <fieldset className="flex justify-around shadow-out rounded-3xl font-bold mb-4 w-full text-center">
+            <label htmlFor={USER_TYPE.BUYER} className="w-1/2 cursor-pointer">
+              <input
+                type="radio"
+                name="userType"
+                value={USER_TYPE.BUYER}
+                id={USER_TYPE.BUYER}
+                className="hidden peer"
+                defaultChecked
+              />
+              <span className="block w-full h-full rounded-tl-3xl rounded-bl-3xl leading-relaxed peer-checked:shadow-in peer-checked:text-font-hover">
+                구매자
+              </span>
+            </label>
+            <label htmlFor={USER_TYPE.SELLER} className="w-1/2 cursor-pointer">
+              <input
+                type="radio"
+                name="userType"
+                value={USER_TYPE.SELLER}
+                id={USER_TYPE.SELLER}
+                className="hidden peer"
+              />
+              <span className="block w-full h-full rounded-tr-3xl rounded-br-3xl leading-relaxed peer-checked:shadow-in peer-checked:text-font-hover">
+                판매자
+              </span>
+            </label>
+          </fieldset>
+          {children}
+          <Button
+            type="submit"
+            custom="w-full bg-primary font-bold py-2 rounded-3xl mt-7"
           >
-            구매자
-          </button>
-          <button
-            type="button"
-            className={`w-1/2 px-2 py-1 rounded-tr-3xl rounded-br-3xl ${
-              joinType === JOIN_TYPE.SELLER && "btn-active"
-            }`}
-          >
-            판매자
-          </button>
-        </div>
-        {children}
-        <Button
-          type="submit"
-          custom="w-full bg-primary font-bold py-2 rounded-3xl mt-7"
+            {formType === "join" ? "회원가입" : "로그인"}
+          </Button>
+        </form>
+        <Link
+          href={formType === "login" ? "/join" : "/login"}
+          className="mt-3 text-base"
         >
-          {formType === "join" ? "회원가입" : "로그인"}
-        </Button>
+          {formType === "login" ? "회원가입" : "로그인"}
+        </Link>
       </div>
     </div>
   );
