@@ -1,10 +1,20 @@
-import MoaLogo from "../public/assets/moa-logo.svg";
 import Image from "next/image";
 import Link from "next/link";
+
 import SearchInput from "./search/SearchInput";
 import Navigation from "./common/Navigation";
+import MoaLogo from "../public/assets/moa-logo.svg";
 
-export default function Header() {
+import { createClient } from "@/utils/supabase/server";
+
+export default async function Header() {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const isAuthenticated = user !== null;
+  const isSeller = user?.user_metadata.user_type === "SELLER";
+
   return (
     <header className="w-full border-b border-border-grey flex justify-center shadow-borderBottom">
       <div className="flex w-5/6 py-5 justify-between">
@@ -14,7 +24,7 @@ export default function Header() {
           </Link>
           <SearchInput />
         </div>
-        <Navigation />
+        <Navigation isAuthenticated={isAuthenticated} isSeller={isSeller} />
       </div>
     </header>
   );
