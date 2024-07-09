@@ -164,3 +164,12 @@ export async function loginAction(
 
   return redirect("/");
 }
+
+export async function logOutAction() {
+  const supabase = createClient();
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    console.error("Error Signing Out: ", error);
+  }
+  redirect("/");
+}
