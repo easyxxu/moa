@@ -13,7 +13,7 @@ export default function TabButton({
 
   const handleTabActive = (idx: number) => {
     setTabIdx(idx);
-    const y = scrollRef.current[idx]?.offsetTop! - 52;
+    const y = scrollRef.current[idx]?.offsetTop! - 50;
     window.scrollTo(0, y);
   };
 
@@ -21,7 +21,7 @@ export default function TabButton({
   useEffect(() => {
     const changeTabBtnStyle = () => {
       scrollRef.current.forEach((ref: any, idx: number) => {
-        if (ref.getBoundingClientRect().y < 52) {
+        if (ref?.getBoundingClientRect().y < 56) {
           setTabIdx(idx);
         }
       });
