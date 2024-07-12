@@ -7,7 +7,7 @@ interface CardListProps {
 }
 export default function CardList({ products }: CardListProps) {
   return (
-    <ul>
+    <ul className="grid grid-cols-4 gap-7">
       {products.map((product) => (
         <li key={product.id}>
           <Link href={`/products/${product.id}`}>
