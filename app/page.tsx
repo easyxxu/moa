@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 
-import Header from "@/components/Header";
+import Header from "@/components/common/Header";
 import CardList from "@/components/card/CardList";
 import Footer from "@/components/common/Footer";
 
