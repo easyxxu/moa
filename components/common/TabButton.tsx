@@ -13,15 +13,15 @@ export default function TabButton({
 
   const handleTabActive = (idx: number) => {
     setTabIdx(idx);
-    const y = scrollRef.current[idx]?.offsetTop! - 50;
+    const y = scrollRef.current[idx]?.offsetTop! - 52;
     window.scrollTo(0, y);
   };
 
   // scroll 위치에 따라 탭 버튼 스타일 변경
   useEffect(() => {
     const changeTabBtnStyle = () => {
-      scrollRef.current.forEach((ref: any, idx: number) => {
-        if (ref?.getBoundingClientRect().y < 56) {
+      scrollRef.current.forEach((ref: HTMLDivElement | null, idx: number) => {
+        if (ref && ref.getBoundingClientRect().y < 53) {
           setTabIdx(idx);
         }
       });
