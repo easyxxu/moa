@@ -21,9 +21,9 @@ export default function ProductManagement() {
   const [imgFiles, setImgFiles] = useState<File[]>([]);
   const [productInfo, setProductInfo] = useState({
     name: "",
-    price: "",
-    stock: "",
-    shipping_fee: "",
+    price: 0,
+    stock: 0,
+    shipping_fee: 0,
     description: "",
   });
   const dragStart = (e: DragEvent, position: number) => {
