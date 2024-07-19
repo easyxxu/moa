@@ -20,8 +20,15 @@ export default function DetailContent({ description, image }: Props) {
         ref={(ref) => (scrollRef.current[0] = ref)}
       >
         <p className="mb-2">{description}</p>
-        {image.map((img) => (
-          <Image src={img} alt="" width={100} height={100} className="w-1/3" />
+        {image.map((img, idx) => (
+          <Image
+            src={img}
+            alt=""
+            width={100}
+            height={100}
+            className="w-1/3"
+            key={idx}
+          />
         ))}
       </div>
       <div className="h-[500px]" ref={(ref) => (scrollRef.current[1] = ref)}>
