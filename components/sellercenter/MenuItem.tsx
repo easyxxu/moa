@@ -17,13 +17,15 @@ export default function MenuItem({
   path,
 }: Props) {
   const currentPath = usePathname();
-  const isActive = currentPath === `/sellercenter${path}`;
+  const isActive = currentPath.includes(`/sellercenter${path}`);
 
   return (
     <Link href={`/sellercenter${path}`}>
       <div
-        className={`flex items-center justify-between p-4 font-medium rounded-2xl ${
-          isActive ? "bg-primary shadow-in" : "bg-inherit shadow-out"
+        className={`flex items-center justify-between p-4 font-regular rounded-2xl whitespace-nowrap ${
+          isActive
+            ? "bg-primary shadow-in font-semibold"
+            : "bg-inherit shadow-out"
         } hover:bg-primary`}
       >
         <p>
