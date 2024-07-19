@@ -186,6 +186,10 @@ export default function ProductManagement() {
             (이미지는 최대 5장까지 업로드 가능합니다.)
           </span>
         </label>
+        <div className="font-extralight mb-1">
+          <p>- 이미지의 첫번째 사진이 상품의 대표이미지입니다.</p>
+          <p>- 이미지는 최대 5장까지 업로드할 수 있습니다.</p>
+        </div>
         <div className="flex justify-between gap-3">
           <input
             type="file"
