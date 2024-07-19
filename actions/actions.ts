@@ -173,3 +173,18 @@ export async function logOutAction() {
   }
   redirect("/");
 }
+
+export async function addProductAction(formData: any) {
+  const supabase = createClient();
+  const image = formData.image;
+  console.log("#입력된 formData: ", formData);
+
+  const { error } = await supabase
+    .from("product")
+    .insert({ ...formData, image });
+
+  if (error) {
+    return { error };
+  }
+  redirect("/sellercenter/product");
+}
