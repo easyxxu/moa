@@ -23,12 +23,12 @@ export default function Form({ children, formType, onSubmit }: FormProps) {
           <Image src={MoaLogo} alt="모아 로고" className="w-64" />
         </Link>
       </h1>
-      <div className="max-w-[550px] rounded-xl shadow-out px-16 py-14 text-2xl flex flex-col items-center justify-center">
-        <h2 className="text-center text-3xl text-font-grey-bold font-bold mb-6">
+      <div className="max-w-[550px] rounded-xl shadow-out px-16 py-14 flex flex-col items-center justify-center">
+        <h2 className="mb-6 text-3xl font-bold text-center text-font-grey-bold">
           {formType === "join" ? "회원가입" : "로그인"}
         </h2>
-        <form className="flex flex-col gap-4 w-96" action={onSubmit}>
-          <fieldset className="flex justify-around shadow-out rounded-3xl font-bold mb-4 w-full text-center">
+        <form className="flex flex-col gap-2 w-96" action={onSubmit}>
+          <fieldset className="flex justify-around w-full mb-4 font-bold text-center text-xl shadow-out rounded-3xl">
             <label htmlFor={USER_TYPE.BUYER} className="w-1/2 cursor-pointer">
               <input
                 type="radio"
@@ -38,7 +38,7 @@ export default function Form({ children, formType, onSubmit }: FormProps) {
                 className="hidden peer"
                 defaultChecked
               />
-              <span className="block w-full h-full rounded-tl-3xl rounded-bl-3xl leading-relaxed peer-checked:shadow-in peer-checked:text-font-hover">
+              <span className="block w-full h-full leading-relaxed rounded-tl-3xl rounded-bl-3xl peer-checked:shadow-in peer-checked:text-font-hover">
                 구매자
               </span>
             </label>
@@ -50,7 +50,7 @@ export default function Form({ children, formType, onSubmit }: FormProps) {
                 id={USER_TYPE.SELLER}
                 className="hidden peer"
               />
-              <span className="block w-full h-full rounded-tr-3xl rounded-br-3xl leading-relaxed peer-checked:shadow-in peer-checked:text-font-hover">
+              <span className="block w-full h-full leading-relaxed rounded-tr-3xl rounded-br-3xl peer-checked:shadow-in peer-checked:text-font-hover">
                 판매자
               </span>
             </label>
