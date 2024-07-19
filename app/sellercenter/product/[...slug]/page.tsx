@@ -17,7 +17,9 @@ export default function ProductManagement() {
   const dragImgIdx = useRef<number | null>();
   const dragOverImgIdx = useRef<number | null>();
   const multipleImgRef = useRef<HTMLInputElement>(null);
-  const [imgs, setImgs] = useState<string[]>(Array(ImageMaxCnt).fill(""));
+  const [previewImgs, setPreviewImgs] = useState<string[]>(
+    Array(ImageMaxCnt).fill("")
+  );
   const [imgFiles, setImgFiles] = useState<File[]>([]);
   const [productInfo, setProductInfo] = useState({
     name: "",
@@ -33,7 +35,7 @@ export default function ProductManagement() {
     dragOverImgIdx.current = position;
   };
   const drop = (e: DragEvent) => {
-    const newImgList = [...imgs];
+    const newImgList = [...previewImgs];
     const newImgFileList = [...imgFiles];
     const dragImgValue = newImgList[dragImgIdx.current!];
     const dragImgFileValue = newImgFileList[dragImgIdx.current!];
@@ -43,50 +45,44 @@ export default function ProductManagement() {
     newImgFileList.splice(dragOverImgIdx.current!, 0, dragImgFileValue);
     dragImgIdx.current = null;
     dragOverImgIdx.current = null;
-    setImgs(newImgList);
+    setPreviewImgs(newImgList);
     setImgFiles(newImgFileList);
   };
 
-  const handleMutipleImgAddBtn = () => {
+  const handleMultipleImgAddBtn = () => {
     multipleImgRef.current?.click();
   };
 
   // 이미지 여러장 업로드
-  const handleMutipleImgInput = () => {
-    const file = multipleImgRef.current?.files;
-    if (!file) return;
-    const filesArray = Array.from(file);
-    setImgFiles([...imgFiles, ...filesArray]);
+  const handleMultipleImgInput = () => {
+    const files = multipleImgRef.current?.files;
+    if (!files) return;
 
-    const imgList = [...imgs];
+    const filesArray = Array.from(files);
+    setImgFiles((prevImgFiles) =>
+      [...prevImgFiles, ...filesArray].slice(0, ImageMaxCnt)
+    );
 
-    for (
-      let i = 0;
-      i < file.length && imgList.filter(Boolean).length < ImageMaxCnt;
-      i++
-    ) {
-      const imgUrl = URL.createObjectURL(file[i]);
-      const emptyIndex = imgList.indexOf("");
+    const updatePreviewImgs = [...previewImgs];
+    const imgUrls = filesArray.map((file) => URL.createObjectURL(file));
 
+    for (const imgUrl of imgUrls) {
+      const emptyIndex = updatePreviewImgs.indexOf("");
       if (emptyIndex !== -1) {
-        imgList[emptyIndex] = imgUrl;
-      } else {
-        imgList.push(imgUrl);
+        updatePreviewImgs[emptyIndex] = imgUrl;
       }
     }
-
-    setImgs(imgList.slice(0, ImageMaxCnt));
+    setPreviewImgs(updatePreviewImgs);
   };
 
   const handleImgDelete = (id: number) => {
-    setImgs([...imgs.filter((_, idx) => idx !== id), ""]);
+    setPreviewImgs([...previewImgs.filter((_, idx) => idx !== id), ""]);
     setImgFiles([...imgFiles.filter((_, idx) => idx !== id)]);
   };
 
   const handleInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    console.log(e.target.value);
     const { name, value } = e.target;
     setProductInfo((prev) => ({ ...prev, [name]: value }));
   };
@@ -96,17 +92,18 @@ export default function ProductManagement() {
 
     const uploadedImgUrls = await handleUploadStorage(imgFiles);
     // console.log("uploadedImgUrls", uploadedImgUrls);
-    const { error } = await addProductAction({
-      ...productInfo,
-      image: uploadedImgUrls,
-    });
+    if (uploadedImgUrls) {
+      const error = await addProductAction({
+        ...productInfo,
+        image: uploadedImgUrls,
+      });
+      if (error) {
+        console.error("상품 등록 실패", error);
+        return;
+      }
 
-    if (error) {
-      console.error("상품 등록 실패", error);
-      return;
+      console.log("상품 등록 성공!");
     }
-
-    console.log("상품 등록 성공!");
   };
 
   const handleUploadStorage = async (files: File[]) => {
@@ -130,7 +127,7 @@ export default function ProductManagement() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full mb-10">
       <form className="flex flex-col" onSubmit={handleSubmit}>
         <div className="flex justify-between">
           <h3 className="text-3xl">상품 등록</h3>
@@ -181,10 +178,6 @@ export default function ProductManagement() {
         />
         <label htmlFor="image" className="my-1 font-extralight">
           상품 이미지
-          <span className="font-grey">
-            {" "}
-            (이미지는 최대 5장까지 업로드 가능합니다.)
-          </span>
         </label>
         <div className="font-extralight mb-1">
           <p>- 이미지의 첫번째 사진이 상품의 대표이미지입니다.</p>
@@ -198,10 +191,10 @@ export default function ProductManagement() {
             accept=".jpg,.jpeg,.png,.gif"
             className="hidden shadow-in"
             ref={multipleImgRef}
-            onChange={handleMutipleImgInput}
+            onChange={handleMultipleImgInput}
             multiple
           />
-          {imgs.map((img, idx) => (
+          {previewImgs.map((img, idx) => (
             <div
               key={idx}
               className="relative w-1/5 aspect-square shadow-in rounded-2xl"
@@ -211,7 +204,7 @@ export default function ProductManagement() {
                 alt="미리보기"
                 idx={idx}
                 img={img}
-                onClick={handleMutipleImgAddBtn}
+                onClick={handleMultipleImgAddBtn}
                 onDelete={handleImgDelete}
                 onDragStart={dragStart}
                 onDragEnter={dragEnter}
