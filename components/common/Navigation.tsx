@@ -17,6 +17,7 @@ interface Props {
   isAuthenticated: boolean;
   isSeller: boolean;
 }
+
 export default function Navigation({ isAuthenticated, isSeller }: Props) {
   const [isLogOut, setIsLogOut] = useState(!isAuthenticated);
 
@@ -27,14 +28,14 @@ export default function Navigation({ isAuthenticated, isSeller }: Props) {
           <>
             <li>
               <ToolTip name="장바구니">
-                <Link href="/cart" className="outer-box w-12 h-12">
+                <Link href="/cart" className="w-12 h-12 outer-box">
                   <Image src={CartIcon} alt="장바구니" />
                 </Link>
               </ToolTip>
             </li>
             <li>
               <ToolTip name="로그인">
-                <Link href="/login" className="outer-box w-12 h-12">
+                <Link href="/login" className="w-12 h-12 outer-box">
                   <Image src={PersonIcon} alt="로그인" />
                 </Link>
               </ToolTip>
@@ -46,14 +47,14 @@ export default function Navigation({ isAuthenticated, isSeller }: Props) {
               <>
                 <li>
                   <ToolTip name="장바구니">
-                    <Link href="/cart" className="outer-box w-12 h-12">
+                    <Link href="/cart" className="w-12 h-12 outer-box">
                       <Image src={CartIcon} alt="장바구니" />
                     </Link>
                   </ToolTip>
                 </li>
                 <li>
                   <ToolTip name="마이페이지">
-                    <Link href="/mypage" className="outer-box w-12 h-12">
+                    <Link href="/mypage" className="w-12 h-12 outer-box">
                       <Image src={PersonIcon} alt="마이페이지" />
                     </Link>
                   </ToolTip>
@@ -90,8 +91,8 @@ export default function Navigation({ isAuthenticated, isSeller }: Props) {
                   </ToolTip>
                 </li>
                 <li>
-                  <ToolTip name="판매자샵">
-                    <Link href="/sellershop" className="outer-box w-12 h-12">
+                  <ToolTip name="판매자센터">
+                    <Link href="/sellercenter" className="w-12 h-12 outer-box">
                       <Image src={ShopIcon} alt="판매자샵" />
                     </Link>
                   </ToolTip>
