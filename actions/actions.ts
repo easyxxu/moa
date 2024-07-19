@@ -173,18 +173,25 @@ export async function logOutAction() {
   }
   redirect("/");
 }
+interface ProductForm {
+  name: string;
+  price: number;
+  stock: number;
+  description: string;
+  image: string[];
+}
 
-export async function addProductAction(formData: any) {
+export async function addProductAction(formData: ProductForm) {
   const supabase = createClient();
   const image = formData.image;
-  console.log("#입력된 formData: ", formData);
+  // console.log("#입력된 formData: ", formData);
 
   const { error } = await supabase
     .from("product")
     .insert({ ...formData, image });
 
   if (error) {
-    return { error };
+    return error;
   }
   redirect("/sellercenter/product");
 }
