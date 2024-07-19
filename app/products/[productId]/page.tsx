@@ -25,9 +25,9 @@ export default async function ProductPage({
   const productId = params.productId;
   const supabase = createClient();
   const { data } = await supabase
-    .from("products")
+    .from("product")
     .select(
-      "name, price, description, shipping_fee, stock, image, seller, seller_store"
+      "name, price, description, shipping_fee, stock, image, seller_store"
     )
     .eq("id", productId)
     .single();
@@ -42,7 +42,7 @@ export default async function ProductPage({
       </div>
       <div className="flex gap-12">
         <Image
-          src={data.image}
+          src={data.image[0]}
           alt={data.name}
           width={300}
           height={300}
@@ -86,7 +86,7 @@ export default async function ProductPage({
           </div>
         </div>
       </div>
-      <DetailContent />
+      <DetailContent description={data.description} image={data.image} />
     </div>
   );
 }

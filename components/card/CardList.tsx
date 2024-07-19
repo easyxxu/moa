@@ -12,7 +12,7 @@ export default function CardList({ products }: CardListProps) {
         <li key={product.id}>
           <Link href={`/products/${product.id}`}>
             <CardItem
-              src={product.image}
+              src={product.image[0]}
               name={product.name}
               price={product.price}
             />

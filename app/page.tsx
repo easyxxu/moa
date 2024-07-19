@@ -8,7 +8,7 @@ import { Product } from "@/types/product";
 
 export default async function Index() {
   const supabase = createClient();
-  const { data: products } = await supabase.from("products").select();
+  const { data: products } = await supabase.from("product").select();
 
   return (
     <div className="">
