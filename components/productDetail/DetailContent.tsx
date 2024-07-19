@@ -24,8 +24,8 @@ export default function DetailContent({ description, image }: Props) {
           <Image
             src={img}
             alt=""
-            width={100}
-            height={100}
+            width={300}
+            height={300}
             className="w-1/3"
             key={idx}
           />
