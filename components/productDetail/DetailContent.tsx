@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 
-import TabButton from "../common/TabButton";
+import TabButton from "../common/button/TabButton";
 import Image from "next/image";
 
 interface Props {

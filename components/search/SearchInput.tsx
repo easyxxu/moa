@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import Button from "../common/Button";
+import Button from "../common/button/Button";
 import SearchIcon from "@/public/assets/icon/icon-search.svg";
 import { useRouter } from "next/navigation";
 

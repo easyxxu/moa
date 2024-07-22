@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { v4 } from "uuid";
 
-import Button from "@/components/common/Button";
+import Button from "@/components/common/button/Button";
 import InputLabel from "@/components/common/InputLabel";
 import ImagePreview from "@/components/sellercenter/ImagePreview";
 

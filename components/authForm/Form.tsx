@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import Button from "../common/Button";
+import Button from "../common/button/Button";
 import MoaLogo from "@/public/assets/moa-logo.svg";
 
 interface FormProps {

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import Button from "./Button";
+import Button from "./button/Button";
 import ToolTip from "./ToolTip";
 import CartIcon from "@/public/assets/icon/icon-shopping-cart.svg";
 import PersonIcon from "@/public/assets/icon/icon-user.svg";
