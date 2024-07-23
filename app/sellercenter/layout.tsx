@@ -8,7 +8,7 @@ interface Props {
 export default function SellerLayout({ children }: Props) {
   return (
     <>
-      <Header headerType="SELLER" />
+      <Header />
       <div className="flex gap-6 mx-auto my-5 max-w-7xl">
         <Menu />
         {children}
