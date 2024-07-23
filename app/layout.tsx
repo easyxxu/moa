@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import { UserProvider } from "@/contexts/UserContext";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -24,12 +25,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${pretendard.variable}`}>
-      <body className="bg-background font-pretendard">
-        <div className="min-h-screen flex flex-col items-center">
-          {children}
-        </div>
-      </body>
-    </html>
+    <UserProvider>
+      <html lang="en" className={`${pretendard.variable}`}>
+        <body className="bg-background font-pretendard">
+          <div className="h-[100vh]">{children}</div>
+        </body>
+      </html>
+    </UserProvider>
   );
 }
