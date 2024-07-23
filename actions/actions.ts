@@ -114,7 +114,7 @@ export async function joinAction(
 
 export type LoginState = State & {
   code?: "SUCCESS" | "FAILED";
-  userData?: { id: string; user_type: "BUYER" | "SELLER" };
+  userData?: { id: string; name: string; user_type: "BUYER" | "SELLER" };
 };
 
 export async function loginAction(
@@ -126,7 +126,6 @@ export async function loginAction(
   const userType = formData.get("userType") as string;
   const supabase = createClient();
   const errorMsg: ErrorMsg = {};
-  // const userDispatch = useUserDispatch();
 
   if (!email || email.trim().length === 0) {
     errorMsg.email = ERROR_MESSAGE.required;
@@ -148,9 +147,8 @@ export async function loginAction(
     .select()
     .eq("id", data.user?.id)
     .single();
-  // console.log("Login! userData: ", userData);
+
   if (userError) {
-    // console.log("userError", userError);
     errorMsg.login = ERROR_MESSAGE.getUserError;
   }
 

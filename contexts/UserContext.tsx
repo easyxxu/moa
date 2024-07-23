@@ -10,12 +10,14 @@ import {
 
 interface AuthUser {
   id: string | null;
+  name: string | null;
   isLogin: boolean;
   user_type: "LOGGED_OUT" | "BUYER" | "SELLER";
 }
 
 const initialUser: AuthUser = {
   id: null,
+  name: null,
   user_type: "LOGGED_OUT",
   isLogin: false,
 };
@@ -24,6 +26,7 @@ interface LoginAction {
   type: "LOGIN";
   payload: {
     id: string;
+    name: string;
     user_type: "BUYER" | "SELLER";
   };
 }
@@ -41,6 +44,7 @@ function userReducer(state: AuthUser, action: UserAction): AuthUser {
       return {
         ...state,
         id: action.payload.id,
+        name: action.payload.name,
         user_type: action.payload.user_type,
         isLogin: true,
       };
@@ -49,6 +53,7 @@ function userReducer(state: AuthUser, action: UserAction): AuthUser {
       return {
         ...state,
         id: null,
+        name: null,
         user_type: "LOGGED_OUT",
         isLogin: false,
       };

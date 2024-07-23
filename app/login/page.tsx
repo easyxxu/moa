@@ -19,6 +19,7 @@ export default function Login() {
     if (state.code === "SUCCESS") {
       const userData = {
         id: state.userData?.id!,
+        name: state.userData?.name!,
         user_type: state.userData?.user_type!,
       };
 
@@ -26,6 +27,7 @@ export default function Login() {
         "userState",
         JSON.stringify({
           id: userData.id,
+          name: userData.name,
           user_type: userData.user_type,
           isLogin: true,
         })
