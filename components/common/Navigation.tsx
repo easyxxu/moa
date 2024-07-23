@@ -66,6 +66,7 @@ export default function Navigation({ isAuthenticated, isSeller }: Props) {
                       custom="w-12 h-12"
                       onClick={async () => {
                         await logOutAction();
+                        localStorage.removeItem("userState");
                         setIsLogOut(true);
                       }}
                     >
