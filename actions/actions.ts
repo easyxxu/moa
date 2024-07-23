@@ -2,7 +2,7 @@
 
 import { UserType } from "@/types/user";
 import { createClient } from "@/utils/supabase/server";
-import { User, WeakPassword, Session } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
 
 import { redirect } from "next/navigation";
 
@@ -19,12 +19,6 @@ export type State = {
   errorMsg?: ErrorMsg;
 };
 
-export type loginState = {
-  errorMsg?: ErrorMsg;
-  userData?:
-    | { user: User; session: Session; weakPassword?: WeakPassword }
-    | { user: null; session: null; weakPassword?: null };
-};
 const emailRegex = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
@@ -118,15 +112,21 @@ export async function joinAction(
   return redirect("/login");
 }
 
+export type LoginState = State & {
+  code?: "SUCCESS" | "FAILED";
+  userData?: { id: string; user_type: "BUYER" | "SELLER" };
+};
+
 export async function loginAction(
   prevState: State,
   formData: FormData
-): Promise<loginState> {
+): Promise<LoginState> {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const userType = formData.get("userType") as string;
   const supabase = createClient();
   const errorMsg: ErrorMsg = {};
+  // const userDispatch = useUserDispatch();
 
   if (!email || email.trim().length === 0) {
     errorMsg.email = ERROR_MESSAGE.required;
@@ -148,9 +148,9 @@ export async function loginAction(
     .select()
     .eq("id", data.user?.id)
     .single();
-
+  // console.log("Login! userData: ", userData);
   if (userError) {
-    console.log("userError", userError);
+    // console.log("userError", userError);
     errorMsg.login = ERROR_MESSAGE.getUserError;
   }
 
@@ -159,10 +159,10 @@ export async function loginAction(
   }
 
   if (Object.keys(errorMsg).length > 0) {
-    return { errorMsg };
+    return { code: "FAILED", errorMsg };
   }
 
-  return redirect("/");
+  return { code: "SUCCESS", userData: userData };
 }
 
 export async function logOutAction() {
@@ -193,5 +193,6 @@ export async function addProductAction(formData: ProductForm) {
   if (error) {
     return error;
   }
+
   redirect("/sellercenter/product");
 }
