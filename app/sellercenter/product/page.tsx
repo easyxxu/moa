@@ -62,7 +62,7 @@ export default function ProductDashboard() {
         <TableHeader headers={listHeaders} />
         <tbody>
           {productData.map((product) => (
-            <tr>
+            <tr key={product.id}>
               <TableCell.TextWithImgCell
                 src={product.image[0]}
                 text={product.name}
