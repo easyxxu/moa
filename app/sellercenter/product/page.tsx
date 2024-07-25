@@ -23,8 +23,10 @@ export default function ProductDashboard() {
   const [productData, setProductData] = useState<Product[]>([]);
   const userId = userState.id;
 
-  const handleDeleteProduct = () => {
-    console.log("product deleted");
+  const handleDeleteProduct = async (id: number) => {
+    const res = await supabase.from("product").delete().eq("id", id);
+    if (res.status === 204) console.log("Delete Product");
+    setProductData((prev) => [...prev.filter((data) => data.id !== id)]);
   };
 
   useEffect(() => {
@@ -73,7 +75,10 @@ export default function ProductDashboard() {
                 text="수정"
                 onClick={() => router.push("/sellercenter/modify")}
               />
-              <TableCell.ButtonCell text="삭제" onClick={handleDeleteProduct} />
+              <TableCell.ButtonCell
+                text="삭제"
+                onClick={() => handleDeleteProduct(product.id)}
+              />
             </tr>
           ))}
         </tbody>
