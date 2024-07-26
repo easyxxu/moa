@@ -69,15 +69,17 @@ export default function ProductDashboard() {
                 src={product.image[0]}
                 text={product.name}
               />
-              <TableCell.TextCell text={product.name} />
               <TableCell.TextCell text={product.price} />
+              <TableCell.TextCell text={product.stock} />
               <TableCell.ButtonCell
                 text="수정"
-                onClick={() => router.push("/sellercenter/modify")}
+                onClick={() =>
+                  router.push(`/sellercenter/product/modify/${product.id}`)
+                }
               />
               <TableCell.ButtonCell
                 text="삭제"
-                onClick={() => handleDeleteProduct(product.id)}
+                onClick={() => handleDeleteProduct(product.id!)}
               />
             </tr>
           ))}
