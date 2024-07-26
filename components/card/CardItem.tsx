@@ -11,9 +11,9 @@ export default function CardItem({ src, name, price }: CardItemProps) {
       <Image
         src={src}
         alt={name}
-        width={268}
-        height={270}
-        className="w-full rounded-t-xl"
+        width={300}
+        height={300}
+        className="w-full h-64 rounded-t-xl"
       />
       <div className="px-4 py-3 bg-white rounded-b-xl font-extralight">
         <div className="flex justify-between">
