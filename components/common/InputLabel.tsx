@@ -1,21 +1,23 @@
 interface InputLabelProps {
   name: string;
+  value?: string | number;
   label: string;
   type: string;
   placeholder?: string;
   style: "box" | "line";
   error?: string;
-  onBlur?: React.ChangeEventHandler;
+  onChange?: React.ChangeEventHandler;
 }
 
 export default function InputLabel({
   name,
+  value,
   label,
   type,
   placeholder,
   style,
   error,
-  onBlur,
+  onChange,
 }: InputLabelProps) {
   return (
     <div className="flex flex-col gap-1 font-extralight">
@@ -26,10 +28,11 @@ export default function InputLabel({
             id={label}
             name={label}
             type={type}
+            value={value}
             className="px-4 py-2 inner-box"
             placeholder={placeholder}
             required
-            onBlur={onBlur}
+            onChange={onChange}
           />
           <span className="text-sm text-red-600">{error}</span>
         </>
@@ -43,7 +46,7 @@ export default function InputLabel({
               className="w-full px-2 py-2 border-b-2 peer bg-inherit focus:outline-none focus:border-b-font-hover"
               placeholder={placeholder}
               required
-              onBlur={onBlur}
+              onChange={onChange}
             />
             <label
               htmlFor={label}
