@@ -55,7 +55,7 @@ export default async function ProductPage({
           </div>
           <div>
             <div>
-              <p>배송비: {data.shipping_fee.toLocaleString("ko-KR")} 원</p>
+              <p>배송비: {data.shipping_fee.toLocaleString()} 원</p>
               <hr className="my-5" />
               <QuantityButton />
               <hr className="my-5" />

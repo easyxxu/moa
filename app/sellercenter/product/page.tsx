@@ -69,7 +69,7 @@ export default function ProductDashboard() {
                 src={product.image[0]}
                 text={product.name}
               />
-              <TableCell.TextCell text={product.price} />
+              <TableCell.TextCell text={product.price.toLocaleString()} />
               <TableCell.TextCell text={product.stock} />
               <TableCell.ButtonCell
                 text="수정"
