@@ -1,6 +1,5 @@
 import Image from "next/image";
 import HeartIcon from "@/public/assets/icon/icon-unheart.svg";
-import Button from "../common/Button";
 interface CardItemProps {
   src: string;
   name: string;
