@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import { UserProvider } from "@/contexts/UserContext";
+import { ModalProvider } from "@/contexts/ModalContext";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -28,7 +29,9 @@ export default function RootLayout({
     <UserProvider>
       <html lang="en" className={`${pretendard.variable}`}>
         <body className="bg-background font-pretendard">
-          <div className="h-[100vh]">{children}</div>
+          <ModalProvider>
+            <div className="h-[100vh]">{children}</div>
+          </ModalProvider>
         </body>
       </html>
     </UserProvider>
