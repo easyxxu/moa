@@ -12,6 +12,7 @@ import LogoutIcon from "@/public/assets/icon/icon-logout.svg";
 import ShopIcon from "@/public/assets/icon/icon-shop.svg";
 
 import { logOutAction } from "@/actions/actions";
+import { useUserDispatch } from "@/contexts/UserContext";
 
 interface Props {
   isAuthenticated: boolean;
@@ -20,6 +21,7 @@ interface Props {
 
 export default function Navigation({ isAuthenticated, isSeller }: Props) {
   const [isLogOut, setIsLogOut] = useState(!isAuthenticated);
+  const userDispatch = useUserDispatch();
 
   return (
     <nav>
@@ -66,7 +68,18 @@ export default function Navigation({ isAuthenticated, isSeller }: Props) {
                       custom="w-12 h-12"
                       onClick={async () => {
                         await logOutAction();
-                        localStorage.removeItem("userState");
+                        // localStorage.setItem(
+                        //   "userState",
+                        //   JSON.stringify({
+                        //     id: null,
+                        //     name: null,
+                        //     user_type: "LOGGED_OUT",
+                        //     isLogin: false,
+                        //   })
+                        // );
+                        userDispatch({
+                          type: "LOGOUT",
+                        });
                         setIsLogOut(true);
                       }}
                     >
@@ -84,6 +97,18 @@ export default function Navigation({ isAuthenticated, isSeller }: Props) {
                       custom="w-12 h-12"
                       onClick={async () => {
                         await logOutAction();
+                        // localStorage.setItem(
+                        //   "userState",
+                        //   JSON.stringify({
+                        //     id: null,
+                        //     name: null,
+                        //     user_type: "LOGGED_OUT",
+                        //     isLogin: false,
+                        //   })
+                        // );
+                        userDispatch({
+                          type: "LOGOUT",
+                        });
                         setIsLogOut(true);
                       }}
                     >

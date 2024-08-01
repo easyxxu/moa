@@ -23,15 +23,15 @@ export default function Login() {
         user_type: state.userData?.user_type!,
       };
 
-      localStorage.setItem(
-        "userState",
-        JSON.stringify({
-          id: userData.id,
-          name: userData.name,
-          user_type: userData.user_type,
-          isLogin: true,
-        })
-      );
+      // localStorage.setItem(
+      //   "userState",
+      //   JSON.stringify({
+      //     id: userData.id,
+      //     name: userData.name,
+      //     user_type: userData.user_type,
+      //     isLogin: true,
+      //   })
+      // );
 
       userDispatch({
         type: "LOGIN",

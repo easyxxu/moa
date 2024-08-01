@@ -41,6 +41,15 @@ function userReducer(state: AuthUser, action: UserAction): AuthUser {
   switch (action.type) {
     case "LOGIN":
       console.log("Login");
+      localStorage.setItem(
+        "userState",
+        JSON.stringify({
+          id: action.payload.id,
+          name: action.payload.name,
+          user_type: action.payload.user_type,
+          isLogin: true,
+        })
+      );
       return {
         ...state,
         id: action.payload.id,
@@ -50,6 +59,15 @@ function userReducer(state: AuthUser, action: UserAction): AuthUser {
       };
     case "LOGOUT":
       console.log("logout");
+      localStorage.setItem(
+        "userState",
+        JSON.stringify({
+          id: null,
+          name: null,
+          user_type: "LOGGED_OUT",
+          isLogin: false,
+        })
+      );
       return {
         ...state,
         id: null,
