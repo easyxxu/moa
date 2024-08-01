@@ -6,6 +6,8 @@ import Link from "next/link";
 import LikeIcon from "@/public/assets/icon/icon-heart.svg";
 import UnLikeIcon from "@/public/assets/icon/icon-unheart.svg";
 import QuantityButton from "@/components/common/button/QuantityButton";
+import { loadProductById } from "@/api/apis";
+import ProductPurchaseOptions from "@/components/productDetail/ProductPurchaseOptions";
 
 interface ProductType {
   name: string;
@@ -23,18 +25,9 @@ export default async function ProductPage({
   params: { productId: string };
 }) {
   const productId = params.productId;
-  const supabase = createClient();
-  const { data } = await supabase
-    .from("product")
-    .select(
-      "name, price, description, shipping_fee, stock, image, seller_store"
-    )
-    .eq("id", productId)
-    .single();
-
+  const { data } = await loadProductById(+productId);
   if (!data) return;
 
-  // console.log("#data: ", data);
   return (
     <div className="flex flex-col gap-3 mx-auto my-0 max-w-7xl">
       <div className="my-5">
@@ -54,35 +47,8 @@ export default async function ProductPage({
             <p>평점</p>
           </div>
           <div>
-            <div>
-              <p>배송비: {data.shipping_fee.toLocaleString()} 원</p>
-              <hr className="my-5" />
-              <QuantityButton />
-              <hr className="my-5" />
-            </div>
-            <div className="flex items-center justify-between my-5">
-              <p className="font-semibold">총 상품 금액</p>
-              <div className="flex items-center">
-                <span className="mr-5">수량 : 1</span>
-                <span className="text-3xl before:content-[''] before:absolute before:w-px before:h-6 before:bg-font-hover before:-translate-x-2.5 before:translate-y-1.5">
-                  <strong>{data.price.toLocaleString("ko-KR")}</strong> 원
-                </span>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <Button type="button" custom="w-10">
-                <Image src={UnLikeIcon} alt="좋아요" />
-              </Button>
-              <Button type="button" custom="w-1/2 py-3 font-semibold">
-                장바구니 담기
-              </Button>
-              <Button
-                type="button"
-                custom="w-1/2 py-3 bg-primary font-semibold"
-              >
-                바로 구매
-              </Button>
-            </div>
+            <p>배송비: {data.shipping_fee.toLocaleString()} 원</p>
+            <ProductPurchaseOptions price={data.price} />
           </div>
         </div>
       </div>
