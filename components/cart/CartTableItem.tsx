@@ -73,7 +73,7 @@ export default function CartTableItem({ item, isLastItem }: Props) {
       </td>
       <td>
         <div className="flex flex-col items-center gap-2">
-          {item.quantity}
+          {quantity}
           <Button
             type="button"
             custom="px-3 py-2 bg-secondary font-semibold"
