@@ -25,16 +25,7 @@ export default function ProductPurchaseOptions({ price }: Props) {
   const [priceByQuantity, setPriceByQuantity] = useState(price);
   const [quantity, setQuantity] = useState(1);
   const userDispatch = useUserDispatch();
-  const [cartId, setCartId] = useState(0);
-  const [isInCart, setIsInCart] = useState(false);
 
-  const handlePlusQuantity = () => {
-    setQuantity(quantity + 1);
-  };
-  const handleMinusQuantity = () => {
-    if (quantity === 1) return;
-    setQuantity(quantity - 1);
-  };
   const redirectToLogin = () => {
     router.push("/login");
     closeModal();
@@ -50,16 +41,18 @@ export default function ProductPurchaseOptions({ price }: Props) {
   };
   const handleAddCart = async () => {
     if (!isLogin) {
-      showModal(
-        "로그인이 필요한 서비스입니다. \n로그인 하시겠습니까?",
-        redirectToLogin
-      );
+      showModal({
+        type: "CONFIRM",
+        content: "로그인이 필요한 서비스입니다. \n로그인 하시겠습니까?",
+        onConfirm: () => redirectToLogin(),
+      });
       return;
     } else if (!isBuyer) {
-      showModal(
-        "구매자로 로그인해주세요. \n로그인 하시겠습니까?",
-        redirectToLoginWithLogout
-      );
+      showModal({
+        type: "CONFIRM",
+        content: "구매자로 로그인해주세요. \n로그인 하시겠습니까?",
+        onConfirm: () => redirectToLoginWithLogout(),
+      });
       return;
     }
     let cartId;
@@ -70,10 +63,12 @@ export default function ProductPurchaseOptions({ price }: Props) {
 
     const isInCart = await checkProductInCart(cartId); // 이미 장바구니에 담긴 물건인지 확인
     if (isInCart) {
-      showModal(
-        "이미 장바구니에 담긴 상품입니다. 장바구니로 이동하시겠습니까?",
-        redirectToCart
-      );
+      showModal({
+        type: "CONFIRM",
+        content:
+          "이미 장바구니에 담긴 상품입니다. \n장바구니로 이동하시겠습니까?",
+        onConfirm: () => redirectToCart(),
+      });
       return;
     }
 
@@ -83,10 +78,11 @@ export default function ProductPurchaseOptions({ price }: Props) {
       quantity,
     });
     if (!error) {
-      showModal(
-        "장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?",
-        redirectToCart
-      );
+      showModal({
+        type: "CONFIRM",
+        content: "장바구니에 담겼습니다. \n장바구니로 이동하시겠습니까?",
+        onConfirm: () => redirectToCart(),
+      });
       console.log("장바구니 담긴 상품:", data);
     }
   };
@@ -99,11 +95,7 @@ export default function ProductPurchaseOptions({ price }: Props) {
   return (
     <>
       <hr className="my-5" />
-      <QuantityButton
-        quantity={quantity}
-        onMinusClick={handleMinusQuantity}
-        onPlusClick={handlePlusQuantity}
-      />
+      <QuantityButton quantity={quantity} setQuantity={setQuantity} />
       <hr className="my-5" />
       <div className="flex items-center justify-between my-5">
         <p className="font-semibold">총 상품 금액</p>
