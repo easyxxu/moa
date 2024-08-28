@@ -163,6 +163,17 @@ export async function getCartItem(cartId: number) {
   return groupBySellerStore(cartItemsInfo);
 }
 
+export const deleteCartItem = async (productId: number) => {
+  const supabase = createClient();
+  const res = await supabase
+    .from("cart_item")
+    .delete()
+    .eq("product_id", productId);
+
+  revalidatePath("/cart");
+  return res;
+};
+
 export const updateQuantity = async (productId: number, quantity: number) => {
   const supabase = createClient();
   const { data } = await supabase

@@ -1,6 +1,7 @@
 "use client";
 import { CartItemInfo, GroupedCartItems } from "@/types/cart";
 import CartTableItem from "./CartTableItem";
+import { useState } from "react";
 
 interface Props {
   cartItems: GroupedCartItems;
@@ -13,7 +14,7 @@ export default function CartTable({ cartItems }: Props) {
       {Object.keys(cartItems).map((store) => (
         <>
           <tr key={store} className="bg-white">
-            <td colSpan={4} className="p-3 font-bold text-left rounded-t-2xl">
+            <td colSpan={5} className="p-3 font-bold text-left rounded-t-2xl">
               {store}
             </td>
           </tr>

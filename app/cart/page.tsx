@@ -14,14 +14,13 @@ export default async function CartPage() {
   const cartItemsInfo = await getCartItem(cartId);
 
   if (!cartItemsInfo) return;
-  // console.log(cartItemsInfo);
   return (
     <div className="flex flex-col w-full my-5">
       <h2 className="mb-4 text-3xl font-bold text-center">장바구니</h2>
       <table className="">
         <thead className="bg-primary rounded-2xl shadow-out">
           <tr className="*:py-3">
-            <th className="rounded-l-2xl">
+            <th className="rounded-l-2xl" scope="col">
               <label htmlFor="allProduct" className="a11y-hidden">
                 전체상품
               </label>
@@ -31,9 +30,10 @@ export default async function CartPage() {
                 className="align-text-top	 bg-[url('/assets/icon/icon-check-box.svg')] w-5 h-5 checked:bg-[url('/assets/icon/icon-check-box-fill.svg')]"
               />
             </th>
-            <th>상품정보</th>
-            <th>수량</th>
-            <th className="rounded-r-2xl">상품금액</th>
+            <th scope="col">상품정보</th>
+            <th scope="col">수량</th>
+            <th scope="col">상품금액</th>
+            <th className="rounded-r-2xl" scope="col"></th>
           </tr>
         </thead>
         <CartTable cartItems={cartItemsInfo} />
