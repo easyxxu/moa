@@ -43,14 +43,14 @@ export default function InputLabel({
               id={label}
               name={label}
               type={type}
-              className="w-full px-2 py-2 border-b-2 peer bg-inherit focus:outline-none focus:border-b-font-hover"
+              className="w-full px-2 pb-1 pt-3 border-b-2 peer bg-inherit focus:outline-none focus:border-b-font-hover"
               placeholder={placeholder}
               required
               onChange={onChange}
             />
             <label
               htmlFor={label}
-              className="absolute transition-all left-2 bottom-2 text-md peer-focus:text-sm peer-focus:bottom-9 peer-valid:text-sm peer-valid:bottom-9"
+              className="absolute transition-all left-2 bottom-2 text-md peer-focus:text-sm peer-focus:bottom-7 peer-valid:text-sm peer-valid:bottom-7"
             >
               {name}
             </label>
