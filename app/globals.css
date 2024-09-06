@@ -35,6 +35,9 @@
   .tab-btn-active {
     @apply w-1/4 border-b-4 py-3;
   }
+  .total-price-box {
+    @apply *:first:text-lg text-center;
+  }
   .a11y-hidden {
     clip: rect(1px, 1px, 1px, 1px);
     clip-path: inset(50%);

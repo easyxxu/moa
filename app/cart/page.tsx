@@ -2,6 +2,7 @@ import { getCartId, getCartItem } from "@/api/apis";
 import CartNoBuyer from "@/components/cart/CartNoBuyer";
 import CartNoItem from "@/components/cart/CartNoItem";
 import CartTable from "@/components/cart/CartTable";
+import CartTotalPrice from "@/components/cart/CartTotalPrice";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function CartPage() {
@@ -26,7 +27,7 @@ export default async function CartPage() {
   return (
     <div className="flex flex-col w-full my-5">
       <h2 className="mb-4 text-3xl font-bold text-center">장바구니</h2>
-      <table className="">
+      <table>
         <thead className="bg-primary rounded-2xl shadow-out">
           <tr className="*:py-3">
             <th className="rounded-l-2xl" scope="col">
@@ -47,6 +48,7 @@ export default async function CartPage() {
         </thead>
         <CartTable cartItems={cartData.cart} />
       </table>
+      <CartTotalPrice />
     </div>
   );
 }
