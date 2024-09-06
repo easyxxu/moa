@@ -12,8 +12,16 @@ export default async function CartPage() {
   /**
    * TODO Logout 상태일 때 처리하기
    */
+
+  const isLogin = user !== null ? true : false;
+  const isSeller = user?.user_metadata.user_type === "SELLER";
+
+  if (!isLogin || isSeller) return <CartNoBuyer />;
+
   const cartId = await getCartId(user!.id);
-  const cartItemsInfo = await getCartItem(cartId);
+  const cartData = await getCartItem(cartId);
+
+  if (!cartData || cartData.count === 0) return <CartNoItem />;
 
   return (
     <div className="flex flex-col w-full my-5">
