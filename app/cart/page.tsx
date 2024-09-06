@@ -1,4 +1,6 @@
 import { getCartId, getCartItem } from "@/api/apis";
+import CartNoBuyer from "@/components/cart/CartNoBuyer";
+import CartNoItem from "@/components/cart/CartNoItem";
 import CartTable from "@/components/cart/CartTable";
 import { createClient } from "@/utils/supabase/server";
 
@@ -13,7 +15,6 @@ export default async function CartPage() {
   const cartId = await getCartId(user!.id);
   const cartItemsInfo = await getCartItem(cartId);
 
-  if (!cartItemsInfo) return;
   return (
     <div className="flex flex-col w-full my-5">
       <h2 className="mb-4 text-3xl font-bold text-center">장바구니</h2>
@@ -36,7 +37,7 @@ export default async function CartPage() {
             <th className="rounded-r-2xl" scope="col"></th>
           </tr>
         </thead>
-        <CartTable cartItems={cartItemsInfo} />
+        <CartTable cartItems={cartData.cart} />
       </table>
     </div>
   );

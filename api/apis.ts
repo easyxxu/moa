@@ -125,10 +125,7 @@ export async function getCartItem(cartId: number) {
     .select()
     .eq("cart_id", cartId);
 
-  /**
-   * TODO 장바구니에 담긴 아이템이 없는 경우 처리가 필요함(현재 처리는 임시임)
-   */
-  if (!cartItems) return;
+  if (cartItems?.length === 0 || !cartItems) return;
 
   /**
    ** 상품정보+수량을 같이 리턴함
@@ -160,7 +157,7 @@ export async function getCartItem(cartId: number) {
     }, {});
   };
 
-  return groupBySellerStore(cartItemsInfo);
+  return { count: cartItems?.length, cart: groupBySellerStore(cartItemsInfo) };
 }
 
 export const deleteCartItem = async (productId: number) => {
