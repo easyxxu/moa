@@ -4,9 +4,10 @@ import { CartItemInfo } from "@/types/cart";
 import Image from "next/image";
 import Button from "../common/button/Button";
 import { useModal } from "@/contexts/ModalContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { deleteCartItem, updateQuantity } from "@/api/apis";
 import DeleteIcon from "@/public/assets/icon/icon-delete.svg";
+import { useCartCheckItems } from "@/contexts/CartContext";
 
 interface Props {
   item: CartItemInfo;
@@ -15,6 +16,8 @@ interface Props {
 
 export default function CartTableItem({ item, isLastItem }: Props) {
   const { showModal, closeModal } = useModal();
+  const { checkItem, uncheckItem, checkedItems } = useCartCheckItems();
+  const [isChecked, setIsChecked] = useState(true);
   const [quantity, setQuantity] = useState(item.quantity);
 
   const handleOpenQuantityModal = () => {
@@ -55,6 +58,29 @@ export default function CartTableItem({ item, isLastItem }: Props) {
       },
     });
   };
+
+  const handleCheckToggle = () => {
+    const updateItem = {
+      itemId: item.id!,
+      price: item.price,
+      quantity: item.quantity,
+      shipping_fee: item.shipping_fee,
+    };
+    setIsChecked(!isChecked);
+    if (isChecked) {
+      uncheckItem(updateItem);
+    } else {
+      checkItem(updateItem);
+    }
+  };
+
+  useEffect(() => {
+    checkedItems.filter((checkedItem) => checkedItem.itemId === item.id)
+      .length === 1
+      ? setIsChecked(true)
+      : setIsChecked(false);
+  }, [checkItem]);
+
   return (
     <tr
       key={item.id}
@@ -70,6 +96,8 @@ export default function CartTableItem({ item, isLastItem }: Props) {
         </label>
         <input
           type="checkbox"
+          checked={isChecked}
+          onClick={handleCheckToggle}
           id="productCheck"
           className="bg-[url('/assets/icon/icon-check-box.svg')] w-5 h-5 checked:bg-[url('/assets/icon/icon-check-box-fill.svg')]"
         />

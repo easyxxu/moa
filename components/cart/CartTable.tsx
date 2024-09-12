@@ -1,30 +1,44 @@
 "use client";
-import { CartItemInfo, GroupedCartItems } from "@/types/cart";
-import CartTableItem from "./CartTableItem";
-import { useState } from "react";
+import { GroupedCartItems } from "@/types/cart";
+import { useEffect } from "react";
+import { useCartCheckItems } from "@/contexts/CartContext";
+import CartTableHeader from "./CartTableHeader";
+import CartTableBody from "./CartTableBody";
 
 interface Props {
   cartItems: GroupedCartItems;
+  cartCount: number;
 }
 
-export default function CartTable({ cartItems }: Props) {
+export default function CartTable({ cartItems, cartCount }: Props) {
+  const { allCheck } = useCartCheckItems();
+
+  const handleCheckAllItems = () => {
+    const allCheckedItems: any[] = [];
+    Object.keys(cartItems).forEach((store) => {
+      cartItems[store].forEach((item) => {
+        allCheckedItems.push({
+          itemId: item.id,
+          quantity: item.quantity,
+          price: item.price,
+          shipping_fee: item.shipping_fee,
+        });
+      });
+    });
+    allCheck(allCheckedItems);
+  };
+
+  useEffect(() => {
+    handleCheckAllItems();
+  }, [cartItems]);
+
   return (
-    <tbody className="text-center">
-      <tr className="h-5" />
-      {Object.keys(cartItems).map((store) => (
-        <>
-          <tr key={store} className="bg-white">
-            <td colSpan={5} className="p-3 font-bold text-left rounded-t-2xl">
-              {store}
-            </td>
-          </tr>
-          {cartItems[store].map((item: CartItemInfo, index: number) => {
-            const isLastItem = index === cartItems[store].length - 1;
-            return <CartTableItem item={item} isLastItem={isLastItem} />;
-          })}
-          <tr className="h-5" />
-        </>
-      ))}
-    </tbody>
+    <>
+      <CartTableHeader
+        handleCheckAllItems={handleCheckAllItems}
+        cartCount={cartCount}
+      />
+      <CartTableBody cartItems={cartItems} />
+    </>
   );
 }
