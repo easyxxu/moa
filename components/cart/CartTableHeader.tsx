@@ -16,7 +16,6 @@ export default function CartTableHeader({
   const [isChecked, setIsChecked] = useState(true);
 
   const handleCheckBoxToggle = () => {
-    isChecked ? handleCheckAllItems() : allUncheck();
     if (isChecked) {
       allUncheck();
       setIsChecked(false);
