@@ -7,6 +7,7 @@ interface cartItem {
   quantity: number;
   price: number;
   shipping_fee: number;
+  store: string;
 }
 
 interface CartContextValues {

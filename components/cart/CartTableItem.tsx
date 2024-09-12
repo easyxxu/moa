@@ -65,6 +65,7 @@ export default function CartTableItem({ item, isLastItem }: Props) {
       price: item.price,
       quantity: item.quantity,
       shipping_fee: item.shipping_fee,
+      store: item.seller_store,
     };
     setIsChecked(!isChecked);
     if (isChecked) {
@@ -112,7 +113,8 @@ export default function CartTableItem({ item, isLastItem }: Props) {
         />
         <div className="text-start">
           <p className="font-semibold">{item.name}</p>
-          <p>{item.price.toLocaleString()} 원</p>
+          <p className="font-bold">{item.price.toLocaleString()} 원</p>
+          <p>배송비 {item.shipping_fee.toLocaleString()} 원</p>
         </div>
       </td>
       <td>
@@ -129,7 +131,10 @@ export default function CartTableItem({ item, isLastItem }: Props) {
       </td>
       <td>
         <div className="flex flex-col items-center gap-2">
-          {item.price.toLocaleString()} 원
+          <p className="font-semibold">
+            <strong className="font-bold">{item.price.toLocaleString()}</strong>{" "}
+            원
+          </p>
           <Button type="button" custom="px-10 py-2 bg-primary font-semibold">
             주문하기
           </Button>

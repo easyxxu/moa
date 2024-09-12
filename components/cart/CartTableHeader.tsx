@@ -1,7 +1,7 @@
 "use client";
 
 import { useCartCheckItems } from "@/contexts/CartContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   handleCheckAllItems: () => void;
@@ -18,12 +18,15 @@ export default function CartTableHeader({
   const handleCheckBoxToggle = () => {
     if (isChecked) {
       allUncheck();
-      setIsChecked(false);
     } else {
       handleCheckAllItems();
-      setIsChecked(true);
     }
+    setIsChecked((prev) => !prev);
   };
+
+  useEffect(() => {
+    setIsChecked(cartCount === checkedItems.length);
+  }, [cartCount, checkedItems]);
 
   return (
     <thead className="bg-primary rounded-2xl shadow-out">
@@ -35,9 +38,9 @@ export default function CartTableHeader({
           <input
             type="checkbox"
             id="allProduct"
-            checked={cartCount === checkedItems.length ? true : false}
+            checked={isChecked}
             onChange={handleCheckBoxToggle}
-            className="align-text-top	 bg-[url('/assets/icon/icon-check-box.svg')] w-5 h-5 checked:bg-[url('/assets/icon/icon-check-box-fill.svg')]"
+            className="align-text-top	bg-[url('/assets/icon/icon-check-box.svg')] w-5 h-5 checked:bg-[url('/assets/icon/icon-check-box-fill.svg')]"
           />
         </th>
         <th scope="col">상품정보</th>

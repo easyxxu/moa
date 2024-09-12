@@ -22,6 +22,7 @@ export default function CartTable({ cartItems, cartCount }: Props) {
           quantity: item.quantity,
           price: item.price,
           shipping_fee: item.shipping_fee,
+          store: store,
         });
       });
     });
