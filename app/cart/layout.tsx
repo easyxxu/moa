@@ -9,7 +9,7 @@ export default function CartLayout({
   return (
     <CartProvider>
       <Header />
-      <main className="mx-auto my-0 max-w-7xl">{children}</main>
+      <main>{children}</main>
     </CartProvider>
   );
 }

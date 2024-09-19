@@ -17,6 +17,12 @@
   input[type="radio"] {
     @apply appearance-none;
   }
+  input[type="checkbox"] {
+    @apply appearance-none cursor-pointer;
+  }
+  main {
+    @apply mx-auto my-0 max-w-7xl;
+  }
   th {
     @apply font-medium;
   }

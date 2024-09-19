@@ -9,7 +9,7 @@ export default function ProductLayout({
   return (
     <>
       <Header />
-      <div>{children}</div>
+      <main>{children}</main>
       <Footer />
     </>
   );

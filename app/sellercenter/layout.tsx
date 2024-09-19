@@ -12,7 +12,7 @@ export default function SellerLayout({ children }: Props) {
   return (
     <>
       <Header />
-      <div className="mx-auto my-5 max-w-7xl">
+      <main className="my-5">
         <h3 className="text-3xl font-medium mb-5">
           <strong className="text-font-hover">{userState.name}</strong> 's
           Dashboard
@@ -21,7 +21,7 @@ export default function SellerLayout({ children }: Props) {
           <Menu />
           {children}
         </div>
-      </div>
+      </main>
     </>
   );
 }
