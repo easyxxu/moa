@@ -16,6 +16,7 @@ interface CartContextValues {
   checkItem: (arg0: cartItem) => void;
   allCheck: ([]) => void;
   allUncheck: () => void;
+  changeQuantity: (arg0: number, arg1: number) => void;
 }
 
 const contextDefaultValue: CartContextValues = {
@@ -24,6 +25,7 @@ const contextDefaultValue: CartContextValues = {
   checkItem: ({}) => {},
   allCheck: ([]) => {},
   allUncheck: () => {},
+  changeQuantity: () => {},
 };
 
 const CheckedItemsContext = createContext(contextDefaultValue);
@@ -49,12 +51,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setCheckedItems([]);
   };
 
+  const changeQuantity = (itemId: number, updatedQuantity: number) => {
+    setCheckedItems((prev) =>
+      prev.map((x) =>
+        x.itemId === itemId ? { ...x, quantity: updatedQuantity } : x
+      )
+    );
+  };
+
   const CartContextValues: CartContextValues = {
     checkedItems,
     uncheckItem,
     checkItem,
     allCheck,
     allUncheck,
+    changeQuantity,
   };
   console.log("Now checkItem: ", checkedItems);
   return (
