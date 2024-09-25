@@ -43,10 +43,10 @@ export default function Login() {
 
   return (
     <Form formType="login" onSubmit={formAction}>
-      <InputLabel name="이메일" label="email" type="text" style="line" />
+      <InputLabel fieldName="이메일" fieldId="email" type="text" style="line" />
       <InputLabel
-        name="비밀번호"
-        label="password"
+        fieldName="비밀번호"
+        fieldId="password"
         type="password"
         style="line"
       />

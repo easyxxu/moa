@@ -231,33 +231,33 @@ export default function ProductManagement({
         </div>
         <InputLabel
           type="text"
-          name="상품 이름"
+          fieldName="상품 이름"
           value={productInfo.name}
-          label="name"
+          fieldId="name"
           style="box"
           onChange={handleInput}
         />
         <InputLabel
           type="text"
-          name="상품 가격"
+          fieldName="상품 가격"
           value={productInfo.price}
-          label="price"
+          fieldId="price"
           style="box"
           onChange={handleInput}
         />
         <InputLabel
           type="text"
-          name="상품 수량"
+          fieldName="상품 수량"
           value={productInfo.stock}
-          label="stock"
+          fieldId="stock"
           style="box"
           onChange={handleInput}
         />
         <InputLabel
           type="text"
-          name="배송비"
+          fieldName="배송비"
           value={productInfo.shipping_fee}
-          label="shipping_fee"
+          fieldId="shipping_fee"
           style="box"
           onChange={handleInput}
         />
