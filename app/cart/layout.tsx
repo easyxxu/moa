@@ -7,9 +7,9 @@ export default function CartLayout({
   children: React.ReactNode;
 }) {
   return (
-    <CartProvider>
+    <>
       <Header />
       <main>{children}</main>
-    </CartProvider>
+    </>
   );
 }

@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { UserProvider } from "@/contexts/UserContext";
 import { ModalProvider } from "@/contexts/ModalContext";
+import { CartProvider } from "@/contexts/CartContext";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -27,13 +28,15 @@ export default function RootLayout({
 }) {
   return (
     <UserProvider>
-      <html lang="en" className={`${pretendard.variable}`}>
-        <body className="bg-background font-pretendard">
-          <ModalProvider>
-            <div className="h-[100vh]">{children}</div>
-          </ModalProvider>
-        </body>
-      </html>
+      <CartProvider>
+        <html lang="en" className={`${pretendard.variable}`}>
+          <body className="bg-background font-pretendard">
+            <ModalProvider>
+              <div className="h-[100vh]">{children}</div>
+            </ModalProvider>
+          </body>
+        </html>
+      </CartProvider>
     </UserProvider>
   );
 }
