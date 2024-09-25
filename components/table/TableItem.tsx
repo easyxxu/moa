@@ -9,6 +9,8 @@ interface TextProp {
 
 interface TextWithImgProps extends TextProp {
   src: string;
+  quantity?: number;
+  price?: number;
 }
 
 interface ButtonProps extends TextProp {
@@ -32,9 +34,9 @@ const TableCell = Object.assign(TableItem, {
 export default TableCell;
 
 // 하위 컴포넌트
-function TextWithImgCell({ src, text }: TextWithImgProps) {
+function TextWithImgCell({ src, text, quantity, price }: TextWithImgProps) {
   return (
-    <td className="flex justify-center gap-5 py-4 items-center">
+    <td className="flex justify-start gap-5 py-4 px-8 items-center">
       <Image
         src={src}
         alt={text as string}
@@ -42,7 +44,15 @@ function TextWithImgCell({ src, text }: TextWithImgProps) {
         height={200}
         className="rounded w-16 h-16 shadow-out"
       />
-      <p>{text}</p>
+      <div>
+        <p>{text}</p>
+        {quantity && price && (
+          <>
+            <p>{quantity} 개</p>
+            <p>{price?.toLocaleString()} 원</p>
+          </>
+        )}
+      </div>
     </td>
   );
 }
