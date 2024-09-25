@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { deleteCartItem, updateQuantity } from "@/api/apis";
 import DeleteIcon from "@/public/assets/icon/icon-delete.svg";
 import { useCartCheckItems } from "@/contexts/CartContext";
+import { useRouter } from "next/navigation";
 
 interface Props {
   item: CartItemInfo;
@@ -15,8 +16,10 @@ interface Props {
 }
 
 export default function CartTableItem({ item, isLastItem }: Props) {
+  const router = useRouter();
   const { showModal, closeModal } = useModal();
-  const { checkItem, uncheckItem, checkedItems } = useCartCheckItems();
+  const { checkItem, uncheckItem, checkedItems, changeQuantity, allUncheck } =
+    useCartCheckItems();
   const [isChecked, setIsChecked] = useState(true);
   const [quantity, setQuantity] = useState(item.quantity);
 
@@ -41,6 +44,7 @@ export default function CartTableItem({ item, isLastItem }: Props) {
   const submitModifyQuantity = async (updatedQuantity: number) => {
     const data = await updateQuantity(item.id!, updatedQuantity);
     setQuantity(data.quantity);
+    changeQuantity(item.id!, data.quantity);
     closeModal();
   };
 
@@ -75,13 +79,26 @@ export default function CartTableItem({ item, isLastItem }: Props) {
     }
   };
 
+  const handleOrderOneProduct = () => {
+    const itemForOneOrder = {
+      itemId: item.id!,
+      price: item.price,
+      quantity: item.quantity,
+      shipping_fee: item.shipping_fee,
+      store: item.seller_store,
+    };
+    allUncheck();
+    checkItem(itemForOneOrder);
+    router.push(`/order`);
+  };
+
   useEffect(() => {
     checkedItems.filter((checkedItem) => checkedItem.itemId === item.id)
       .length === 1
       ? setIsChecked(true)
       : setIsChecked(false);
   }, [checkItem]);
-
+  // console.log("#item: ", item);
   return (
     <tr
       key={item.id}
@@ -132,10 +149,16 @@ export default function CartTableItem({ item, isLastItem }: Props) {
       <td>
         <div className="flex flex-col items-center gap-2">
           <p className="font-semibold">
-            <strong className="font-bold">{item.price.toLocaleString()}</strong>{" "}
+            <strong className="font-bold">
+              {(item.price * quantity).toLocaleString()}
+            </strong>{" "}
             원
           </p>
-          <Button type="button" custom="px-10 py-2 bg-primary font-semibold">
+          <Button
+            onClick={handleOrderOneProduct}
+            type="button"
+            custom="px-10 py-2 bg-primary font-semibold"
+          >
             주문하기
           </Button>
         </div>
