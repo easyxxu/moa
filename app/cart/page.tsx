@@ -4,6 +4,7 @@ import CartNoItem from "@/components/cart/CartNoItem";
 import CartTable from "@/components/cart/CartTable";
 import CartTotalPrice from "@/components/cart/CartTotalPrice";
 import { createClient } from "@/utils/supabase/server";
+import Link from "next/link";
 
 export default async function CartPage() {
   const supabase = createClient();
@@ -23,7 +24,6 @@ export default async function CartPage() {
   const cartData = await getCartItem(cartId);
 
   if (!cartData || cartData.count === 0) return <CartNoItem />;
-
   return (
     <div className="flex flex-col w-full my-5">
       <h2 className="mb-4 text-3xl font-bold text-center">장바구니</h2>
@@ -31,6 +31,12 @@ export default async function CartPage() {
         <CartTable cartItems={cartData.cart} cartCount={cartData.count} />
       </table>
       <CartTotalPrice />
+      <Link
+        href="/order"
+        className="self-center rounded-2xl bg-primary my-4 text-center font-semibold shadow-out text-2xl py-4 w-1/5"
+      >
+        주문하기
+      </Link>
     </div>
   );
 }
