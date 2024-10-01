@@ -123,7 +123,8 @@ export async function getCartItem(cartId: number) {
   const { data: cartItems, error } = await supabase
     .from("cart_item")
     .select()
-    .eq("cart_id", cartId);
+    .eq("cart_id", cartId)
+    .order("product_id");
 
   if (cartItems?.length === 0 || !cartItems) return;
 
