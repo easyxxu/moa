@@ -1,13 +1,11 @@
 export interface Product {
-  id: number;
+  id?: number;
   name: string;
-  desc: string;
+  description: string;
   price: number;
-  image: string;
   stock: number;
-  seller: number;
-  store_name: string;
-  created_at: string;
-  updated_at: string;
   shipping_fee: number;
+  image: string[];
+  seller_id?: number;
+  seller_store: string;
 }
