@@ -117,7 +117,7 @@ export default function CartTableItem({ item, isLastItem }: Props) {
         <input
           type="checkbox"
           checked={isChecked}
-          onClick={handleCheckToggle}
+          onChange={handleCheckToggle}
           id="productCheck"
           className="bg-[url('/assets/icon/icon-check-box.svg')] w-5 h-5 checked:bg-[url('/assets/icon/icon-check-box-fill.svg')]"
         />
