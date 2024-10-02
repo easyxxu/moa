@@ -13,7 +13,7 @@ export default function CartTableBody({ cartItems }: Props) {
       <tr className="h-5" />
       {Object.keys(cartItems).map((store) => (
         <>
-          <tr key={store} className="bg-white">
+          <tr className="bg-white">
             <td colSpan={5} className="p-3 font-bold text-left rounded-t-2xl">
               {store}
             </td>
