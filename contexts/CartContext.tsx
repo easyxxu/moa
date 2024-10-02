@@ -8,6 +8,7 @@ interface cartItem {
   price: number;
   shipping_fee: number;
   store: string;
+  cartItemId: number;
 }
 
 interface CartContextValues {

@@ -70,6 +70,7 @@ export default function CartTableItem({ item, isLastItem }: Props) {
       quantity: item.quantity,
       shipping_fee: item.shipping_fee,
       store: item.seller_store,
+      cartItemId: item.cartItemId,
     };
     setIsChecked(!isChecked);
     if (isChecked) {
@@ -86,6 +87,7 @@ export default function CartTableItem({ item, isLastItem }: Props) {
       quantity: item.quantity,
       shipping_fee: item.shipping_fee,
       store: item.seller_store,
+      cartItemId: item.cartItemId,
     };
     allUncheck();
     checkItem(itemForOneOrder);
