@@ -25,6 +25,7 @@ export default function OrderList() {
       <tr className="h-1" />
       {orderItems.map((item, idx) => (
         <tr
+          key={item.id}
           className={
             idx === 0
               ? `[&>td:first-child]:rounded-tl-2xl [&>td:last-child]:rounded-tr-2xl`
