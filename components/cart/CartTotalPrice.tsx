@@ -6,7 +6,7 @@ import ResultIcon from "@/public/assets/icon/icon-result-round-white.svg";
 import { useCartCheckItems } from "@/contexts/CartContext";
 
 export default function CartTotalPrice() {
-  const { checkedItems } = useCartCheckItems();
+  const { checkedItems, price } = useCartCheckItems();
 
   const productsPrice = checkedItems.reduce((acc, cur) => {
     //  각 store별로 배송비는 한번만 추가
@@ -46,7 +46,7 @@ export default function CartTotalPrice() {
         <p>총 상품금액</p>
         <p>
           <strong className="text-2xl font-bold">
-            {totalProductPrice.toLocaleString()}
+            {price.productsPrice.toLocaleString()}
           </strong>
           원
         </p>
@@ -63,7 +63,7 @@ export default function CartTotalPrice() {
         <p>배송비</p>
         <p>
           <strong className="text-2xl font-bold">
-            {totalShippingFee.toLocaleString()}
+            {price.shippingFee.toLocaleString()}
           </strong>
           원
         </p>
@@ -73,7 +73,7 @@ export default function CartTotalPrice() {
         <p>결제 예정 금액</p>
         <p>
           <strong className="text-2xl font-bold">
-            {finalPrice.toLocaleString()}
+            {price.totalPrice.toLocaleString()}
           </strong>
           원
         </p>
