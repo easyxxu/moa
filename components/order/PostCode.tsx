@@ -1,29 +1,37 @@
+import { CartItem } from "@/contexts/CartContext";
 import { CSSProperties } from "react";
 import DaumPostCode from "react-daum-postcode";
+import { Address as DaumAddress } from "react-daum-postcode/lib/loadPostcode";
 
-interface Address {
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
   postCode: string;
   defaultAddress: string;
   detailAddress: string;
+  deliveryMessage: string;
+  orderItems: CartItem[];
+  totalPrice: number;
+  orderName: string;
+  payment: string;
 }
 
 interface PostCodeProps {
-  address: Address;
-  setAddress: React.Dispatch<React.SetStateAction<Address>>;
+  setFormData: React.Dispatch<React.SetStateAction<FormData>>;
   setPostCodeModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function PostCode({
-  address,
-  setAddress,
+  setFormData,
   setPostCodeModal,
 }: PostCodeProps) {
-  const handleComplete = (data: any) => {
-    setAddress({
-      ...address,
+  const handleComplete = (data: DaumAddress) => {
+    setFormData((prevData) => ({
+      ...prevData,
       postCode: data.zonecode,
       defaultAddress: data.roadAddress,
-    });
+    }));
     setPostCodeModal(false);
   };
 
