@@ -133,14 +133,18 @@ export async function getCartItem(cartId: number) {
    */
   const cartItemsInfo = await Promise.all(
     cartItems?.map(
-      async (cartItem: { product_id: number; quantity: number }) => {
+      async (cartItem: {
+        id: number;
+        product_id: number;
+        quantity: number;
+      }) => {
         const { data: productInfo } = await loadProductById(
           cartItem["product_id"]
         );
-
         return {
           id: cartItem["product_id"],
           quantity: cartItem["quantity"],
+          cartItemId: cartItem["id"],
           ...productInfo,
         };
       }
