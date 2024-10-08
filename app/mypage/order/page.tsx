@@ -41,7 +41,7 @@ export default async function MyOrder() {
         <OrderTableHeader titles={HEADER_TITLES} />
         <tbody>
           {ordersData?.map((order) => (
-            <tr>
+            <tr className="border-b">
               <td>
                 <Link href={`/mypage/order/${order.id}`}>
                   <OrderItem order={order} />

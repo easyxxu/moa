@@ -19,7 +19,7 @@ export default function OrderItem({ order }: Props) {
   const orderTitleDate = `${year}.${month}.${day}`;
   const orderTitleTime = `${hours}:${minutes}:${seconds}`;
   return (
-    <div className="my-4 border-b">
+    <div className="my-4">
       <div className="flex items-center gap-2 mb-4">
         <p className="text-lg font-light">
           <strong className="mr-1 text-xl font-semibold ">
