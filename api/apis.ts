@@ -34,7 +34,7 @@ export async function loadProductById(productId: number) {
   const { data, error } = await supabase
     .from("product")
     .select(
-      "name, price, description, shipping_fee, stock, image, seller_store"
+      "name, price, description, shipping_fee, stock, image, seller_store, liked_list, liked_count"
     )
     .eq("id", productId)
     .single();
@@ -186,4 +186,63 @@ export const updateQuantity = async (productId: number, quantity: number) => {
     .single();
   revalidatePath("/cart");
   return data;
+};
+
+export const likeProduct = async (productId: number) => {
+  const supabase = createClient();
+
+  // userId 불러오기
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    console.log("getUser() error: ", userError);
+    throw new Error("User not authenticated");
+  }
+
+  const userId = user?.id;
+  // 이미 좋아요를 누른적이 있는지 체크
+  const { data: productData, error: productError } = await supabase
+    .from("product")
+    .select("liked_list")
+    .eq("id", productId)
+    .single();
+
+  const likedList = productData?.liked_list || [];
+
+  const hasLiked = likedList.includes(userId);
+
+  if (hasLiked) {
+    // 이미 눌렀다면 좋아요 취소 실행
+    const updatedLikedList = likedList.filter((id: string) => id !== userId);
+    const { error: updatedError } = await supabase
+      .from("product")
+      .update({ liked_list: updatedLikedList })
+      .eq("id", productId);
+
+    if (updatedError) {
+      throw new Error(`Failed to remove like ${updatedError}`);
+    }
+    revalidatePath("/");
+    revalidatePath("/products/[productId]", "page");
+
+    return { success: true, liked: false, message: "좋아요 취소 완료" };
+  } else {
+    const updatedLikedList = [...likedList, userId];
+
+    const { error: updateError } = await supabase
+      .from("product")
+      .update({ liked_list: updatedLikedList })
+      .eq("id", productId);
+
+    if (updateError) {
+      throw new Error(`Failed to add like :${updateError.message}`);
+    }
+
+    revalidatePath("/");
+    revalidatePath("/products/[productId]", "page");
+    return { success: true, liked: true, message: "좋아요 완료" };
+  }
 };
