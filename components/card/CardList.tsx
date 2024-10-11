@@ -1,3 +1,5 @@
+"use client";
+
 import { Product } from "@/types/product";
 import CardItem from "./CardItem";
 import Link from "next/link";
@@ -5,6 +7,7 @@ import Link from "next/link";
 interface CardListProps {
   products: Product[];
 }
+
 export default function CardList({ products }: CardListProps) {
   return (
     <ul className="grid grid-cols-4 gap-7">
@@ -12,9 +15,12 @@ export default function CardList({ products }: CardListProps) {
         <li key={product.id}>
           <Link href={`/products/${product.id}`}>
             <CardItem
+              id={product.id}
               src={product.image[0]}
               name={product.name}
               price={product.price}
+              likedCnt={product.liked_count}
+              likedList={product.liked_list}
             />
           </Link>
         </li>
