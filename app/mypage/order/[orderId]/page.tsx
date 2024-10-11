@@ -13,8 +13,8 @@ export default async function OrderDetailPage({
   params: { orderId: string };
 }) {
   const orderId = params.orderId;
-  console.log("orderId: ", orderId);
   const supabase = createClient();
+
   const { data: order, error } = await supabase
     .from("order")
     .select(
@@ -56,13 +56,15 @@ export default async function OrderDetailPage({
             {orderData.order_item?.map((item) => (
               <tr>
                 <td>
-                  <OrderProductItem
-                    image={item.product.image[0]}
-                    name={item.product.name}
-                    price={item.price}
-                    seller_store={item.product.seller_store}
-                    quantity={item.quantity}
-                  />
+                  <Link href={`/products/${item.item_id}`}>
+                    <OrderProductItem
+                      image={item.product.image[0]}
+                      name={item.product.name}
+                      price={item.price}
+                      seller_store={item.product.seller_store}
+                      quantity={item.quantity}
+                    />
+                  </Link>
                 </td>
                 <td className="text-center">
                   {item.shipping_fee.toLocaleString()} 원
