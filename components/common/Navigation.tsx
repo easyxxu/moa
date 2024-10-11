@@ -10,6 +10,7 @@ import CartIcon from "@/public/assets/icon/icon-shopping-cart.svg";
 import PersonIcon from "@/public/assets/icon/icon-user.svg";
 import LogoutIcon from "@/public/assets/icon/icon-logout.svg";
 import ShopIcon from "@/public/assets/icon/icon-shop.svg";
+import LikeIcon from "@/public/assets/icon/icon-like.svg";
 
 import { logOutAction } from "@/actions/actions";
 import { useUserDispatch } from "@/contexts/UserContext";
@@ -58,6 +59,13 @@ export default function Navigation({ isAuthenticated, isSeller }: Props) {
                   <ToolTip name="마이페이지">
                     <Link href="/mypage" className="w-12 h-12 outer-box">
                       <Image src={PersonIcon} alt="마이페이지" />
+                    </Link>
+                  </ToolTip>
+                </li>
+                <li>
+                  <ToolTip name="나의 좋아요">
+                    <Link href="/product/like" className="w-12 h-12 outer-box">
+                      <Image src={LikeIcon} alt="좋아요" />
                     </Link>
                   </ToolTip>
                 </li>
