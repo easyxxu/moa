@@ -5,6 +5,8 @@ interface InputLabelProps {
   fieldId: string;
   /** input의 name 속성 */
   fieldName: string;
+  /** input 요소를 설명하는 라벨 텍스트 */
+  labelText: string;
   /** input의 value 속성 */
   value?: string | number;
   /** input의 placeholder 속성 */
@@ -21,6 +23,7 @@ export default function InputLabel({
   fieldName,
   value,
   fieldId,
+  labelText,
   type,
   placeholder,
   style,
@@ -31,7 +34,7 @@ export default function InputLabel({
     <div className="flex flex-col gap-1 font-extralight">
       {style === "box" ? (
         <>
-          <label htmlFor={fieldId}>{fieldName}</label>
+          <label htmlFor={fieldId}>{labelText}</label>
           <input
             id={fieldId}
             name={fieldName}
@@ -60,7 +63,7 @@ export default function InputLabel({
               htmlFor={fieldId}
               className="absolute transition-all left-2 bottom-2 text-md peer-focus:text-sm peer-focus:bottom-7 peer-valid:text-sm peer-valid:bottom-7"
             >
-              {fieldName}
+              {labelText}
             </label>
           </div>
           <span className="text-sm text-red-400">{error}</span>

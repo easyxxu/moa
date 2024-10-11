@@ -13,28 +13,32 @@ export default function Join() {
   return (
     <Form formType="join" onSubmit={formAction}>
       <InputLabel
-        fieldName="이메일"
+        labelText="이메일"
+        fieldName="email"
         fieldId="email"
         type="text"
         style="box"
         error={state.errorMsg?.email}
       />
       <InputLabel
-        fieldName="비밀번호"
+        labelText="비밀번호"
+        fieldName="password"
         fieldId="password"
         type="password"
         style="box"
         error={state.errorMsg?.password}
       />
       <InputLabel
-        fieldName="이름"
+        labelText="이름"
+        fieldName="name"
         fieldId="name"
         type="text"
         style="box"
         error={state.errorMsg?.name}
       />
       <InputLabel
-        fieldName="전화번호"
+        labelText="전화번호"
+        fieldName="phone"
         fieldId="phone"
         type="tel"
         placeholder="-은 제외하고 입력해주세요."

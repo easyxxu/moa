@@ -231,7 +231,8 @@ export default function ProductManagement({
         </div>
         <InputLabel
           type="text"
-          fieldName="상품 이름"
+          labelText="상품 이름"
+          fieldName="name"
           value={productInfo.name}
           fieldId="name"
           style="box"
@@ -239,7 +240,8 @@ export default function ProductManagement({
         />
         <InputLabel
           type="text"
-          fieldName="상품 가격"
+          labelText="상품 가격"
+          fieldName="price"
           value={productInfo.price}
           fieldId="price"
           style="box"
@@ -247,7 +249,8 @@ export default function ProductManagement({
         />
         <InputLabel
           type="text"
-          fieldName="상품 수량"
+          labelText="상품 수량"
+          fieldName="stock"
           value={productInfo.stock}
           fieldId="stock"
           style="box"
@@ -255,7 +258,8 @@ export default function ProductManagement({
         />
         <InputLabel
           type="text"
-          fieldName="배송비"
+          labelText="배송비"
+          fieldName="shipping_fee"
           value={productInfo.shipping_fee}
           fieldId="shipping_fee"
           style="box"
