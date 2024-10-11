@@ -3,24 +3,37 @@
 import Image from "next/image";
 import Button from "../common/button/Button";
 import QuantityButton from "../common/button/QuantityButton";
-import LikeIcon from "@/public/assets/icon/icon-heart.svg";
-import UnLikeIcon from "@/public/assets/icon/icon-unheart.svg";
-import { useEffect, useState } from "react";
+import HeartIcon from "@/public/assets/icon/icon-heart.svg";
+import UnHeartIcon from "@/public/assets/icon/icon-unheart.svg";
+import { useState } from "react";
 import { useUserDispatch, useUserState } from "@/contexts/UserContext";
-import { addCartItem, checkCartItem, createCart, getCartId } from "@/api/apis";
+import {
+  addCartItem,
+  checkCartItem,
+  createCart,
+  getCartId,
+  likeProduct,
+} from "@/api/apis";
 import { useModal } from "@/contexts/ModalContext";
 import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   price: number;
+  likedCnt: number;
+  likedList: string[];
 }
 
-export default function ProductPurchaseOptions({ price }: Props) {
+export default function ProductPurchaseOptions({
+  price,
+  likedCnt,
+  likedList,
+}: Props) {
   const productId = +usePathname().split("/")[2];
   const router = useRouter();
-  const userId = useUserState().id;
-  const isLogin = useUserState().isLogin;
-  const isBuyer = useUserState().user_type === "BUYER";
+  const userState = useUserState();
+  const userId = userState.id;
+  const isLogin = userState.isLogin;
+  const isBuyer = userState.user_type === "BUYER";
   const { showModal, closeModal } = useModal();
   const [priceByQuantity, setPriceByQuantity] = useState(price);
   const [quantity, setQuantity] = useState(1);
@@ -91,7 +104,10 @@ export default function ProductPurchaseOptions({ price }: Props) {
     console.log("result:", result);
     return result;
   };
-
+  const handleLike = async () => {
+    const res = await likeProduct(productId);
+    console.log("#res: ", res);
+  };
   return (
     <>
       <hr className="my-5" />
@@ -110,8 +126,12 @@ export default function ProductPurchaseOptions({ price }: Props) {
         </div>
       </div>
       <div className="flex gap-3">
-        <Button type="button" custom="w-10">
-          <Image src={UnLikeIcon} alt="좋아요" />
+        <Button type="button" custom="w-14" onClick={handleLike}>
+          <Image
+            src={likedList.includes(userId!) ? HeartIcon : UnHeartIcon}
+            alt="좋아요"
+          />
+          <p className="ml-1 text-font-grey font-extralight">{likedCnt}</p>
         </Button>
         <Button
           type="button"

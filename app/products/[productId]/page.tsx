@@ -1,11 +1,6 @@
-import Button from "@/components/common/button/Button";
 import DetailContent from "@/components/productDetail/DetailContent";
-import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
-import LikeIcon from "@/public/assets/icon/icon-heart.svg";
-import UnLikeIcon from "@/public/assets/icon/icon-unheart.svg";
-import QuantityButton from "@/components/common/button/QuantityButton";
 import { loadProductById } from "@/api/apis";
 import ProductPurchaseOptions from "@/components/productDetail/ProductPurchaseOptions";
 
@@ -48,7 +43,11 @@ export default async function ProductPage({
           </div>
           <div>
             <p>배송비: {data.shipping_fee.toLocaleString()} 원</p>
-            <ProductPurchaseOptions price={data.price} />
+            <ProductPurchaseOptions
+              price={data.price}
+              likedCnt={data.liked_count}
+              likedList={data.liked_list}
+            />
           </div>
         </div>
       </div>
