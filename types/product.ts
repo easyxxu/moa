@@ -1,5 +1,5 @@
 export interface Product {
-  id?: number;
+  id: number;
   name: string;
   description: string;
   price: number;
@@ -8,4 +8,6 @@ export interface Product {
   image: string[];
   seller_id?: number;
   seller_store: string;
+  liked_list: string[];
+  liked_count: number;
 }
