@@ -184,5 +184,6 @@ export const updateQuantity = async (productId: number, quantity: number) => {
     .eq("product_id", productId)
     .select()
     .single();
+  revalidatePath("/cart");
   return data;
 };
