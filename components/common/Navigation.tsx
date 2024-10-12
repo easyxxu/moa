@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -16,18 +15,17 @@ import { logOutAction } from "@/actions/actions";
 import { useUserDispatch } from "@/contexts/UserContext";
 
 interface Props {
-  isAuthenticated: boolean;
+  isLogin: boolean;
   isSeller: boolean;
 }
 
-export default function Navigation({ isAuthenticated, isSeller }: Props) {
-  const [isLogOut, setIsLogOut] = useState(!isAuthenticated);
+export default function Navigation({ isLogin, isSeller }: Props) {
   const userDispatch = useUserDispatch();
 
   return (
     <nav>
       <ul className="flex gap-5">
-        {isLogOut ? (
+        {!isLogin ? (
           <>
             <li>
               <ToolTip name="장바구니">
@@ -76,19 +74,9 @@ export default function Navigation({ isAuthenticated, isSeller }: Props) {
                       custom="w-12 h-12"
                       onClick={async () => {
                         await logOutAction();
-                        // localStorage.setItem(
-                        //   "userState",
-                        //   JSON.stringify({
-                        //     id: null,
-                        //     name: null,
-                        //     user_type: "LOGGED_OUT",
-                        //     isLogin: false,
-                        //   })
-                        // );
                         userDispatch({
                           type: "LOGOUT",
                         });
-                        setIsLogOut(true);
                       }}
                     >
                       <Image src={LogoutIcon} alt="로그아웃" />
@@ -105,19 +93,9 @@ export default function Navigation({ isAuthenticated, isSeller }: Props) {
                       custom="w-12 h-12"
                       onClick={async () => {
                         await logOutAction();
-                        // localStorage.setItem(
-                        //   "userState",
-                        //   JSON.stringify({
-                        //     id: null,
-                        //     name: null,
-                        //     user_type: "LOGGED_OUT",
-                        //     isLogin: false,
-                        //   })
-                        // );
                         userDispatch({
                           type: "LOGOUT",
                         });
-                        setIsLogOut(true);
                       }}
                     >
                       <Image src={LogoutIcon} alt="로그아웃" />

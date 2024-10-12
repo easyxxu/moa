@@ -1,27 +1,26 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import SearchInput from "../search/SearchInput";
 import Navigation from "./Navigation";
 import MoaLogo from "@/public/assets/moa-logo.svg";
 
-import { createClient } from "@/utils/supabase/server";
+import { useUserState } from "@/contexts/UserContext";
 
-export default async function Header({
-  headerType,
-}: {
-  headerType?: "SELLER";
-}) {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const isAuthenticated = user !== null;
-  const isSeller = user?.user_metadata.user_type === "SELLER";
+export default function Header() {
+  const userState = useUserState();
+  const currentPath = usePathname();
+  const isLogin = userState.isLogin;
+  const isSeller = userState.user_type === "SELLER";
+  const isSellerCenter =
+    userState.user_type === "SELLER" && currentPath.includes("/sellercenter");
 
   return (
     <header className="border-b border-border-grey shadow-borderBottom">
-      {!headerType ? (
+      {!isSellerCenter ? (
         <>
           <div className="flex items-center justify-between py-5 mx-auto my-0 max-w-7xl">
             <div className="flex items-center gap-9">
@@ -36,7 +35,7 @@ export default async function Header({
               </h1>
               <SearchInput />
             </div>
-            <Navigation isAuthenticated={isAuthenticated} isSeller={isSeller} />
+            <Navigation isLogin={isLogin} isSeller={isSeller} />
           </div>
         </>
       ) : (
