@@ -3,6 +3,8 @@ import HeartIcon from "@/public/assets/icon/icon-heart.svg";
 import UnHeartIcon from "@/public/assets/icon/icon-unheart.svg";
 import { useUserState } from "@/contexts/UserContext";
 import { likeProduct } from "@/api/apis";
+import { useModal } from "@/contexts/ModalContext";
+import { useRouter } from "next/navigation";
 
 interface CardItemProps {
   id: number;
@@ -20,11 +22,24 @@ export default function CardItem({
   likedCnt,
   likedList,
 }: CardItemProps) {
+  const router = useRouter();
   const userState = useUserState();
   const userId = userState.id;
-
+  const { showModal, closeModal } = useModal();
   const handleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    // 로그인 여부 체크
+    if (!userState.isLogin) {
+      showModal({
+        type: "CONFIRM",
+        content: "로그인이 필요합니다. \n 로그인하러 가시겠습니까?",
+        onConfirm: () => {
+          router.push("/login");
+          closeModal();
+        },
+      });
+      return;
+    }
     const res = await likeProduct(id);
     console.log("#like res: ", res);
   };
