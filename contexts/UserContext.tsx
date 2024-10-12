@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  Dispatch,
-  useContext,
-  useEffect,
-  useReducer,
-} from "react";
+import { createContext, Dispatch, useContext, useReducer } from "react";
 
 interface AuthUser {
   id: string | null;
@@ -84,13 +78,17 @@ const UserContext = createContext(initialUser);
 const UserDispatchContext = createContext<Dispatch<UserAction>>(() => null);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-  const storedUser = localStorage.getItem("userState") || null;
-  const initialState = storedUser ? JSON.parse(storedUser) : initialUser;
-  const [state, dispatch] = useReducer(userReducer, initialState);
+  const initialUser = localStorage.getItem("userState");
+  const parsedUser = initialUser
+    ? JSON.parse(initialUser)
+    : {
+        id: null,
+        name: null,
+        user_type: "LOGGED_OUT",
+        isLogin: false,
+      };
+  const [state, dispatch] = useReducer(userReducer, parsedUser);
 
-  useEffect(() => {
-    localStorage.setItem("userState", JSON.stringify(state));
-  }, [state]);
   return (
     <UserContext.Provider value={state}>
       <UserDispatchContext.Provider value={dispatch}>
