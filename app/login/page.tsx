@@ -20,19 +20,9 @@ export default function Login() {
       const userData = {
         id: state.userData?.id!,
         name: state.userData?.name!,
-        user_type: state.userData?.user_type!,
+        userType: state.userData?.user_type!,
+        moreUserData: state.userData?.moreUserData!,
       };
-
-      // localStorage.setItem(
-      //   "userState",
-      //   JSON.stringify({
-      //     id: userData.id,
-      //     name: userData.name,
-      //     user_type: userData.user_type,
-      //     isLogin: true,
-      //   })
-      // );
-
       userDispatch({
         type: "LOGIN",
         payload: userData,

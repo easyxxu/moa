@@ -1,27 +1,31 @@
 "use client";
 
-import { createContext, Dispatch, useContext, useReducer } from "react";
+import { User } from "@supabase/supabase-js";
+
+import {
+  createContext,
+  Dispatch,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 
 interface AuthUser {
   id: string | null;
   name: string | null;
   isLogin: boolean;
-  user_type: "LOGGED_OUT" | "BUYER" | "SELLER";
+  userType: "LOGGED_OUT" | "BUYER" | "SELLER";
+  moreUserData: User | null;
 }
-
-const initialUser: AuthUser = {
-  id: null,
-  name: null,
-  user_type: "LOGGED_OUT",
-  isLogin: false,
-};
 
 interface LoginAction {
   type: "LOGIN";
   payload: {
     id: string;
     name: string;
-    user_type: "BUYER" | "SELLER";
+    userType: "BUYER" | "SELLER";
+    moreUserData: User;
   };
 }
 
@@ -31,63 +35,88 @@ interface LogoutAction {
 
 type UserAction = LoginAction | LogoutAction;
 
+async function fetchUserData() {
+  try {
+    const res = await fetch("/api/auth/user");
+    const data = await res.json();
+    if (data.status === 200) {
+      return data;
+    } else {
+      throw new Error(`data.message`);
+    }
+  } catch (e) {
+    console.log("Error fetching user data: ", e);
+    return null;
+  }
+}
+
 function userReducer(state: AuthUser, action: UserAction): AuthUser {
   switch (action.type) {
     case "LOGIN":
       console.log("Login");
-      localStorage.setItem(
-        "userState",
-        JSON.stringify({
-          id: action.payload.id,
-          name: action.payload.name,
-          user_type: action.payload.user_type,
-          isLogin: true,
-        })
-      );
       return {
         ...state,
         id: action.payload.id,
         name: action.payload.name,
-        user_type: action.payload.user_type,
+        userType: action.payload.userType,
+        moreUserData: action.payload.moreUserData,
         isLogin: true,
       };
     case "LOGOUT":
       console.log("logout");
-      localStorage.setItem(
-        "userState",
-        JSON.stringify({
-          id: null,
-          name: null,
-          user_type: "LOGGED_OUT",
-          isLogin: false,
-        })
-      );
       return {
         ...state,
         id: null,
         name: null,
-        user_type: "LOGGED_OUT",
+        userType: "LOGGED_OUT",
         isLogin: false,
+        moreUserData: null,
       };
     default:
       throw new Error(`Unhandled action type :${action}`);
   }
 }
 
+const initialUser: AuthUser = {
+  id: null,
+  name: null,
+  userType: "LOGGED_OUT",
+  isLogin: false,
+  moreUserData: null,
+};
+
 const UserContext = createContext(initialUser);
 const UserDispatchContext = createContext<Dispatch<UserAction>>(() => null);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-  const initialUser = localStorage.getItem("userState");
-  const parsedUser = initialUser
-    ? JSON.parse(initialUser)
-    : {
-        id: null,
-        name: null,
-        user_type: "LOGGED_OUT",
-        isLogin: false,
-      };
-  const [state, dispatch] = useReducer(userReducer, parsedUser);
+  const [userData, setUserData] = useState(initialUser);
+  const [state, dispatch] = useReducer(userReducer, userData);
+
+  useEffect(() => {
+    async function loadUserData() {
+      const data = await fetchUserData();
+      if (data && data.userData) {
+        dispatch({
+          type: "LOGIN",
+          payload: {
+            id: data.userData.user.id,
+            name: data.userData.user.user_metadata.name,
+            userType: data.userData.user.user_metadata.user_type,
+            moreUserData: data.userData.user,
+          },
+        });
+        setUserData({
+          id: data.userData.user.id,
+          name: data.userData.user.user_metadata.name,
+          userType: data.userData.user.user_metadata.user_ype,
+          isLogin: true,
+          moreUserData: data.userData.user,
+        });
+      }
+    }
+
+    loadUserData();
+  }, []);
 
   return (
     <UserContext.Provider value={state}>
