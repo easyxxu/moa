@@ -14,10 +14,10 @@ export default function Header() {
   const userState = useUserState();
   const currentPath = usePathname();
   const isLogin = userState.isLogin;
-  const isSeller = userState.user_type === "SELLER";
+  const isSeller = userState.userType === "SELLER";
   const isSellerCenter =
-    userState.user_type === "SELLER" && currentPath.includes("/sellercenter");
-
+    userState.userType === "SELLER" && currentPath.includes("/sellercenter");
+  // console.log(userState);
   return (
     <header className="border-b border-border-grey shadow-borderBottom">
       {!isSellerCenter ? (
