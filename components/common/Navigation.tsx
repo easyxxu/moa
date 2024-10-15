@@ -62,7 +62,7 @@ export default function Navigation({ isLogin, isSeller }: Props) {
                 </li>
                 <li>
                   <ToolTip name="나의 좋아요">
-                    <Link href="/product/like" className="w-12 h-12 outer-box">
+                    <Link href="/like" className="w-12 h-12 outer-box">
                       <Image src={LikeIcon} alt="좋아요" />
                     </Link>
                   </ToolTip>
