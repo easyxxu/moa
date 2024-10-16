@@ -123,7 +123,7 @@ export async function POST(req: Request) {
             })
           );
 
-          revalidatePath("/cart");
+          // revalidatePath("/cart");
           return NextResponse.json({
             message: "Payment completed successfully",
           });
