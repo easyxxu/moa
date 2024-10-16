@@ -33,9 +33,7 @@ export async function loadProductById(productId: number) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("product")
-    .select(
-      "name, price, description, shipping_fee, stock, image, seller_store, liked_list, liked_count"
-    )
+    .select()
     .eq("id", productId)
     .single();
 
