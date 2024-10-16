@@ -50,7 +50,6 @@ export async function joinAction(
   const phone = formData.get("phone") as string;
   const supabase = createClient();
   const errorMsg: ErrorMsg = {};
-
   // form validation for user
   if (!email || email.trim().length === 0) {
     errorMsg.email = ERROR_MESSAGE.required;
@@ -114,7 +113,12 @@ export async function joinAction(
 
 export type LoginState = State & {
   code?: "SUCCESS" | "FAILED";
-  userData?: { id: string; name: string; user_type: "BUYER" | "SELLER" };
+  userData?: {
+    id: string;
+    name: string;
+    user_type: "BUYER" | "SELLER";
+    moreUserData: User;
+  };
 };
 
 export async function loginAction(
