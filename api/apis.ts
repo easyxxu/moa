@@ -244,3 +244,26 @@ export const likeProduct = async (productId: number) => {
     return { success: true, liked: true, message: "좋아요 완료" };
   }
 };
+
+export const uploadImgs = async (files: File[], fileCategory: string) => {
+  const supabase = createClient();
+  const fileFolder = crypto.randomUUID();
+  const uploadedImgUrls = [];
+  try {
+    for (let i = 0; i < files.length; i++) {
+      const { data, error } = await supabase.storage
+        .from("Image")
+        .upload(`/${fileCategory}/${fileFolder}/${i}`, files[i]);
+      if (error) {
+        console.error("이미지 업로드에 실패했습니다.", error);
+        throw new Error("이미지 업로드 실패", error);
+      }
+      const res = await supabase.storage.from("Image").getPublicUrl(data.path);
+      uploadedImgUrls.push(res.data.publicUrl);
+    }
+
+    return uploadedImgUrls;
+  } catch (error) {
+    console.error("ERROR: ", error);
+  }
+};
