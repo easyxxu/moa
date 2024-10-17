@@ -5,7 +5,7 @@ import { OrderWithOrderItem } from "@/types/order";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 
-const HEADER_TITLES = ["주문정보", "총 결제금액", "주문상태", "리뷰작성"];
+const HEADER_TITLES = ["주문정보", "총 결제금액", "주문상태"];
 
 export default async function MyOrder() {
   const supabase = createClient();
@@ -52,9 +52,6 @@ export default async function MyOrder() {
               </td>
               <td className="text-center">
                 <StatusChip status={order.order_status} />
-              </td>
-              <td className="text-center">
-                <Link href="/">작성하기</Link>
               </td>
             </tr>
           ))}
