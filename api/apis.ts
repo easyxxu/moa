@@ -267,3 +267,43 @@ export const uploadImgs = async (files: File[], fileCategory: string) => {
     console.error("ERROR: ", error);
   }
 };
+
+export const addReview = async (productId: number, formData: FormData) => {
+  const supabase = createClient();
+  try {
+    const content = formData.get("content");
+    const starRating = Number(formData.get("starRating"));
+
+    const images = [];
+    for (let i = 0; i < 3; i++) {
+      const image = formData.get(`images[${i}]`) as File | null;
+      if (image) {
+        images.push(image);
+      }
+    }
+
+    let uploadedImgUrls;
+
+    // 이미지 storage에 업로드
+    if (images.length !== 0) {
+      uploadedImgUrls = await uploadImgs(images, "review");
+    }
+
+    // review 작성
+    const { error } = await supabase.from("review").insert({
+      product_id: productId,
+      content: content,
+      star_rating: starRating,
+      images: uploadedImgUrls,
+    });
+
+    if (error) {
+      console.error("Failed Add Review: ", error);
+      throw new Error("리뷰를 작성하는데 실패했습니다.");
+    }
+
+    redirect("/mypage/order");
+  } catch (e) {
+    console.error(e);
+  }
+};
