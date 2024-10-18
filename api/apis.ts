@@ -255,16 +255,17 @@ export const uploadImgs = async (files: File[], fileCategory: string) => {
         .from("Image")
         .upload(`/${fileCategory}/${fileFolder}/${i}`, files[i]);
       if (error) {
-        console.error("이미지 업로드에 실패했습니다.", error);
-        throw new Error("이미지 업로드 실패", error);
+        console.log("이미지 업로드 실패: ", error);
+        throw { message: "이미지 업로드 실패", error };
       }
       const res = await supabase.storage.from("Image").getPublicUrl(data.path);
       uploadedImgUrls.push(res.data.publicUrl);
     }
 
     return uploadedImgUrls;
-  } catch (error) {
-    console.error("ERROR: ", error);
+  } catch (e) {
+    console.error("[ERROR] ", e);
+    return { message: "서버에서 문제가 생겼습니다." };
   }
 };
 
@@ -298,12 +299,17 @@ export const addReview = async (productId: number, formData: FormData) => {
     });
 
     if (error) {
-      console.error("Failed Add Review: ", error);
-      throw new Error("리뷰를 작성하는데 실패했습니다.");
+      console.log("리뷰를 작성 실패했습니다", error);
+      throw { message: "리뷰를 작성하는데 실패했습니다.", error };
     }
 
-    redirect("/mypage/order");
+    if (updatedError) {
+      console.log("order_item 업데이트 실패", updatedError);
+      throw { message: "order_item 업데이트 실패", updatedError };
+    }
+    console.log("리뷰 작성 완료 ", data);
   } catch (e) {
-    console.error(e);
+    console.error("[ERROR] ", e);
+    return { message: "서버에서 문제가 생겼습니다.", e };
   }
 };
