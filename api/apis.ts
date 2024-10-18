@@ -251,6 +251,7 @@ export const uploadImgs = async (files: File[], fileCategory: string) => {
   const uploadedImgUrls = [];
   try {
     for (let i = 0; i < files.length; i++) {
+      // 이미지 업로드
       const { data, error } = await supabase.storage
         .from("Image")
         .upload(`/${fileCategory}/${fileFolder}/${i}`, files[i]);
@@ -258,8 +259,11 @@ export const uploadImgs = async (files: File[], fileCategory: string) => {
         console.log("이미지 업로드 실패: ", error);
         throw { message: "이미지 업로드 실패", error };
       }
-      const res = await supabase.storage.from("Image").getPublicUrl(data.path);
-      uploadedImgUrls.push(res.data.publicUrl);
+      // 이미지 url 로드
+      const {
+        data: { publicUrl },
+      } = await supabase.storage.from("Image").getPublicUrl(data.path);
+      uploadedImgUrls.push(publicUrl);
     }
 
     return uploadedImgUrls;
