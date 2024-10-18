@@ -23,6 +23,8 @@ export interface OrderItem {
   price: number;
   quantity: number;
   shipping_fee: number;
+  review_status: boolean;
+  review_id: null | number;
 }
 
 export interface OrderWithOrderItem extends Order {
