@@ -71,7 +71,6 @@ export default function ReviewForm() {
       if (error) {
         throw error.message;
       }
-      router.push(`/mypage/order`);
     } catch (e) {
       throw new Error(`${e}`);
     }
