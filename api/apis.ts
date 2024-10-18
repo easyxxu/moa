@@ -278,7 +278,7 @@ export const addReview = async (productId: number, formData: FormData) => {
   try {
     const content = formData.get("content");
     const starRating = Number(formData.get("starRating"));
-
+    const orderItemId = Number(formData.get("orderItemId"));
     const images = [];
     for (let i = 0; i < 3; i++) {
       const image = formData.get(`images[${i}]`) as File | null;
@@ -294,18 +294,31 @@ export const addReview = async (productId: number, formData: FormData) => {
       uploadedImgUrls = await uploadImgs(images, "review");
     }
 
-    // review 작성
-    const { error } = await supabase.from("review").insert({
-      product_id: productId,
-      content: content,
-      star_rating: starRating,
-      images: uploadedImgUrls,
-    });
+    //review 작성
+    const { data, error } = await supabase
+      .from("review")
+      .insert({
+        product_id: productId,
+        order_item_id: orderItemId,
+        content: content,
+        star_rating: starRating,
+        images: uploadedImgUrls,
+      })
+      .select()
+      .single();
 
     if (error) {
       console.log("리뷰를 작성 실패했습니다", error);
       throw { message: "리뷰를 작성하는데 실패했습니다.", error };
     }
+    // order_item 업데이트
+    const { error: updatedError } = await supabase
+      .from("order_item")
+      .update({
+        review_id: data.id,
+        review_status: true,
+      })
+      .eq("id", orderItemId);
 
     if (updatedError) {
       console.log("order_item 업데이트 실패", updatedError);
@@ -316,4 +329,5 @@ export const addReview = async (productId: number, formData: FormData) => {
     console.error("[ERROR] ", e);
     return { message: "서버에서 문제가 생겼습니다.", e };
   }
+  redirect("/mypage/review");
 };
