@@ -54,7 +54,7 @@ export default async function OrderDetailPage({
           <OrderTableHeader titles={HEADER_TITLES} />
           <tbody>
             {orderData.order_item?.map((item) => (
-              <tr>
+              <tr key={item.id}>
                 <td>
                   <Link href={`/products/${item.item_id}`}>
                     <OrderProductItem
@@ -73,7 +73,15 @@ export default async function OrderDetailPage({
                   <StatusChip status={order.order_status} />
                 </td>
                 <td className="text-center">
-                  <Link href={`/`}>작성하기</Link>
+                  {item.review_status ? (
+                    "작성완료"
+                  ) : (
+                    <Link
+                      href={`/mypage/review/${item.id}/write/${item.item_id}`}
+                    >
+                      작성하기
+                    </Link>
+                  )}
                 </td>
               </tr>
             ))}
