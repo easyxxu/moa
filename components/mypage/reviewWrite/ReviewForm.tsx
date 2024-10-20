@@ -4,12 +4,11 @@ import ImageIcon from "@/public/assets/icon/icon-image.svg";
 import DeleteIcon from "@/public/assets/icon/icon-delete.svg";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import Button from "../common/button/Button";
+import Button from "../../common/button/Button";
 import { addReview } from "@/api/apis";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function ReviewForm() {
-  const router = useRouter();
   const currentPath = usePathname().split("/");
   const orderItemId = Number(currentPath[3]);
   const productId = Number(currentPath.pop());
@@ -88,7 +87,7 @@ export default function ReviewForm() {
       <label htmlFor="content" className="font-medium">
         리뷰 내용 ({contentLength}/15)
         <br />
-        <span className="font-light text-sm">
+        <span className="text-sm font-light">
           (최소 15자 이상 작성해주세요.)
         </span>
       </label>
@@ -132,7 +131,7 @@ export default function ReviewForm() {
       </div>
       <label htmlFor="images" className="font-medium">
         이미지 첨부{" "}
-        <span className="font-light text-sm">(최대 3장까지 가능합니다.)</span>
+        <span className="text-sm font-light">(최대 3장까지 가능합니다.)</span>
       </label>
       <input
         type="file"
@@ -162,7 +161,7 @@ export default function ReviewForm() {
               width={150}
               height={150}
               key={idx}
-              className="object-cover shadow-out rounded-xl"
+              className="object-cover shadow-out rounded-xl aspect-square"
             />
             <button
               type="button"
