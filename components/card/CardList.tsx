@@ -12,7 +12,7 @@ export default function CardList({ products }: CardListProps) {
   return (
     <ul className="grid grid-cols-4 gap-7">
       {products.map((product) => (
-        <li key={product.id}>
+        <li key={product.id} className="w-64">
           <Link href={`/products/${product.id}`}>
             <CardItem
               id={product.id}
