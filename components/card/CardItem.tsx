@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import HeartIcon from "@/public/assets/icon/icon-heart.svg";
 import UnHeartIcon from "@/public/assets/icon/icon-unheart.svg";
@@ -6,13 +8,13 @@ import { likeProduct } from "@/api/apis";
 import { useModal } from "@/contexts/ModalContext";
 import { useRouter } from "next/navigation";
 
-interface CardItemProps {
+interface Props {
   id: number;
   src: string;
   name: string;
-  price: number;
-  likedCnt: number;
-  likedList: string[];
+  price?: number;
+  likedCnt?: number;
+  likedList?: string[];
 }
 export default function CardItem({
   id,
@@ -21,7 +23,7 @@ export default function CardItem({
   price,
   likedCnt,
   likedList,
-}: CardItemProps) {
+}: Props) {
   const router = useRouter();
   const userState = useUserState();
   const userId = userState.id;
@@ -45,30 +47,32 @@ export default function CardItem({
   };
 
   return (
-    <div className="w-64 shadow-out rounded-xl">
+    <div className="w-full shadow-out rounded-xl">
       <Image
         src={src}
         alt={name}
         width={300}
         height={300}
-        className="w-full h-64 rounded-t-xl"
+        className="w-full rounded-t-xl aspect-square"
       />
       <div className="flex items-center justify-between px-4 py-3 bg-white rounded-b-xl font-extralight">
         <div>
           <p>{name}</p>
-          <p>{price} 원</p>
+          {price && <p>{price} 원</p>}
         </div>
-        <div>
-          <button type="button" onClick={handleLike}>
-            <Image
-              src={likedList.includes(userId!) ? HeartIcon : UnHeartIcon}
-              alt="좋아요"
-            />
-            <p className="text-center text-md font-extralight text-font-grey">
-              {likedCnt}
-            </p>
-          </button>
-        </div>
+        {likedList && (
+          <div>
+            <button type="button" onClick={handleLike}>
+              <Image
+                src={likedList?.includes(userId!) ? HeartIcon : UnHeartIcon}
+                alt="좋아요"
+              />
+              <p className="text-center text-md font-extralight text-font-grey">
+                {likedCnt}
+              </p>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
