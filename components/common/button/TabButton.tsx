@@ -40,7 +40,7 @@ export default function TabButton({
           type="button"
           onClick={() => handleTabActive(idx)}
           className={`${
-            tabIdx === idx ? "border-b-primary" : "border-inherit"
+            tabIdx === idx ? "border-b-primary font-semibold" : "border-inherit"
           }`}
         >
           {item}
