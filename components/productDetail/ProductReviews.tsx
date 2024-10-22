@@ -17,7 +17,8 @@ export default function ProductReviews() {
   const [page, setPage] = useState(1);
   const [isExpand, setIsExpand] = useState(false);
   const [imageOrder, setImageOrder] = useState(0);
-  
+  const [isEnd, setIsEnd] = useState(true);
+
   const handleMoreBtn = () => {
     setPage((prev) => prev + 1);
   };
@@ -30,9 +31,9 @@ export default function ProductReviews() {
   const fetchReviews = async () => {
     const start = (page - 1) * 10;
     const end = start + 9;
-    const { data, error } = await supabase
+    const { data, count, error } = await supabase
       .from("review")
-      .select(`*, user(name)`)
+      .select(`*, user(name)`, { count: "exact" })
       .range(start, end)
       .eq("product_id", productId!);
 
@@ -40,8 +41,15 @@ export default function ProductReviews() {
       console.error(error);
       throw new Error("서버에서 문제가 생겼습니다.");
     }
-    console.log(data);
-    setReviews(data);
+
+    // 더보기 버튼 활성화 여부
+    if (count! > end) {
+      setIsEnd(false);
+    } else {
+      setIsEnd(true);
+    }
+
+    setReviews((prev) => [...prev, ...data]);
   };
 
   useEffect(() => {
@@ -104,13 +112,15 @@ export default function ProductReviews() {
           </div>
         ))}
       </ul>
-      <Button
-        onClick={handleMoreBtn}
-        type="button"
-        custom="bg-secondary px-4 py-1 w-full font-semibold"
-      >
-        더보기
-      </Button>
+      {!isEnd && (
+        <Button
+          onClick={handleMoreBtn}
+          type="button"
+          custom="bg-secondary px-4 py-1 w-full font-semibold"
+        >
+          더보기
+        </Button>
+      )}
     </div>
   );
 }
