@@ -4,9 +4,10 @@ import { useRef } from "react";
 
 import TabButton from "../common/button/TabButton";
 import Image from "next/image";
+import ProductReviews from "./ProductReviews";
 
 interface Props {
-  description: string;
+  description: string | null;
   image: string[];
 }
 export default function DetailContent({ description, image }: Props) {
@@ -19,7 +20,7 @@ export default function DetailContent({ description, image }: Props) {
         className="flex flex-col items-center py-3"
         ref={(ref) => (scrollRef.current[0] = ref)}
       >
-        <p className="mb-2">{description}</p>
+        {description && <p className="mb-2">{description}</p>}
         {image.map((img, idx) => (
           <Image
             src={img}
@@ -31,16 +32,16 @@ export default function DetailContent({ description, image }: Props) {
           />
         ))}
       </div>
-      <div className="h-[500px]" ref={(ref) => (scrollRef.current[1] = ref)}>
-        상품 후기
+      <div className="" ref={(ref) => (scrollRef.current[1] = ref)}>
+        <ProductReviews />
       </div>
       <div className="h-[500px]" ref={(ref) => (scrollRef.current[2] = ref)}>
         문의
       </div>
       <div ref={(ref) => (scrollRef.current[3] = ref)}>
-        <p className="font-semibold text-xl">반품/교환정보 안내</p>
-        <div className="pl-4 py-2">
-          <ul className="list-disc leading-7">
+        <p className="text-xl font-semibold">반품/교환정보 안내</p>
+        <div className="py-2 pl-4">
+          <ul className="leading-7 list-disc">
             <li>상품 수령 후 7일 이내 교환/반품을 요청해야 합니다.</li>
             <li>
               교환/반품 시 반품비용은 선결제함으로 동제하지 마시고, 동봉하여
@@ -70,9 +71,9 @@ export default function DetailContent({ description, image }: Props) {
             </li>
           </ul>
         </div>
-        <p className="font-semibold text-lg">교환/반품이 불가능한 경우</p>
-        <div className="pl-4 py-2">
-          <ul className="list-disc leading-7">
+        <p className="text-lg font-semibold">교환/반품이 불가능한 경우</p>
+        <div className="py-2 pl-4">
+          <ul className="leading-7 list-disc">
             <li>반품 요청 기간(수령 후 7일 이내)이 경과한 경우</li>
             <li>
               상품을 사용(또는 착용, 착화) 혹은 훼손하여 재판매가 어려울 정도로
