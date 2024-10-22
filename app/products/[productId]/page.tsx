@@ -4,16 +4,6 @@ import Link from "next/link";
 import { loadProductById } from "@/api/apis";
 import ProductPurchaseOptions from "@/components/productDetail/ProductPurchaseOptions";
 
-interface ProductType {
-  name: string;
-  price: number;
-  description: string;
-  shipping_fee: number;
-  stock: number;
-  image: string;
-  seller: string;
-  seller_store: string;
-}
 export default async function ProductPage({
   params,
 }: {
