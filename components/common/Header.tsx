@@ -45,7 +45,7 @@ export default function Header() {
               <Image src={MoaLogo} alt="모아 로고" className="w-32 min-w-16" />
             </Link>
           </h1>
-          <h2 className="text-4xl font-semibold text-black">판매자센터</h2>
+          <h2 className="text-4xl text-black">판매자센터</h2>
         </div>
       )}
     </header>

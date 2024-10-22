@@ -26,14 +26,14 @@ export default async function CartPage() {
   if (!cartData || cartData.count === 0) return <CartNoItem />;
   return (
     <div className="flex flex-col w-full my-5">
-      <h2 className="mb-4 text-3xl font-bold text-center">장바구니</h2>
+      <h2 className="mb-4 text-center">장바구니</h2>
       <table>
         <CartTable cartItems={cartData.cart} cartCount={cartData.count} />
       </table>
       <CartTotalPrice />
       <Link
         href="/order"
-        className="self-center rounded-2xl bg-primary my-4 text-center font-semibold shadow-out text-2xl py-4 w-1/5"
+        className="self-center w-1/5 py-4 my-4 text-2xl font-semibold text-center rounded-2xl bg-primary shadow-out"
       >
         주문하기
       </Link>

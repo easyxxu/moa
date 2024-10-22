@@ -8,6 +8,9 @@
     --btn-background: #f3f3f3;
     --icon: #505050;
   }
+  h2 {
+    @apply font-semibold text-2xl;
+  }
   input::placeholder {
     @apply text-font-grey;
   }

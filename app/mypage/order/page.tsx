@@ -36,7 +36,7 @@ export default async function MyOrder() {
   const ordersData: OrderWithOrderItem[] = orders;
   return (
     <div className="w-4/5">
-      <h2 className="mb-8 text-3xl font-semibold text-center">주문배송조회</h2>
+      <h2 className="mb-8 text-center">주문배송조회</h2>
       <table className="w-full">
         <OrderTableHeader titles={HEADER_TITLES} />
         <tbody>

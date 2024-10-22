@@ -25,7 +25,7 @@ export default function MyPageLayout({
       <Header />
       <main className="flex gap-4 py-8">
         <div className="w-1/5">
-          <h2 className="mb-6 text-2xl font-semibold">마이</h2>
+          <h2 className="mb-6">마이</h2>
           <div>
             {Object.keys(MY_MENU).map((menu, index) => (
               <div key={index} className="mb-6">

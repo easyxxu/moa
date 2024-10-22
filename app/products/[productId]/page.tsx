@@ -27,8 +27,8 @@ export default async function ProductPage({
           className="w-2/5 shadow-out rounded-2xl"
         />
         <div className="flex flex-col justify-between w-3/5">
-          <div className="">
-            <h2 className="text-2xl font-bold">{data.name}</h2>
+          <div>
+            <h2>{data.name}</h2>
             <p>평점</p>
           </div>
           <div>

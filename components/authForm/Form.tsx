@@ -24,11 +24,11 @@ export default function Form({ children, formType, onSubmit }: FormProps) {
         </Link>
       </h1>
       <div className="max-w-[550px] rounded-xl shadow-out px-16 py-14 flex flex-col items-center justify-center">
-        <h2 className="mb-6 text-3xl font-bold text-center text-font-grey-bold">
+        <h2 className="mb-6 text-center text-font-grey-bold">
           {formType === "join" ? "회원가입" : "로그인"}
         </h2>
         <form className="flex flex-col gap-2 w-96" action={onSubmit}>
-          <fieldset className="flex justify-around w-full mb-4 font-bold text-center text-xl shadow-out rounded-3xl">
+          <fieldset className="flex justify-around w-full mb-4 text-xl font-bold text-center shadow-out rounded-3xl">
             <label htmlFor={USER_TYPE.BUYER} className="w-1/2 cursor-pointer">
               <input
                 type="radio"

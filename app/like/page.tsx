@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 const NoLikedProducts = () => {
   return (
-    <div className="h-full flex justify-center items-center">
+    <div className="flex items-center justify-center h-full">
       좋아요한 상품이 없습니다.
     </div>
   );
@@ -39,7 +39,7 @@ export default function LikePage() {
 
   return (
     <>
-      <h2 className="font-semibold text-2xl text-center mb-4">나의 좋아요</h2>
+      <h2 className="mb-4 text-center">나의 좋아요</h2>
       {products.length === 0 ? (
         <NoLikedProducts />
       ) : (

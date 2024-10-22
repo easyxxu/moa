@@ -30,7 +30,7 @@ export default async function ReviewPage() {
 
   return (
     <div className="w-full">
-      <h2 className="pb-8 mb-4 text-3xl font-semibold text-center border-b-4 border-black">
+      <h2 className="pb-8 mb-4 text-center border-b-4 border-black">
         리뷰조회
       </h2>
       <MyReviews reviews={data} />
