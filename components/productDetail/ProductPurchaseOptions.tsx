@@ -20,7 +20,7 @@ import { usePathname, useRouter } from "next/navigation";
 interface Props {
   price: number;
   likedCnt: number;
-  likedList: string[];
+  likedList: string[] | null;
 }
 
 export default function ProductPurchaseOptions({
@@ -128,7 +128,7 @@ export default function ProductPurchaseOptions({
       <div className="flex gap-3">
         <Button type="button" custom="w-14" onClick={handleLike}>
           <Image
-            src={likedList.includes(userId!) ? HeartIcon : UnHeartIcon}
+            src={likedList?.includes(userId!) ? HeartIcon : UnHeartIcon}
             alt="좋아요"
           />
           <p className="ml-1 text-font-grey font-extralight">{likedCnt}</p>
