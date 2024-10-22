@@ -7,10 +7,11 @@ import { useState } from "react";
 
 interface Props {
   images: string[];
+  order: number;
   onClose: () => void;
 }
-export default function ExpandImage({ images, onClose }: Props) {
-  const [imageOrder, setImageOrder] = useState(0);
+export default function ExpandImage({ images, order, onClose }: Props) {
+  const [imageOrder, setImageOrder] = useState(order);
 
   const handlePrevious = () => {
     setImageOrder((prev) => (prev === 0 ? images.length - 1 : prev - 1));
@@ -21,20 +22,19 @@ export default function ExpandImage({ images, onClose }: Props) {
   return (
     <div className="fixed top-0 left-0 z-10 w-full h-full bg-background-modal">
       <div className="flex flex-col items-center justify-center h-full">
-        <div className="h-3/4">
+        <div className="flex items-center h-3/4">
           <Image
             src={images[imageOrder]}
             alt="상품 이미지"
-            width={300}
-            height={300}
-            className="translate-y-1/4"
+            width={400}
+            height={400}
           />
         </div>
         <div className="flex items-center justify-center gap-10">
           <button type="button" onClick={handlePrevious}>
             <Image src={ArrowIcon} alt="이전 이미지" width={30} height={30} />
           </button>
-          <p className="text-lg font-light text-center text-white">
+          <p className="w-20 text-lg font-light text-center text-white">
             {imageOrder + 1} / {images.length}
           </p>
           <button type="button" onClick={handleNext}>
