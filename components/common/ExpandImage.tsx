@@ -9,7 +9,7 @@ interface Props {
   images: string[];
   onClose: () => void;
 }
-export default function ImagePreview({ images, onClose }: Props) {
+export default function ExpandImage({ images, onClose }: Props) {
   const [imageOrder, setImageOrder] = useState(0);
 
   const handlePrevious = () => {
