@@ -1,5 +1,6 @@
 import { Tables } from "@/types/database.types";
 import Image from "next/image";
+import Link from "next/link";
 
 interface ReviewsWithProductInfo extends Tables<"review"> {
   product: {
@@ -24,20 +25,22 @@ export default async function MyReviews({ reviews }: Props) {
             {new Date(review.created_at).toLocaleDateString()}
           </p>
           <div>
-            <div className="flex gap-2">
-              <Image
-                src={review.product?.image[0]!}
-                alt="상품 이미지"
-                width={60}
-                height={60}
-              />
-              <div className="flex flex-col justify-center">
-                <p className="text-sm text-font-grey">
-                  {review.product?.seller_store}
-                </p>
-                <p className="font-semibold">{review.product?.name}</p>
+            <Link href={`/products/${review.product?.id}`}>
+              <div className="flex gap-2">
+                <Image
+                  src={review.product?.image[0]!}
+                  alt="상품 이미지"
+                  width={60}
+                  height={60}
+                />
+                <div className="flex flex-col justify-center">
+                  <p className="text-sm text-font-grey">
+                    {review.product?.seller_store}
+                  </p>
+                  <p className="font-semibold">{review.product?.name}</p>
+                </div>
               </div>
-            </div>
+            </Link>
             <div className="flex gap-1 my-2">
               {Array.from({ length: 5 }).map((_, idx) => (
                 <svg
