@@ -13,7 +13,7 @@ module.exports = {
         black: "#1D1D1D",
         white: "#FFFFFF",
         background: "#F3F3F3",
-        "background-modal": "#424446cf",
+        "background-modal": "#0000006e",
         "font-grey": "#818181",
         "font-grey-bold": "#505050",
         liked: "#FF4343",
