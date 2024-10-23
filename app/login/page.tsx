@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import Form from "@/components/authForm/Form";
 import InputLabel from "@/components/common/InputLabel";
 
-import { loginAction } from "@/actions/actions";
+import { loginAction } from "@/api/apis";
 import { useUserDispatch, useUserState } from "@/contexts/UserContext";
 
 export default function Login() {

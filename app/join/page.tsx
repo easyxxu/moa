@@ -5,7 +5,7 @@ import { useFormState } from "react-dom";
 import Form from "@/components/authForm/Form";
 import InputLabel from "@/components/common/InputLabel";
 
-import { joinAction } from "@/actions/actions";
+import { joinAction } from "@/api/apis";
 
 export default function Join() {
   const [state, formAction] = useFormState(joinAction, {});

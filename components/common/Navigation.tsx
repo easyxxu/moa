@@ -11,7 +11,7 @@ import LogoutIcon from "@/public/assets/icon/icon-logout.svg";
 import ShopIcon from "@/public/assets/icon/icon-shop.svg";
 import LikeIcon from "@/public/assets/icon/icon-like.svg";
 
-import { logOutAction } from "@/actions/actions";
+import { logOutAction } from "@/api/apis";
 import { useUserDispatch } from "@/contexts/UserContext";
 
 interface Props {
