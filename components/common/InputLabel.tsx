@@ -17,6 +17,8 @@ interface InputLabelProps {
   error?: string;
   /** input이 입력됨에 따라 실행되는 이벤트 핸들러 */
   onChange?: React.ChangeEventHandler;
+  /** InputLabel 전체 컨테이너에 대한 커스텀 스타일 */
+  custom?: string;
 }
 
 export default function InputLabel({
@@ -29,9 +31,10 @@ export default function InputLabel({
   style,
   error,
   onChange,
+  custom,
 }: InputLabelProps) {
   return (
-    <div className="flex flex-col gap-1 font-extralight">
+    <div className={`flex flex-col gap-1 font-extralight ${custom}`}>
       {style === "box" ? (
         <>
           <label htmlFor={fieldId}>{labelText}</label>
