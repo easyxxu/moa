@@ -3,6 +3,7 @@ interface ButtonProps {
   custom?: string;
   onClick?: React.MouseEventHandler;
   children: React.ReactNode;
+  disable?: boolean;
 }
 
 export default function Button({
@@ -10,9 +11,15 @@ export default function Button({
   custom,
   onClick,
   children,
+  disable,
 }: ButtonProps) {
   return (
-    <button type={type} className={`${custom} outer-box`} onClick={onClick}>
+    <button
+      type={type}
+      className={`${custom} outer-box`}
+      onClick={onClick}
+      disabled={disable}
+    >
       {children}
     </button>
   );
