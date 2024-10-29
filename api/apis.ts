@@ -5,8 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { UserType } from "@/types/user";
-import { User  } from "@supabase/supabase-js";
-import { Tables } from "@/types/database.types";
+import { AuthError, PostgrestError, User } from "@supabase/supabase-js";
 
 export type ErrorMsg = {
   email?: string;
@@ -508,4 +507,153 @@ export const addReview = async (productId: number, formData: FormData) => {
     return { message: "서버에서 문제가 생겼습니다.", e };
   }
   redirect("/mypage/review");
+};
+interface PrevState {
+  status: number;
+  message: string;
+  error?: PostgrestError | AuthError | ErrorMsg;
+}
+
+export const updateEmail = async (
+  prevState: PrevState,
+  formData: FormData
+): Promise<PrevState> => {
+  const supabase = createClient();
+  const newEmail = formData.get("newEmail") as string;
+  const errorMsg: ErrorMsg = {};
+
+  // email 유효성 검사
+  if (!newEmail || newEmail.trim().length === 0) {
+    errorMsg.email = ERROR_MESSAGE.required;
+  }
+  if (!emailRegex.test(newEmail)) {
+    errorMsg.email = ERROR_MESSAGE.emailInvalid;
+  }
+
+  if (Object.keys(errorMsg).length > 0) {
+    return {
+      status: 400,
+      message: ERROR_MESSAGE.inputInvalid,
+      error: errorMsg,
+    };
+  }
+  // auth update
+  const { data: authData, error: authUserError } =
+    await supabase.auth.updateUser({
+      email: newEmail,
+      data: {
+        email: newEmail,
+      },
+    });
+  console.log("authData:", authData, authUserError);
+  if (authUserError?.code === "email_exists") {
+    errorMsg.email = ERROR_MESSAGE.emailAlreadyExists;
+    return {
+      status: 404,
+      message: ERROR_MESSAGE.serverError,
+      error: errorMsg,
+    };
+  }
+
+  if (authUserError) {
+    return {
+      status: 404,
+      message: ERROR_MESSAGE.serverError,
+      error: authUserError,
+    };
+  }
+
+  // user update
+  const { data: userData, error: userError } = await supabase
+    .from("user")
+    .update({
+      email: newEmail,
+    })
+    .eq("id", authData.user?.id);
+
+  if (userError) {
+    return {
+      status: 404,
+      message: ERROR_MESSAGE.serverError,
+      error: userError,
+    };
+  }
+  console.log("user update success: ", userData);
+
+  redirect("/mypage");
+};
+
+export const checkEmailConfirm = async (email: string) => {
+  const supabase = createClient();
+  const { error } = await supabase.auth.updateUser({ email });
+  if (error) {
+    console.error("이메일 업데이트 실패");
+    throw new Error("서버 문제 발생");
+  }
+  return { status: 200, message: "이메일 인증이 완료되었습니다." };
+};
+
+export const updateUserInfo = async (
+  prevState: PrevState,
+  formData: FormData
+): Promise<PrevState> => {
+  const supabase = createClient();
+  const name = formData.get("name") as string;
+  const phone = formData.get("phone") as string;
+  const errorMsg: ErrorMsg = {};
+
+  // form 유효성 검사
+  if (!name || name.trim().length === 0) {
+    errorMsg.name = ERROR_MESSAGE.required;
+  }
+  if (!phone || phone.trim().length === 0) {
+    errorMsg.phone = ERROR_MESSAGE.required;
+  }
+
+  if (Object.keys(errorMsg).length > 0) {
+    return {
+      status: 400,
+      message: ERROR_MESSAGE.inputInvalid,
+      error: errorMsg,
+    };
+  }
+
+  // auth update
+  const { data: authData, error: authUserError } =
+    await supabase.auth.updateUser({
+      data: {
+        name,
+        phone,
+      },
+    });
+
+  if (authUserError) {
+    console.error("Auth 수정 실패: ", authUserError);
+    return {
+      status: 404,
+      message: ERROR_MESSAGE.serverError,
+      error: authUserError,
+    };
+  }
+  console.log("1. Auth 수정 성공", authData);
+
+  // user update
+  const { data: userData, error: userError } = await supabase
+    .from("user")
+    .update({
+      name,
+      phone,
+    })
+    .eq("id", authData.user?.id);
+
+  if (userError) {
+    console.error("회원정보 수정 실패: ", userError);
+    return {
+      status: 404,
+      message: ERROR_MESSAGE.serverError,
+      error: userError,
+    };
+  }
+  console.log("2. 회원정보 수정 성공", userData);
+  redirect("/mypage");
 };
