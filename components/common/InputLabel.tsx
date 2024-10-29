@@ -19,6 +19,8 @@ interface InputLabelProps {
   onChange?: React.ChangeEventHandler;
   /** InputLabel 전체 컨테이너에 대한 커스텀 스타일 */
   custom?: string;
+  /** input의 readOnly 속성 */
+  readOnly?: boolean;
 }
 
 export default function InputLabel({
@@ -32,6 +34,7 @@ export default function InputLabel({
   error,
   onChange,
   custom,
+  readOnly,
 }: InputLabelProps) {
   return (
     <div className={`flex flex-col gap-1 font-extralight ${custom}`}>
@@ -47,12 +50,13 @@ export default function InputLabel({
             placeholder={placeholder}
             required
             onChange={onChange}
+            readOnly={readOnly}
           />
           <span className="text-sm text-red-600">{error}</span>
         </>
       ) : (
         <div>
-          <div className="relative w-full">
+          <div className={`relative w-full ${custom}`}>
             <input
               id={fieldId}
               name={fieldName}
@@ -61,6 +65,7 @@ export default function InputLabel({
               placeholder={placeholder}
               required
               onChange={onChange}
+              readOnly={readOnly}
             />
             <label
               htmlFor={fieldId}
