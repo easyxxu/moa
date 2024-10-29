@@ -7,7 +7,7 @@ const MY_MENU: { [key: string]: { href: string; title: string }[] } = {
     { href: "/mypage/review", title: "리뷰조회" },
   ],
   "나의 정보": [
-    { href: "/mypage/myinfo", title: "개인정보수정" },
+    { href: "/mypage/modify", title: "개인정보수정" },
     { href: "/mypage/coupon", title: "쿠폰" },
   ],
   "나의 문의": [
