@@ -657,3 +657,36 @@ export const updateUserInfo = async (
   console.log("2. 회원정보 수정 성공", userData);
   redirect("/mypage");
 };
+
+export const addQuestion = async (
+  prevState: PrevState,
+  formData: FormData
+): Promise<PrevState> => {
+  const supabase = createClient();
+  const productId = formData.get("productId") as string;
+  const title = formData.get("title") as string;
+  const content = formData.get("content") as string;
+
+  const { error } = await supabase.from("question").insert({
+    title,
+    content,
+    product_id: +productId,
+    answer_status: false,
+  });
+
+  if (error) {
+    console.error("문의 작성 실패", error);
+    return {
+      status: 404,
+      message: ERROR_MESSAGE.serverError,
+      error,
+    };
+  }
+
+  revalidatePath("/products", "layout");
+
+  return {
+    status: 200,
+    message: "문의를 작성하는데 성공했습니다.",
+  };
+};
