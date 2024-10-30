@@ -8,12 +8,18 @@ import ArrowIcon from "@/public/assets/icon/icon-arrow.svg";
 interface QuestionWithAnswer extends Tables<"question"> {
   answer: Tables<"answer"> | null;
 }
+
 export default function QuestionList() {
   const productId = usePathname().split("/").pop();
   const [page, setPage] = useState(1);
   const [qas, setQas] = useState<QuestionWithAnswer[]>([]);
-  const [isOpenAnswer, setIsOpenAnswer] = useState(false);
-  const [isMoreContent, setIsMoreContent] = useState(false);
+  const [openAnswers, setOpenAnswers] = useState<{ [key: number]: boolean }>(
+    {}
+  );
+  const [showFullContent, setShowFullContent] = useState<{
+    [key: number]: boolean;
+  }>({});
+
   const fetchQA = async () => {
     const supabase = createClient();
     const { data, error } = await supabase
@@ -31,6 +37,21 @@ export default function QuestionList() {
   useEffect(() => {
     fetchQA();
   }, [page]);
+
+  const toggleAnswer = (id: number) => {
+    setOpenAnswers((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const toggleContent = (id: number) => {
+    setShowFullContent((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   return (
     <div>
       <ul>
@@ -51,10 +72,10 @@ export default function QuestionList() {
                         ]
                       </p>
                       <p
-                        className={`w-full  cursor-pointer ${
-                          !isMoreContent && "ellipsis-1"
+                        className={`w-full ${
+                          !showFullContent[qa.id] && "ellipsis-1 cursor-pointer"
                         }`}
-                        onClick={() => setIsMoreContent(!isMoreContent)}
+                        onClick={() => toggleContent(qa.id)}
                       >
                         {qa.content}
                       </p>
@@ -67,7 +88,7 @@ export default function QuestionList() {
                     <button type="button" className="w-full mt-2">
                       <div
                         className="flex gap-1"
-                        onClick={() => setIsOpenAnswer(!isOpenAnswer)}
+                        onClick={() => toggleAnswer(qa.id)}
                       >
                         <Image
                           src={ArrowIcon}
@@ -75,7 +96,7 @@ export default function QuestionList() {
                           width={18}
                           height={18}
                           className={`${
-                            isOpenAnswer ? "rotate-90" : "-rotate-90"
+                            openAnswers[qa.id] ? "rotate-90" : "-rotate-90"
                           }`}
                         />
                         답변 보기
@@ -84,7 +105,7 @@ export default function QuestionList() {
                   )}
                 </div>
 
-                {isOpenAnswer && qa.answer_status && qa.answer?.id && (
+                {openAnswers[qa.id] && qa.answer_status && qa.answer?.id && (
                   <p className="mt-2">
                     <strong>답변</strong>
                     <br />
