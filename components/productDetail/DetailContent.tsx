@@ -1,10 +1,12 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import TabButton from "../common/button/TabButton";
 import Image from "next/image";
 import ProductReviews from "./ProductReviews";
+import QuestionForm from "./QuestionForm";
+import QuestionList from "./QuestionList";
 
 interface Props {
   description: string | null;
@@ -12,9 +14,10 @@ interface Props {
 }
 export default function DetailContent({ description, image }: Props) {
   const scrollRef = useRef<(HTMLDivElement | null)[]>([]);
+  const [isOpenQForm, setIsOpenQForm] = useState(false);
 
   return (
-    <div className="">
+    <div className="flex flex-col gap-10">
       <TabButton scrollRef={scrollRef} />
       <div
         className="flex flex-col items-center py-3"
@@ -33,10 +36,28 @@ export default function DetailContent({ description, image }: Props) {
         ))}
       </div>
       <div className="" ref={(ref) => (scrollRef.current[1] = ref)}>
+        <h3 className="pb-1 text-xl font-semibold border-b-2 border-black">
+          상품 후기
+        </h3>
         <ProductReviews />
       </div>
-      <div className="h-[500px]" ref={(ref) => (scrollRef.current[2] = ref)}>
-        문의
+      <div className="" ref={(ref) => (scrollRef.current[2] = ref)}>
+        <div className="flex justify-between pb-1 border-b-2 border-black">
+          <h3 className="text-xl font-semibold">상품 문의</h3>
+          <button
+            type="button"
+            onClick={() => setIsOpenQForm(true)}
+            className="font-medium underline"
+          >
+            문의 작성
+          </button>
+        </div>
+        {isOpenQForm && (
+          <div className="mt-4">
+            <QuestionForm setIsOpenQForm={setIsOpenQForm} />
+          </div>
+        )}
+        <QuestionList />
       </div>
       <div ref={(ref) => (scrollRef.current[3] = ref)}>
         <p className="text-xl font-semibold">반품/교환정보 안내</p>
@@ -71,7 +92,7 @@ export default function DetailContent({ description, image }: Props) {
             </li>
           </ul>
         </div>
-        <p className="text-lg font-semibold">교환/반품이 불가능한 경우</p>
+        <p className="mt-4 text-lg font-semibold">교환/반품이 불가능한 경우</p>
         <div className="py-2 pl-4">
           <ul className="leading-7 list-disc">
             <li>반품 요청 기간(수령 후 7일 이내)이 경과한 경우</li>
