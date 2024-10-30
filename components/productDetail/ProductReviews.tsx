@@ -75,7 +75,7 @@ export default function ProductReviews() {
     <div>
       <ul>
         {reviews.map((review) => (
-          <div key={review.id} className="border-t-2 border-inherit">
+          <div key={review.id} className="border-inherit">
             <li className="flex flex-col gap-2 p-2">
               <div>
                 <span className="mr-2 font-semibold">{review.user?.name}</span>
