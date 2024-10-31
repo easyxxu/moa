@@ -38,11 +38,10 @@ export default async function QADashboard() {
                 </p>
               </td>
               <td className="text-center">
-                <Link
-                  href={`/sellercenter/qa/${product.id}`}
-                  className="px-3 py-2 rounded-xl shadow-out bg-secondary"
-                >
-                  답변등록
+                <Link href={`/sellercenter/qa/${product.id}`}>
+                  <p className="px-3 py-2 text-blue-400 underline transition-transform duration-200 ease-out underline-offset-4 hover:-translate-y-1">
+                    답변등록
+                  </p>
                 </Link>
               </td>
             </tr>
