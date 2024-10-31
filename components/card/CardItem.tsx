@@ -41,6 +41,16 @@ export default function CardItem({
         },
       });
       return;
+    } else if (userState.userType === "SELLER") {
+      showModal({
+        type: "CONFIRM",
+        content: "판매자로 로그인해주세요.  \n 로그인하러 가시겠습니까?",
+        onConfirm: () => {
+          router.push("/login");
+          closeModal();
+        },
+      });
+      return;
     }
     const res = await likeProduct(id);
     console.log("#like res: ", res);
