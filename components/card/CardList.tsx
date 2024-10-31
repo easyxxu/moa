@@ -1,11 +1,11 @@
 "use client";
 
-import { Product } from "@/types/product";
 import CardItem from "./CardItem";
 import Link from "next/link";
+import { Tables } from "@/types/database.types";
 
 interface CardListProps {
-  products: Product[];
+  products: Tables<"product">[];
 }
 
 export default function CardList({ products }: CardListProps) {
