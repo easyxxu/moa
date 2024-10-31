@@ -825,3 +825,44 @@ export const addAnswer = async (
   revalidatePath("/sellercenter/qa/[productId]", "layout");
   redirect(`/sellercenter/qa/${productId}/${questionId}`);
 };
+export const getUserInfo = async () => {
+  const supabase = createClient();
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error) {
+    console.error("유저 정보를 불러오는 데 실패했습니다.", error);
+    return {
+      status: 404,
+      message: "유저 정보를 불러오는 데 실패했습니다.",
+      error,
+    };
+  }
+
+  console.log(data);
+  return {
+    status: 200,
+    message: "유저 정보를 불러오는 데 성공했습니다.",
+    user: data.user,
+  };
+};
+export const getMyQuestions = async () => {
+  const supabase = createClient();
+  const res = await getUserInfo();
+  if (res.status === 404) {
+    throw new Error(res.message);
+  }
+  const { data, error, status } = await supabase
+    .from("question")
+    .select(`*, product(*)`)
+    .eq("writer_id", res.user?.id!);
+
+  if (error) {
+    console.error("작성한 문의글을 불러오는 데 실패했습니다.");
+    return { status, message: ERROR_MESSAGE.serverError, data };
+  }
+  return {
+    status: 200,
+    message: "작성한 문의글을 불러오는 데 성공했습니다.",
+    data,
+  };
+};
