@@ -690,3 +690,39 @@ export const addQuestion = async (
     message: "문의를 작성하는데 성공했습니다.",
   };
 };
+
+export const getSellerProductsWithQuestions = async () => {
+  const supabase = createClient();
+
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+
+  if (userError) {
+    console.error("유저 정보를 불러오는데 실패했습니다.", userError);
+    return {
+      status: 404,
+      message: ERROR_MESSAGE.serverError,
+    };
+  }
+
+  const { data: products, error: productError } = await supabase
+    .from("product")
+    .select(
+      `
+    *,
+    question(*)
+  `
+    )
+    .eq("seller_id", userData.user?.id);
+
+  if (productError) {
+    console.error("판매자의 상품을 불러오는데 실패했습니다.", productError);
+    return { status: 404, message: ERROR_MESSAGE.serverError };
+  }
+
+  return {
+    status: 200,
+    message: "데이터를 불러오는데 성공했습니다.",
+    data: products,
+  };
+};
+
