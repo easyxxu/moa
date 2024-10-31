@@ -216,15 +216,15 @@ export default function ProductManagement({
   // console.log("imgFiles:", imgFiles);
   // console.log("modifiedImgs:", modifiedImgs);
   return (
-    <div className="w-full mb-10">
-      <form className="flex flex-col" onSubmit={handleSubmit}>
-        <div className="flex justify-between">
-          <h3 className="text-3xl">
+    <div className="w-full px-4 py-1 mb-10">
+      <form className="flex flex-col gap-1" onSubmit={handleSubmit}>
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-3xl font-semibold">
             상품 {operationMode === "add" ? "등록" : "수정"}
           </h3>
           <Button
             type="submit"
-            custom="bg-primary px-4 py-2 text-lg font-semibold"
+            custom="bg-primary px-3 py-2 text-lg font-semibold"
           >
             {operationMode === "add" ? "등록" : "수정"}
           </Button>
@@ -274,12 +274,12 @@ export default function ProductManagement({
           name="description"
           value={productInfo.description}
           onChange={handleInput}
-          className="h-40 shadow-in rounded-2xl bg-inherit p-3"
+          className="h-40 p-3 bg-white shadow-in rounded-2xl"
         />
         <label htmlFor="image" className="my-1 font-extralight">
           상품 이미지
         </label>
-        <div className="font-extralight mb-1">
+        <div className="mb-1 font-extralight">
           <p>- 이미지의 첫번째 사진이 상품의 대표이미지입니다.</p>
           <p>- 이미지는 최대 5장까지 업로드할 수 있습니다.</p>
         </div>
@@ -297,7 +297,7 @@ export default function ProductManagement({
           {previewImgs.map((img, idx) => (
             <div
               key={idx}
-              className="relative w-1/5 aspect-square shadow-in rounded-2xl"
+              className="relative w-1/5 bg-white aspect-square shadow-in rounded-2xl"
             >
               <ImagePreview
                 src={img}
