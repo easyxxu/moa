@@ -68,6 +68,7 @@ export default function QuestionForm({ setIsOpenQForm }: Props) {
               name="content"
               id="content"
               className="w-full h-40 px-3 py-2 shadow-in rounded-xl"
+              placeholder="최소 5자 이상 작성해주세요."
             ></textarea>
           </div>
           <input type="hidden" name="productId" value={productId} />
