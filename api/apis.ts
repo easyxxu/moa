@@ -757,3 +757,70 @@ export const getQuestionsByProductId = async (productId: number) => {
     data: { product: productData, questions: questionData },
   };
 };
+
+export const getQuestionById = async (questionId: number) => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("question")
+    .select(`*, answer!question_answer_id_fkey(*)`)
+    .eq("id", questionId)
+    .single();
+
+  if (error) {
+    console.error("문의를 불러오는 데 실패했습니다.", error);
+    return { status: 404, message: ERROR_MESSAGE.serverError, error };
+  }
+
+  return { status: 200, message: "데이터를 불러오는 데 성공했습니다.", data };
+};
+
+export const addAnswer = async (
+  prevState: PrevState,
+  formData: FormData
+): Promise<PrevState> => {
+  const supabase = createClient();
+  const content = formData.get("answer") as string;
+  const questionId = formData.get("questionId") as string;
+  const productId = formData.get("productId") as string;
+
+  // 답변 작성
+  const { data, error, status } = await supabase
+    .from("answer")
+    .insert({ content, question_id: +questionId })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("문의에 대한 답변을 작성하는 데 실패했습니다.", error);
+    return {
+      status,
+      message: ERROR_MESSAGE.serverError,
+      error,
+    };
+  }
+  // 문의 상태 업데이트
+  const {
+    data: updateData,
+    error: updateError,
+    status: updateStatus,
+  } = await supabase
+    .from("question")
+    .update({
+      answer_id: data?.id,
+      answer_status: true,
+    })
+    .eq("id", data.question_id)
+    .select();
+
+  if (updateError) {
+    console.error("문의 상태를 업데이트하는 데 실패했습니다.", updateError);
+    return {
+      status: updateStatus,
+      message: ERROR_MESSAGE.serverError,
+      error: updateError,
+    };
+  }
+
+  revalidatePath("/sellercenter/qa/[productId]", "layout");
+  redirect(`/sellercenter/qa/${productId}/${questionId}`);
+};
