@@ -3,15 +3,10 @@ interface Props {
 }
 export default function TableHeader({ headers }: Props) {
   return (
-    <thead className="bg-primary text-xl">
+    <thead className="text-lg text-black bg-gray-200">
       <tr>
         {headers.map((header, idx) => (
-          <th
-            className={`py-1.5 ${idx === 0 ? "rounded-l-2xl" : ""} ${
-              idx === headers.length - 1 ? "rounded-r-2xl" : ""
-            }`}
-            key={idx}
-          >
+          <th className={`py-2 px-4`} key={idx}>
             {header}
           </th>
         ))}
