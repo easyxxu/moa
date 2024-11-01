@@ -33,7 +33,7 @@ export default function TabButton({
   }, [scrollRef]);
 
   return (
-    <div className="sticky top-0 bg-background flex [&_button]:tab-btn-active">
+    <div className="sticky top-0 z-10 bg-background flex [&_button]:tab-btn-active">
       {TabList.map((item, idx) => (
         <button
           key={idx}
