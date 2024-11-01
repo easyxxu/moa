@@ -15,6 +15,7 @@ const MY_MENU: { [key: string]: { href: string; title: string }[] } = {
     { href: "/mypage/notice", title: "공지사항" },
   ],
 };
+
 export default function MyPageLayout({
   children,
 }: {
@@ -23,27 +24,34 @@ export default function MyPageLayout({
   return (
     <>
       <Header />
-      <main className="flex gap-4 py-8">
-        <div className="w-1/5">
-          <h2 className="mb-6">마이</h2>
-          <div>
+      <main className="flex py-8 gap-7">
+        <aside className="w-64 p-4 bg-white rounded-lg shadow-md">
+          <h2 className="mb-6 text-2xl font-bold text-gray-800">마이 페이지</h2>
+          <nav className="space-y-6">
             {Object.keys(MY_MENU).map((menu, index) => (
-              <div key={index} className="mb-6">
-                <h3 className="mb-2 text-xl font-semibold ">{menu}</h3>
-                <div className="flex flex-col gap-2 text-lg font-extralight">
-                  {MY_MENU[menu].map(
-                    (item: { href: string; title: string }, idx) => (
-                      <Link href={item.href} key={idx}>
+              <div key={index}>
+                <h3 className="mb-3 text-lg font-semibold text-gray-700 border-b border-gray-300">
+                  {menu}
+                </h3>
+                <ul className="space-y-2">
+                  {MY_MENU[menu].map((item, idx) => (
+                    <li key={idx}>
+                      <Link
+                        href={item.href}
+                        className="block px-2 py-1 text-gray-600 transition-colors duration-150 rounded hover:bg-primary hover:opacity-50 hover:text-blue-700"
+                      >
                         {item.title}
                       </Link>
-                    )
-                  )}
-                </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
-          </div>
-        </div>
-        {children}
+          </nav>
+        </aside>
+        <section className="flex-1 p-6 bg-white rounded-lg shadow-md">
+          {children}
+        </section>
       </main>
     </>
   );
