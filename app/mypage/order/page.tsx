@@ -1,7 +1,6 @@
 import OrderItem from "@/components/mypage/OrderItem";
 import OrderTableHeader from "@/components/mypage/OrderTableHeader";
 import StatusChip from "@/components/mypage/StatusChip";
-import { OrderWithOrderItem } from "@/types/order";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 
@@ -25,7 +24,7 @@ export default async function MyOrder() {
     )
   `
     )
-    .eq("customer_id", user?.id);
+    .eq("customer_id", user?.id!);
 
   if (!orders || orders.length === 0) {
     return <p className="text-center">주문내역이 없습니다.</p>;
@@ -33,14 +32,14 @@ export default async function MyOrder() {
   if (error) {
     console.error("마이페이지 주문조회 에러", error);
   }
-  const ordersData: OrderWithOrderItem[] = orders;
+
   return (
-    <div className="w-4/5">
+    <div>
       <h2 className="mb-8 text-center">주문배송조회</h2>
       <table className="w-full">
         <OrderTableHeader titles={HEADER_TITLES} />
         <tbody>
-          {ordersData?.map((order) => (
+          {orders?.map((order) => (
             <tr className="border-b" key={order.id}>
               <td>
                 <Link href={`/mypage/order/${order.id}`}>

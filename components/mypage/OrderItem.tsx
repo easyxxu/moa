@@ -1,9 +1,26 @@
-import { OrderWithOrderItem } from "@/types/order";
+import { Tables } from "@/types/database.types";
 import OrderProductItem from "./OrderProductItem";
 
-interface Props {
-  order: OrderWithOrderItem;
+interface Product {
+  image: string[];
+  name: string;
+  price: number;
+  seller_store: string;
+  shipping_fee: number;
 }
+
+interface OrderItem extends Tables<"order_item"> {
+  product: Product | null;
+}
+
+interface Order extends Tables<"order"> {
+  order_item: OrderItem[];
+}
+
+interface Props {
+  order: Order;
+}
+
 export default function OrderItem({ order }: Props) {
   return (
     <div className="px-2 py-3">
@@ -16,10 +33,10 @@ export default function OrderItem({ order }: Props) {
         {order.order_item.map((item) => (
           <li key={item.id}>
             <OrderProductItem
-              image={item.product.image[0]}
-              name={item.product.name}
+              image={item.product?.image[0]!}
+              name={item.product?.name!}
               price={item.price}
-              seller_store={item.product.seller_store}
+              seller_store={item.product?.seller_store!}
               quantity={item.quantity}
             />
           </li>
