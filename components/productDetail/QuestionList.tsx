@@ -64,18 +64,21 @@ export default function QuestionList() {
         {qas.data.length > 0 ? (
           <ul>
             {qas.data.map((qa) => (
-              <li key={qa.id} className="px-2 py-3 border-b">
+              <li key={qa.id} className="px-2 py-3 border-b border-border-grey">
                 <div>
                   <div className="flex items-center justify-between">
                     <div className="w-[calc(100vw-120px)]">
-                      <p className="mb-1 font-regular text-font-grey">
+                      <p className="mb-1 font-regular">
                         [
                         {qa.title === "PRODUCT"
                           ? "상품 문의"
                           : qa.title === "SHIPPING"
                           ? "배송 문의"
                           : "기타 문의"}
-                        ]
+                        ]{" "}
+                        <span className="text-sm font-light text-gray-500">
+                          {new Date(qa.created_at).toLocaleString()}
+                        </span>
                       </p>
                       <p
                         className={`w-full ${
