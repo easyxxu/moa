@@ -4,15 +4,19 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ArrowIcon from "@/public/assets/icon/icon-arrow.svg";
+import Pagination from "../common/Pagination";
 
 interface QuestionWithAnswer extends Tables<"question"> {
   answer: Tables<"answer"> | null;
 }
-
+interface QAs {
+  data: QuestionWithAnswer[];
+  count: number;
+}
 export default function QuestionList() {
   const productId = usePathname().split("/").pop();
   const [page, setPage] = useState(1);
-  const [qas, setQas] = useState<QuestionWithAnswer[]>([]);
+  const [qas, setQas] = useState<QAs>({ data: [], count: 0 });
   const [openAnswers, setOpenAnswers] = useState<{ [key: number]: boolean }>(
     {}
   );
@@ -22,16 +26,18 @@ export default function QuestionList() {
 
   const fetchQA = async () => {
     const supabase = createClient();
-    const { data, error } = await supabase
+    const start = (page - 1) * 10;
+    const end = start + 9;
+    const { data, count, error } = await supabase
       .from("question")
-      .select(`*, answer!question_answer_id_fkey(*)`)
+      .select(`*, answer!question_answer_id_fkey(*)`, { count: "exact" })
+      .range(start, end)
       .eq("product_id", productId!);
     if (error) {
       console.error(error);
       throw new Error("데이터를 불러오는데 실패했습니다. 다시 시도해주세요.");
     }
-
-    setQas(data);
+    setQas({ data, count: count || 0 });
   };
 
   useEffect(() => {
@@ -55,9 +61,9 @@ export default function QuestionList() {
   return (
     <div>
       <ul>
-        {qas.length > 0 ? (
+        {qas.data.length > 0 ? (
           <ul>
-            {qas.map((qa) => (
+            {qas.data.map((qa) => (
               <li key={qa.id} className="px-2 py-3 border-b">
                 <div>
                   <div className="flex items-center justify-between">
@@ -80,7 +86,7 @@ export default function QuestionList() {
                         {qa.content}
                       </p>
                     </div>
-                    <p className="w-24 py-1 text-center rounded text-nowrap shadow-out text-font-grey-bold bg-primary">
+                    <p className="px-2 py-1 font-semibold text-center rounded text-nowrap shadow-out text-font-grey-bold bg-primary">
                       {qa.answer_status ? "답변 완료" : "답변 대기"}
                     </p>
                   </div>
@@ -121,6 +127,9 @@ export default function QuestionList() {
           </div>
         )}
       </ul>
+      <div className="flex justify-center mt-4">
+        <Pagination total={qas.count} setPage={setPage} />
+      </div>
     </div>
   );
 }
