@@ -29,55 +29,59 @@ export default async function OrderDetailPage({
     .eq("id", orderId)
     .single();
 
-  const orderData: OrderWithOrderItem = order;
-
+  if (error) {
+    throw new Error("서버에서 문제가 발생했습니다.");
+  }
+  if (!order) {
+    return;
+  }
   return (
-    <div className="flex flex-col w-full gap-4 p-4 shadow-out rounded-xl">
-      <div>
-        <div className="text-sm">
-          <h3 className="mb-4 text-2xl font-medium">주문상세내역</h3>
-          <span className="block w-full h-1 my-4 bg-gray-800" />
-          <span className="mr-4">
-            주문일자{" "}
-            <strong>
-              {new Date(orderData.created_at).toLocaleDateString()}
-            </strong>
+    <div className="flex flex-col w-full gap-6 ">
+      {/* 주문 상세 정보 */}
+      <section className="pb-4 border-b-2">
+        <h3 className="mb-4 text-2xl font-semibold">주문상세내역</h3>
+        <p className="text-sm text-gray-700">
+          주문일자{" "}
+          <span className="font-medium">
+            {new Date(order.created_at).toLocaleDateString()}
           </span>
-          <span>
-            주문번호 <strong>{orderData.order_name}</strong>
-          </span>
-        </div>
-      </div>
-      <div>
-        <h3 className="my-4 text-2xl font-medium">주문상품정보</h3>
-        <table className="w-full">
+          &nbsp;|&nbsp; 주문번호{" "}
+          <span className="font-medium">{order.order_name}</span>
+        </p>
+      </section>
+
+      {/* 주문 상품 정보 */}
+      <section className="pb-4 border-b-2">
+        <h3 className="mb-4 text-2xl font-semibold">주문상품정보</h3>
+        <table className="w-full text-left border-collapse">
           <OrderTableHeader titles={HEADER_TITLES} />
           <tbody>
-            {orderData.order_item?.map((item) => (
-              <tr key={item.id}>
-                <td>
+            {order.order_item?.map((item) => (
+              <tr key={item.id} className="border-b">
+                <td className="px-4 py-4">
                   <Link href={`/products/${item.item_id}`}>
                     <OrderProductItem
-                      image={item.product.image[0]}
-                      name={item.product.name}
+                      image={item.product?.image[0]!}
+                      name={item.product?.name!}
                       price={item.price}
-                      seller_store={item.product.seller_store}
+                      seller_store={item.product?.seller_store!}
                       quantity={item.quantity}
                     />
                   </Link>
                 </td>
-                <td className="text-center">
+                <td className="px-4 py-4 text-center">
                   {item.shipping_fee.toLocaleString()} 원
                 </td>
-                <td className="text-center">
-                  <StatusChip status={order.order_status} />
+                <td className="px-4 py-4 text-center">
+                  <StatusChip status={order?.order_status!} />
                 </td>
-                <td className="text-center">
+                <td className="px-4 py-4 text-center">
                   {item.review_status ? (
                     "작성완료"
                   ) : (
                     <Link
                       href={`/mypage/review/${item.id}/write/${item.item_id}`}
+                      className="text-blue-500 underline hover:text-blue-600"
                     >
                       작성하기
                     </Link>
@@ -87,53 +91,53 @@ export default async function OrderDetailPage({
             ))}
           </tbody>
         </table>
-        <span className="block w-full h-1 my-4 bg-gray-800" />
-        <p className="text-right">
-          총 결제금액:{" "}
-          <span className="font-semibold">
-            {orderData.total_price.toLocaleString()}{" "}
-          </span>
-          원
+        <p className="mt-4 text-lg font-semibold text-right">
+          총 결제금액: {order.total_price.toLocaleString()} 원
         </p>
-      </div>
-      <div>
-        <h3 className="my-4 text-2xl font-medium">주문자정보</h3>
-        <span className="block w-full h-1 my-4 bg-gray-800" />
-        <div>
-          <table>
-            <colgroup>
-              <col width={100} />
-              <col />
-            </colgroup>
-            <tbody>
-              <tr>
-                <th className="px-2 py-1 text-start">이름</th>
-                <td>{orderData.customer_name}</td>
-              </tr>
-              <tr>
-                <th className="px-2 py-1 text-start">전화번호</th>
-                <td>{orderData.customer_phone}</td>
-              </tr>
-              <tr>
-                <th className="px-2 py-1 text-start">이메일</th>
-                <td>{orderData.customer_email}</td>
-              </tr>
-              <tr>
-                <th className="px-2 py-1 text-start">주소</th>
-                <td>{orderData.customer_address}</td>
-              </tr>
-              <tr>
-                <th className="px-2 py-1 text-start">배송메세지</th>
-                <td>
-                  {orderData.customer_delivery_message?.length === 0
-                    ? "-"
-                    : orderData.customer_delivery_message}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      </section>
+
+      {/* 주문자 정보 */}
+      <section>
+        <h3 className="mb-4 text-2xl font-semibold">주문자정보</h3>
+        <table className="w-full text-left border border-gray-300">
+          <tbody>
+            <tr>
+              <th className="w-1/4 px-4 py-2 text-gray-700 bg-gray-100">
+                이름
+              </th>
+              <td className="px-4 py-2">{order.customer_name}</td>
+            </tr>
+            <tr>
+              <th className="w-1/4 px-4 py-2 text-gray-700 bg-gray-100">
+                전화번호
+              </th>
+              <td className="px-4 py-2">{order.customer_phone}</td>
+            </tr>
+            <tr>
+              <th className="w-1/4 px-4 py-2 text-gray-700 bg-gray-100">
+                이메일
+              </th>
+              <td className="px-4 py-2">{order.customer_email}</td>
+            </tr>
+            <tr>
+              <th className="w-1/4 px-4 py-2 text-gray-700 bg-gray-100">
+                주소
+              </th>
+              <td className="px-4 py-2">{order.customer_address}</td>
+            </tr>
+            <tr>
+              <th className="w-1/4 px-4 py-2 text-gray-700 bg-gray-100">
+                배송메세지
+              </th>
+              <td className="px-4 py-2">
+                {order.customer_delivery_message?.length === 0
+                  ? "-"
+                  : order.customer_delivery_message}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
     </div>
   );
 }
