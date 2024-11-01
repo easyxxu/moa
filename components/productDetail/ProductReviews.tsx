@@ -5,6 +5,7 @@ import { Tables } from "@/types/database.types";
 import Button from "../common/button/Button";
 import ExpandImage from "../common/ExpandImage";
 import { usePathname } from "next/navigation";
+import StarRating from "../common/StarRating";
 
 interface ReviewsWithUserName extends Tables<"review"> {
   user: { name: string } | null;
@@ -77,11 +78,12 @@ export default function ProductReviews() {
         {reviews.map((review) => (
           <div key={review.id} className="border-inherit">
             <li className="flex flex-col gap-2 p-2 border-b border-border-grey">
-              <div>
-                <span className="mr-2 font-semibold">{review.user?.name}</span>
-                <span className="font-extralight">
-                  {new Date(review.created_at).toLocaleDateString()}
-                </span>
+              <div className="flex justify-between text-sm font-extralight">
+                <div className="flex items-end gap-1">
+                  <StarRating rating={review.star_rating} size={20} />
+                  <p className="text-gray-600 ">{review.user?.name}</p>
+                </div>
+                <p>{new Date(review.created_at).toLocaleDateString()}</p>
               </div>
               <p>{review.content}</p>
               {review.images && (

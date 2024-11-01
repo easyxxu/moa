@@ -3,14 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { loadProductById } from "@/api/apis";
 import ProductPurchaseOptions from "@/components/productDetail/ProductPurchaseOptions";
+import StarRating from "@/components/common/StarRating";
 
 export default async function ProductPage({
   params,
 }: {
   params: { productId: string };
 }) {
-  const productId = params.productId;
-  const { data } = await loadProductById(+productId);
+  const productId = +params.productId;
+  const { data } = await loadProductById(productId);
   if (!data) return;
 
   return (
@@ -28,8 +29,8 @@ export default async function ProductPage({
         />
         <div className="flex flex-col justify-between w-3/5">
           <div>
-            <h2>{data.name}</h2>
-            <p>평점</p>
+            <h2 className="mb-2">{data.name}</h2>
+            <StarRating rating={data.average_rating!} size={24} />
           </div>
           <div>
             <p>배송비: {data.shipping_fee.toLocaleString()} 원</p>
