@@ -76,7 +76,7 @@ export default function ProductReviews() {
       <ul>
         {reviews.map((review) => (
           <div key={review.id} className="border-inherit">
-            <li className="flex flex-col gap-2 p-2">
+            <li className="flex flex-col gap-2 p-2 border-b border-border-grey">
               <div>
                 <span className="mr-2 font-semibold">{review.user?.name}</span>
                 <span className="font-extralight">
@@ -112,15 +112,17 @@ export default function ProductReviews() {
           </div>
         ))}
       </ul>
-      {!isEnd && (
-        <Button
-          onClick={handleMoreBtn}
-          type="button"
-          custom="bg-secondary px-4 py-1 w-full font-semibold"
-        >
-          더보기
-        </Button>
-      )}
+      <div className="flex justify-center">
+        {!isEnd && (
+          <Button
+            onClick={handleMoreBtn}
+            type="button"
+            custom="bg-primary px-10 py-1 font-semibold mt-6"
+          >
+            더보기
+          </Button>
+        )}
+      </div>
     </div>
   );
 }
