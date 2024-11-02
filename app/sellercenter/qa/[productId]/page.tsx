@@ -1,16 +1,11 @@
 import { getQuestionsByProductId } from "@/api/apis";
 import TableHeader from "@/components/table/TableHeader";
 import TableCell from "@/components/table/TableItem";
+import { answerTitleMap } from "@/utils/answerTitleMap";
 import Image from "next/image";
 import Link from "next/link";
 
 const headers = ["문의내용", "답변상태", "답변관리"];
-
-export const answerTitleMap: { [key: string]: string } = {
-  PRODUCT: "상품 문의",
-  SHIPPING: "배송 문의",
-  ETC: "기타 문의",
-};
 
 export default async function ProductAnswerPage({
   params,

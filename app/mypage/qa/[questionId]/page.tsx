@@ -1,6 +1,6 @@
 import { getQuestionById } from "@/api/apis";
-import { answerTitleMap } from "@/app/sellercenter/qa/[productId]/page";
 import DeleteButton from "@/components/mypage/qa/DeleteButton";
+import { answerTitleMap } from "@/utils/answerTitleMap";
 
 export default async function MyQuestionDetailPage({
   params,

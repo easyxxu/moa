@@ -1,5 +1,5 @@
-import { answerTitleMap } from "@/app/sellercenter/qa/[productId]/page";
 import { Tables } from "@/types/database.types";
+import { answerTitleMap } from "@/utils/answerTitleMap";
 
 interface Props {
   question: Tables<"question">;
