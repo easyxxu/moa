@@ -13,7 +13,7 @@ export default async function QADashboard() {
 
   return (
     <div className="w-full">
-      <table className="w-full">
+      <table className="w-full shadow-md">
         <TableHeader headers={headers} />
         <tbody className="w-full">
           {data?.map((product) => (
