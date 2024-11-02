@@ -66,6 +66,9 @@
     padding: 0;
     position: absolute;
   }
+  .ellipsis-1 {
+    @apply overflow-hidden whitespace-nowrap text-ellipsis break-all;
+  }
   @media (prefers-color-scheme: dark) {
     :root {
       --background: 200 50% 3%;
