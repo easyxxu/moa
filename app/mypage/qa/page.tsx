@@ -50,6 +50,14 @@ export default async function QAPage() {
           ))}
         </tbody>
       </table>
+      {res.data?.length === 0 && (
+        <div className="flex flex-col items-center mt-8 space-y-2">
+          <p className="text-lg text-gray-600">작성된 문의가 없습니다.</p>
+          <p className="text-gray-500">
+            궁금한 점이 있으시면 문의를 작성해보세요!
+          </p>
+        </div>
+      )}
     </div>
   );
 }
