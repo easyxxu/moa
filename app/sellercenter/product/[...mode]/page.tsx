@@ -10,6 +10,7 @@ import ImagePreview from "@/components/sellercenter/ImagePreview";
 import { addProduct, updateProduct } from "@/api/apis";
 import { createClient } from "@/utils/supabase/client";
 import { usePathname, useRouter } from "next/navigation";
+import { useUserState } from "@/contexts/UserContext";
 
 const ImageMaxCnt = 5;
 
@@ -19,6 +20,7 @@ export default function ProductManagement({
   params: { mode: string[] };
 }) {
   const router = useRouter();
+  const sellerName = useUserState().name!;
   const productId = parseInt(params.mode[1]);
   const operationMode = usePathname().includes("add") ? "add" : "modify";
   const supabase = createClient();
@@ -32,9 +34,9 @@ export default function ProductManagement({
   const [modifiedImgs, setModifiedImgs] = useState<any[]>([]);
   const [productInfo, setProductInfo] = useState({
     name: "",
-    price: "",
-    stock: "",
-    shipping_fee: "",
+    price: 0,
+    stock: 0,
+    shipping_fee: 0,
     description: "",
   });
   const dragStart = (e: DragEvent, position: number) => {
@@ -116,6 +118,7 @@ export default function ProductManagement({
       if (!uploadedImgUrls) console.log("상품 이미지 업로드 실패");
       const error = await addProduct({
         ...productInfo,
+        seller_store: sellerName,
         image: uploadedImgUrls!,
       });
       if (error) {
@@ -198,7 +201,7 @@ export default function ProductManagement({
         price: data.price,
         stock: data.stock,
         shipping_fee: data.shipping_fee,
-        description: data.description,
+        description: data.description || "",
       });
 
       const adjustedPreviewImgs = [
