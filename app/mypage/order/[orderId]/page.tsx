@@ -1,9 +1,8 @@
-import OrderTableHeader from "@/components/mypage/OrderTableHeader";
+import Link from "next/link";
 import OrderProductItem from "@/components/mypage/OrderProductItem";
 import StatusChip from "@/components/mypage/StatusChip";
-import { OrderWithOrderItem } from "@/types/order";
+import TableHeader from "@/components/table/TableHeader";
 import { createClient } from "@/utils/supabase/server";
-import Link from "next/link";
 
 const HEADER_TITLES = ["주문정보", "배송비", "주문상태", "리뷰작성"];
 
@@ -53,8 +52,8 @@ export default async function OrderDetailPage({
       {/* 주문 상품 정보 */}
       <section className="pb-4 border-b-2">
         <h3 className="mb-4 text-2xl font-semibold">주문상품정보</h3>
-        <table className="w-full text-left border-collapse">
-          <OrderTableHeader titles={HEADER_TITLES} />
+        <table className="w-full">
+          <TableHeader headers={HEADER_TITLES} />
           <tbody>
             {order.order_item?.map((item) => (
               <tr key={item.id} className="border-b">
