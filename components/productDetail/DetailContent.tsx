@@ -20,6 +20,7 @@ export default function DetailContent({ description, image }: Props) {
   return (
     <div className="flex flex-col gap-10">
       <TabButton scrollRef={scrollRef} />
+      {/* 상품정보 */}
       <div
         className="flex flex-col items-center py-3"
         ref={(ref) => (scrollRef.current[0] = ref)}
@@ -36,12 +37,14 @@ export default function DetailContent({ description, image }: Props) {
           />
         ))}
       </div>
+      {/* 상품후기 */}
       <div className="" ref={(ref) => (scrollRef.current[1] = ref)}>
         <h3 className="pb-1 text-xl font-semibold border-b-2 border-black">
           상품 후기
         </h3>
         <ProductReviews />
       </div>
+      {/* 상품문의 */}
       <div className="" ref={(ref) => (scrollRef.current[2] = ref)}>
         <div className="flex justify-between pb-1 border-b-2 border-black">
           <h3 className="text-xl font-semibold">상품 문의</h3>
@@ -60,6 +63,7 @@ export default function DetailContent({ description, image }: Props) {
         )}
         <QuestionList />
       </div>
+      {/* 반품/교환정보 */}
       <div ref={(ref) => (scrollRef.current[3] = ref)}>
         <ReturnExchangeInfo />
       </div>
