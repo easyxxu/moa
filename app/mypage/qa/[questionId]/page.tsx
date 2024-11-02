@@ -1,12 +1,14 @@
 import { getQuestionById } from "@/api/apis";
 import { answerTitleMap } from "@/app/sellercenter/qa/[productId]/page";
+import DeleteButton from "@/components/mypage/qa/DeleteButton";
 
 export default async function MyQuestionDetailPage({
   params,
 }: {
   params: { questionId: string };
 }) {
-  const res = await getQuestionById(+params.questionId);
+  const questionId = +params.questionId;
+  const res = await getQuestionById(questionId);
   const question = res.data;
 
   return (
@@ -24,20 +26,7 @@ export default async function MyQuestionDetailPage({
             {question?.answer_status ? "답변 완료" : "답변 대기 중"}
           </p>
         </div>
-        <div className="flex gap-4">
-          <button
-            type="button"
-            className="px-3 py-2 font-semibold text-white bg-gray-300 rounded-lg shadow hover:bg-gray-400"
-          >
-            수정
-          </button>
-          <button
-            type="button"
-            className="px-3 py-2 font-semibold text-white bg-gray-300 rounded-lg shadow hover:bg-gray-400"
-          >
-            삭제
-          </button>
-        </div>
+        <DeleteButton questionId={questionId} />
       </div>
       <div className="mb-6">
         <p className="mb-2 font-semibold text-gray-800">
