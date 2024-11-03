@@ -1,35 +1,34 @@
 "use client";
-import ArrowIcon from "@/public/assets/icon/icon-arrow.svg";
+
 import Image from "next/image";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
+
+import ArrowIcon from "@/public/assets/icon/icon-arrow.svg";
 
 interface Props {
   /** 총 아이템 개수 */
   total: number;
+  page: number;
   setPage: Dispatch<SetStateAction<number>>;
 }
-export default function Pagination({ total, setPage }: Props) {
-  const [nowPage, setNowPage] = useState(1);
+export default function Pagination({ total, page, setPage }: Props) {
+  const startPage = Math.floor((page - 1) / 10) * 10 + 1;
   const lastPage = Math.floor((total - 1) / 10) + 1;
-
-  const startPage = Math.floor((nowPage - 1) / 10) * 10 + 1;
   const endPage = Math.min(startPage + 9, lastPage);
+
   const handlePrevious = () => {
-    if (nowPage > 1) {
-      setNowPage((prev) => prev - 1);
+    if (page > 1) {
       setPage((prev) => prev - 1);
     }
   };
 
   const handleNext = () => {
-    if (nowPage < lastPage) {
-      setNowPage((prev) => prev + 1);
+    if (page < lastPage) {
       setPage((prev) => prev + 1);
     }
   };
 
   const handlePage = (page: number) => {
-    setNowPage(page);
     setPage(page);
   };
 
@@ -45,7 +44,7 @@ export default function Pagination({ total, setPage }: Props) {
               type="button"
               onClick={() => handlePage(startPage + idx)}
               className={`${
-                nowPage === startPage + idx
+                page === startPage + idx
                   ? "border-b border-slate-800 leading-tight font-semibold"
                   : ""
               }`}
