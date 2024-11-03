@@ -101,7 +101,7 @@ export default function QAPage() {
           </table>
           {data.count > 10 && (
             <div className="flex justify-center">
-              <Pagination total={data?.count} setPage={setPage} />
+              <Pagination total={data?.count} setPage={setPage} page={page} />
             </div>
           )}
         </>

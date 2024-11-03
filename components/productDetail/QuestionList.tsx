@@ -131,7 +131,7 @@ export default function QuestionList() {
         )}
       </ul>
       <div className="flex justify-center mt-4">
-        <Pagination total={qas.count} setPage={setPage} />
+        <Pagination total={qas.count} page={page} setPage={setPage} />
       </div>
     </div>
   );
