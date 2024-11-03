@@ -43,7 +43,7 @@ export default function QuestionForm({ setIsOpenQForm }: Props) {
               value={selected}
               name="title"
               id="title"
-              className="w-full px-3 py-2 shadow-in rounded-xl bg-background"
+              className="w-full px-3 py-2 bg-white shadow-in rounded-xl"
               onChange={(e) => setSelected(e.target.value)}
               required
             >
