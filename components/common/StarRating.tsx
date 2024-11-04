@@ -5,13 +5,14 @@ import { useRef } from "react";
 interface Props {
   /** 현재 평점 */
   rating: number;
-  /** 평점 변경 시 호출되는 함수(리뷰 작성 페이지에만 필요) */
+  /** 평점 변경 시 호출되는 함수 */
   onRatingChange?: (rating: number) => void;
   /** 별 아이콘 크기 */
   size: number;
-  /** 평점 선택 가능 여부(리뷰 작성 페이지에만 필요) */
+  /** 평점 선택 가능 여부*/
   isEditable?: boolean;
 }
+
 export default function StarRating({
   rating,
   onRatingChange,
@@ -32,14 +33,16 @@ export default function StarRating({
         <div key={idx}>
           {isEditable ? (
             <>
-              <input
-                type="radio"
-                name="starRating"
-                value={idx + 1}
-                className="hidden"
-                onChange={() => handleStarRating(idx + 1)}
-                ref={(el) => (starsRef.current[idx] = el)}
-              />
+              <label className="hidden">
+                <input
+                  type="radio"
+                  name={`starRating${idx + 1}`}
+                  value={idx + 1}
+                  onChange={() => handleStarRating(idx + 1)}
+                  ref={(el) => (starsRef.current[idx] = el)}
+                />
+                {idx + 1}
+              </label>
               <svg
                 width={size}
                 height={size}

@@ -93,8 +93,8 @@ export default function ReviewForm() {
         className="h-24 px-4 py-3 resize-none shadow-in rounded-xl"
         onChange={handleReviewContent}
       />
-      <label className="font-medium">
-        별점
+      <fieldset>
+        <legend>별점</legend>
         <StarRating
           rating={formData.starRating}
           onRatingChange={(newRating) =>
@@ -103,7 +103,8 @@ export default function ReviewForm() {
           isEditable={true}
           size={33}
         />
-      </label>
+      </fieldset>
+
       <label htmlFor="images" className="font-medium">
         이미지 첨부{" "}
         <span className="text-sm font-light">(최대 3장까지 가능합니다.)</span>
