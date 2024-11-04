@@ -14,7 +14,7 @@ interface Props {
   name: string;
   price?: number;
   likedCnt?: number;
-  likedList: string[] | null;
+  likedList?: string[] | null;
 }
 export default function CardItem({
   id,
