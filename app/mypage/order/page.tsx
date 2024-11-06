@@ -1,37 +1,19 @@
 import OrderItem from "@/components/mypage/OrderItem";
 import OrderTableHeader from "@/components/mypage/OrderTableHeader";
 import StatusChip from "@/components/mypage/StatusChip";
-import { createClient } from "@/utils/supabase/server";
-import Link from "next/link";
+import TableHeader from "@/components/table/TableHeader";
+
+import { getOrderByUser } from "@/api/orderApis";
 
 const HEADER_TITLES = ["주문정보", "총 결제금액", "주문상태"];
 
 export default async function MyOrder() {
-  const supabase = createClient();
+  const { status, message, data } = await getOrderByUser();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const { data: orders, error } = await supabase
-    .from("order")
-    .select(
-      `
-    *,
-    order_item (
-      *,
-      product ( name, price, image, seller_store, shipping_fee )
-    )
-  `
-    )
-    .eq("customer_id", user?.id!);
-
-  if (!orders || orders.length === 0) {
-    return <p className="text-center">주문내역이 없습니다.</p>;
+  if (status > 400 && status < 500) {
+    throw new Error(message);
   }
-  if (error) {
-    console.error("마이페이지 주문조회 에러", error);
-  }
+  const orders = data;
 
   return (
     <div>
