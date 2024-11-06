@@ -1,5 +1,6 @@
+import Link from "next/link";
+
 import OrderItem from "@/components/mypage/OrderItem";
-import OrderTableHeader from "@/components/mypage/OrderTableHeader";
 import StatusChip from "@/components/mypage/StatusChip";
 import TableHeader from "@/components/table/TableHeader";
 
@@ -18,26 +19,30 @@ export default async function MyOrder() {
   return (
     <div>
       <h2 className="mb-8 text-center">주문배송조회</h2>
-      <table className="w-full">
-        <OrderTableHeader titles={HEADER_TITLES} />
-        <tbody>
-          {orders?.map((order) => (
-            <tr className="border-b" key={order.id}>
-              <td>
-                <Link href={`/mypage/order/${order.id}`}>
-                  <OrderItem order={order} />
-                </Link>
-              </td>
-              <td className="text-center">
-                {order.total_price.toLocaleString()} 원
-              </td>
-              <td className="text-center">
-                <StatusChip status={order.order_status} />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {orders?.length === 0 ? (
+        <p className="text-center">주문 내역이 없습니다.</p>
+      ) : (
+        <table className="w-full">
+          <TableHeader headers={HEADER_TITLES} />
+          <tbody>
+            {orders?.map((order) => (
+              <tr className="border-b" key={order.id}>
+                <td>
+                  <Link href={`/mypage/order/${order.id}`}>
+                    <OrderItem order={order} />
+                  </Link>
+                </td>
+                <td className="text-center">
+                  {order.total_price.toLocaleString()} 원
+                </td>
+                <td className="text-center">
+                  <StatusChip status={order.order_status} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }
