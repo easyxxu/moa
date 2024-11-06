@@ -36,7 +36,7 @@ export default function StarRating({
               <label className="hidden">
                 <input
                   type="radio"
-                  name={`starRating${idx + 1}`}
+                  name="starRating"
                   value={idx + 1}
                   onChange={() => handleStarRating(idx + 1)}
                   ref={(el) => (starsRef.current[idx] = el)}
