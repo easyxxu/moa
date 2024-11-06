@@ -1,21 +1,33 @@
 "use client";
 
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+
+import StarRating from "@/components/common/StarRating";
 import ImageIcon from "@/public/assets/icon/icon-image.svg";
 import DeleteIcon from "@/public/assets/icon/icon-delete.svg";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
 import Button from "../../common/button/Button";
-import { addReview } from "@/api/apis";
-import { usePathname } from "next/navigation";
-import StarRating from "@/components/common/StarRating";
 
-export default function ReviewForm() {
+import { addReview } from "@/api/apis";
+import { Tables } from "@/types/database.types";
+import { modifyReview } from "@/api/reviewApis";
+
+interface Props {
+  reviewData?: Tables<"review">;
+  productId?: number;
+}
+
+export default function ReviewForm({ reviewData, productId }: Props) {
+  const router = useRouter();
   const currentPath = usePathname().split("/");
-  const orderItemId = Number(currentPath[3]);
-  const productId = Number(currentPath.pop());
+  const formMode = currentPath[3];
+  const orderItemId = Number(currentPath[4]) || reviewData?.order_item_id;
+  const reviewId = Number(currentPath[4]);
   const multipleImgRef = useRef<HTMLInputElement>(null);
   const [imgFiles, setImgFiles] = useState<File[]>([]);
   const [imgPreview, setImgPreivew] = useState<string[]>([]);
+  const [modifiedImgs, setModifiedImgs] = useState<(string | File)[]>([]);
   const [imgLength, setImgLength] = useState(0);
   const [contentLength, setContentLength] = useState(0);
   const [formData, setFormData] = useState({
@@ -23,6 +35,7 @@ export default function ReviewForm() {
     content: "",
     starRating: 0,
   });
+
   const handleMultipleImgInput = () => {
     const files = multipleImgRef.current?.files;
     if (!files) return;
@@ -31,13 +44,16 @@ export default function ReviewForm() {
     const imgUrl = filesArray.map((file) => URL.createObjectURL(file));
     setImgFiles((prev) => [...prev, ...filesArray].slice(0, 3));
     setImgPreivew((prev) => [...prev, ...imgUrl].slice(0, 3));
+    setModifiedImgs((prev) => [...prev, ...filesArray].slice(0, 3));
   };
 
   const handleDeleteImg = (idx: number) => {
     const updatedImgFiles = imgFiles.filter((_, index) => index !== idx);
     const updatedImgPreview = imgPreview.filter((_, index) => index !== idx);
+    const modifiedImg = modifiedImgs.filter((_, index) => index !== idx);
     setImgFiles(updatedImgFiles);
     setImgPreivew(updatedImgPreview);
+    setModifiedImgs(modifiedImg);
   };
 
   const handleReviewContent = (e: React.FocusEvent<HTMLTextAreaElement>) => {
@@ -48,36 +64,60 @@ export default function ReviewForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.content.length < 15 || formData.starRating === 0) {
-      // toast 알림 추가
+      /**
+       * TODO toast 알림 추가
+       *  */
       return;
     }
-    try {
-      const data = new FormData();
-      data.append("content", formData.content);
-      data.append("starRating", String(formData.starRating));
-      data.append("orderItemId", String(formData.orderItemId));
+    const data = new FormData();
+    data.append("content", formData.content);
+    data.append("starRating", String(formData.starRating));
+    data.append("orderItemId", String(formData.orderItemId));
 
+    if (formMode === "add") {
       imgFiles.forEach((file, index) => {
         data.append(`images[${index}]`, file);
       });
-
-      const error = await addReview(productId, data);
-
+      const error = await addReview(productId!, data);
       if (error) {
         throw error.message;
       }
-    } catch (e) {
-      throw new Error(`${e}`);
+    } else {
+      modifiedImgs.forEach((file, index) => {
+        data.append(`images[${index}]`, file);
+      });
+      const { status, message } = await modifyReview(reviewId, data);
+      if (status > 400 && status < 500) {
+        throw new Error(message);
+      }
+      router.push("/mypage/review");
     }
   };
 
   useEffect(() => {
-    setImgLength(imgFiles.length);
-  }, [imgFiles]);
+    setImgLength(imgPreview.length);
+  }, [imgPreview]);
 
   useEffect(() => {
     setContentLength(formData.content.length);
   }, [formData.content]);
+
+  /** edit의 경우 리뷰 데이터 저장 */
+  useEffect(() => {
+    if (formMode === "modify" && reviewData) {
+      console.log(reviewData);
+      setFormData((prev) => ({
+        ...prev,
+        content: reviewData.content,
+        starRating: reviewData.star_rating,
+      }));
+      if (reviewData.images !== null) {
+        setImgPreivew(reviewData.images);
+        setModifiedImgs(reviewData.images);
+      }
+    }
+  }, []);
+
   return (
     <form className="flex flex-col w-full gap-2" onSubmit={handleSubmit}>
       <label htmlFor="content" className="font-medium">
@@ -92,6 +132,7 @@ export default function ReviewForm() {
         name="content"
         className="h-24 px-4 py-3 resize-none shadow-in rounded-xl"
         onChange={handleReviewContent}
+        value={formData.content}
       />
       <fieldset>
         <legend>별점</legend>
