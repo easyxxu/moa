@@ -5,6 +5,41 @@ import { createClient } from "@/utils/supabase/server";
 import { uploadImgs } from "./apis";
 import { revalidatePath } from "next/cache";
 
+/** 유저의 전체 작성 리뷰 조회 API */
+export const getReviewsWithProductByUser = async () => {
+  const supabase = createClient();
+
+  const { data: user, error: getUserError } = await supabase.auth.getUser();
+
+  if (getUserError) {
+    console.error("getUser 에러", getUserError);
+    return { status: 404, message: ERROR_MESSAGE.getUserError };
+  }
+
+  const userId = user.user?.id;
+
+  const {
+    status,
+    data: reviews,
+    error: getReviewError,
+  } = await supabase
+    .from("review")
+    .select(`*, product(id, name, image, seller_store, seller_id)`)
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+
+  if (getReviewError) {
+    console.error("getReview 에러", getReviewError);
+    return { status, message: ERROR_MESSAGE.serverError };
+  }
+
+  return {
+    status,
+    message: "getReview 성공",
+    data: reviews,
+  };
+};
+
 /** 리뷰 수정 API */
 export const modifyReview = async (reviewId: number, formData: FormData) => {
   const supabase = createClient();
