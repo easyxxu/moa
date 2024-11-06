@@ -25,7 +25,7 @@ export const getReviewsWithProductByUser = async () => {
   } = await supabase
     .from("review")
     .select(`*, product(id, name, image, seller_store, seller_id)`)
-    .eq("user_id", userId)
+    .eq("writer_id", userId)
     .order("created_at", { ascending: false });
 
   if (getReviewError) {
