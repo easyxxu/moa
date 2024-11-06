@@ -59,7 +59,22 @@ export const getOrderItemWithProduct = async (orderItemId: number) => {
   return { status, message: "getOrderWithProduct 성공", data };
 };
 
+/** 리뷰 조회(by reviewId) API */
+export const getReviewById = async (reviewId: number) => {
+  const supabase = createClient();
 
+  const { status, data, error } = await supabase
+    .from("review")
+    .select(`*, product(id, name, image)`)
+    .eq("id", reviewId)
+    .single();
+  if (error) {
+    console.error("getReviewById 에러", error);
+    return { status, message: ERROR_MESSAGE.serverError };
+  }
+
+  return { status, message: "리뷰를 가져오는 데 성공했습니다.", data };
+};
 /** 리뷰 수정 API */
 export const modifyReview = async (reviewId: number, formData: FormData) => {
   const supabase = createClient();
@@ -122,6 +137,7 @@ export const deleteReview = async (reviewId: number) => {
     .from("review")
     .delete()
     .eq("id", reviewId);
+
   if (error) {
     console.error("deleteReview Error: ", error);
     return {
