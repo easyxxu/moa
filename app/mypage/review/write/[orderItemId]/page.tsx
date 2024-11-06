@@ -1,14 +1,16 @@
-import { loadProductById } from "@/api/apis";
+import { getOrderItemWithProduct } from "@/api/reviewApis";
 import CardItem from "@/components/card/CardItem";
 import ReviewForm from "@/components/mypage/reviewWrite/ReviewForm";
 
 export default async function ReviewWrite({
-  params,
+  params: { orderItemId },
 }: {
-  params: { productId: string };
+  params: { orderItemId: number };
 }) {
-  const productId = +params.productId;
-  const res = await loadProductById(productId);
+  const { status, message, data } = await getOrderItemWithProduct(orderItemId);
+  if (status > 400 && status < 500) {
+    throw new Error(message);
+  }
 
   return (
     <div className="w-full">
@@ -17,12 +19,12 @@ export default async function ReviewWrite({
       <div className="flex flex-col items-center w-full gap-8">
         <div className="w-64">
           <CardItem
-            id={res.data.id}
-            src={res.data.image[0]}
-            name={res.data.name}
+            id={data?.id!}
+            src={data?.product?.image[0]!}
+            name={data?.product?.name!}
           />
         </div>
-        <ReviewForm />
+        <ReviewForm productId={data?.item_id} />
       </div>
     </div>
   );

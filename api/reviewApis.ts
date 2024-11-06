@@ -40,6 +40,26 @@ export const getReviewsWithProductByUser = async () => {
   };
 };
 
+/** orderItemId를 활용해 product 정보도 함께 조회 API */
+export const getOrderItemWithProduct = async (orderItemId: number) => {
+  const supabase = createClient();
+
+  const { status, data, error } = await supabase
+    .from("order_item")
+    .select(`*,product(id, name, image)`)
+    .eq("id", orderItemId)
+    .single();
+
+  console.log(data);
+  if (error) {
+    console.error("getOrderWithProduct 에러", error);
+    return { status, message: ERROR_MESSAGE.serverError };
+  }
+
+  return { status, message: "getOrderWithProduct 성공", data };
+};
+
+
 /** 리뷰 수정 API */
 export const modifyReview = async (reviewId: number, formData: FormData) => {
   const supabase = createClient();

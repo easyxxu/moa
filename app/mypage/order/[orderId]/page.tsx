@@ -79,7 +79,7 @@ export default async function OrderDetailPage({
                     "작성완료"
                   ) : (
                     <Link
-                      href={`/mypage/review/${item.id}/write/${item.item_id}`}
+                      href={`/mypage/review/write/${item.id}`}
                       className="text-blue-500 underline hover:text-blue-600"
                     >
                       작성하기
