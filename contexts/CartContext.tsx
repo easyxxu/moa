@@ -119,7 +119,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     changeQuantity,
     price,
   };
-  console.log("Now checkItem: ", checkedItems);
+
   return (
     <CheckedItemsContext.Provider value={CartContextValues}>
       {children}
