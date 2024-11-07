@@ -19,18 +19,17 @@ export default function Toast({ type, content, onClose }: Props) {
   const [animationClass, setAnimationClass] = useState("slide-left");
 
   useEffect(() => {
-    // 2초 뒤에 사라지는 애니메이션 적용 후 onClose 호출
-    const timeoutId = setTimeout(() => {
-      setAnimationClass("slide-right");
-      setTimeout(onClose, 200); // 애니메이션이 끝나고 onClose 호출
-    }, 4000); // 예시로 2초 후 사라지게 설정
+    const closeTimer = setTimeout(() => {
+      setAnimationClass("slide-right"); // 사라지는 애니메이션 설정
+      setTimeout(onClose, 200); // 사라지는 애니메이션이 끝난 후 onClose 호출
+    }, 4000);
 
-    return () => clearTimeout(timeoutId);
+    return () => clearTimeout(closeTimer);
   }, [onClose]);
 
   return (
     <div
-      className={`border-b-4 ${animationClass} ${TYPE_COLOR[type]} bg-white fixed top-0 right-0 z-10 px-4 py-4 flex gap-5 justify-between`}
+      className={`border-b-4 ${animationClass} ${TYPE_COLOR[type]} bg-white fixed top-0 right-0 z-50 px-4 py-4 flex gap-5 justify-between`}
     >
       <p>{content}</p>
       <button type="button" className="">
