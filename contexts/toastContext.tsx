@@ -22,7 +22,7 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
   const [toastProps, setToastProps] = useState<{
     type: ToastType;
     content: string;
-  } | null>(null);
+  }>({ type: "INFO", content: "토스트 알림입니다." });
 
   const openToast = useCallback(
     (params: { type: ToastType; content: string }) => {
