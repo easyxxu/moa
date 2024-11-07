@@ -69,6 +69,31 @@
   .ellipsis-1 {
     @apply overflow-hidden whitespace-nowrap text-ellipsis break-all;
   }
+  .slide-left {
+    -webkit-animation: slide-left 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: slide-left 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+  @keyframes slide-left {
+    0% {
+      transform: translate(100%, 40%);
+    }
+    100% {
+      transform: translate(-10%, 40%);
+    }
+  }
+  .slide-right {
+    -webkit-animation: slide-right 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+      both;
+    animation: slide-right 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+  @keyframes slide-right {
+    0% {
+      transform: translate(-10%, 40%);
+    }
+    100% {
+      transform: translate(200%, 40%);
+    }
+  }
   @media (prefers-color-scheme: dark) {
     :root {
       --background: 200 50% 3%;
