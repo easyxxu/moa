@@ -1,7 +1,10 @@
 "use client";
 
-import { deleteQuestion } from "@/api/qaApis";
 import { useRouter } from "next/navigation";
+
+import { deleteQuestion } from "@/api/qaApis";
+import { useToast } from "@/contexts/toastContext";
+import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 
 interface Props {
   questionId: number;
@@ -9,15 +12,16 @@ interface Props {
 
 export default function DeleteButton({ questionId }: Props) {
   const router = useRouter();
+  const { openToast } = useToast();
   const handleDelete = async () => {
     const res = await deleteQuestion(questionId);
-    if (res.status > 400 && res.status < 500) {
+    if (res.status >= 400 && res.status < 500) {
       throw new Error(res.message);
     }
-    /**
-     * TODO 삭제 완료 토스트 알림 추가하기
-     */
-    // console.log(res);
+    openToast({
+      type: "SUCCESS",
+      content: TOAST_MESSAGE.MYPAGE.QUETION.DELETE,
+    });
     router.push("/mypage/qa");
   };
   return (
