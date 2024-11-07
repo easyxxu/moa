@@ -75,44 +75,50 @@ export default function ProductReviews() {
   return (
     <div>
       <ul>
-        {reviews.map((review) => (
-          <div key={review.id} className="border-inherit">
-            <li className="flex flex-col gap-2 p-2 border-b border-border-grey">
-              <div className="flex justify-between text-sm font-extralight">
-                <div className="flex items-end gap-1">
-                  <StarRating rating={review.star_rating} size={20} />
-                  <p className="text-gray-600 ">{review.user?.name}</p>
+        {reviews.length > 0 ? (
+          reviews.map((review) => (
+            <div key={review.id} className="border-inherit">
+              <li className="flex flex-col gap-2 p-2 border-b border-border-grey">
+                <div className="flex justify-between text-sm font-extralight">
+                  <div className="flex items-end gap-1">
+                    <StarRating rating={review.star_rating} size={20} />
+                    <p className="text-gray-600 ">{review.user?.name}</p>
+                  </div>
+                  <p>{new Date(review.created_at).toLocaleDateString()}</p>
                 </div>
-                <p>{new Date(review.created_at).toLocaleDateString()}</p>
-              </div>
-              <p>{review.content}</p>
-              {review.images && (
-                <div className="flex gap-2">
-                  {review.images?.map((image, idx) => (
-                    <div key={idx}>
-                      <Image
-                        src={image}
-                        alt="리뷰 이미지"
-                        width={100}
-                        height={100}
-                        // fill={true}
-                        onClick={() => handleExpandImg(idx)}
-                        className="object-cover cursor-pointer aspect-square"
+                <p>{review.content}</p>
+                {review.images && (
+                  <div className="flex gap-2">
+                    {review.images?.map((image, idx) => (
+                      <div key={idx}>
+                        <Image
+                          src={image}
+                          alt="리뷰 이미지"
+                          width={100}
+                          height={100}
+                          // fill={true}
+                          onClick={() => handleExpandImg(idx)}
+                          className="object-cover cursor-pointer aspect-square"
+                        />
+                      </div>
+                    ))}
+                    {isExpand && (
+                      <ExpandImage
+                        images={review.images!}
+                        order={imageOrder}
+                        onClose={() => setIsExpand(false)}
                       />
-                    </div>
-                  ))}
-                  {isExpand && (
-                    <ExpandImage
-                      images={review.images!}
-                      order={imageOrder}
-                      onClose={() => setIsExpand(false)}
-                    />
-                  )}
-                </div>
-              )}
-            </li>
+                    )}
+                  </div>
+                )}
+              </li>
+            </div>
+          ))
+        ) : (
+          <div className="flex items-center justify-center h-72">
+            작성된 후기가 없습니다.
           </div>
-        ))}
+        )}
       </ul>
       <div className="flex justify-center">
         {!isEnd && (
