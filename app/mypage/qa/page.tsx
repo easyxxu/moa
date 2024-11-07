@@ -44,15 +44,16 @@ export default function QAPage() {
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-bold text-center">상품 Q/A</h2>
-      {data.count === 0 && !isLoading && (
+      {isLoading ? (
+        <Loading />
+      ) : data.count === 0 ? (
         <div className="flex flex-col items-center mt-8 space-y-2">
           <p className="text-lg text-gray-600">작성된 문의가 없습니다.</p>
           <p className="text-gray-500">
             궁금한 점이 있으시면 문의를 작성해보세요!
           </p>
         </div>
-      )}
-      {!isLoading ? (
+      ) : (
         <>
           <table className="w-full text-left border-collapse">
             <thead>
@@ -105,8 +106,6 @@ export default function QAPage() {
             </div>
           )}
         </>
-      ) : (
-        <Loading />
       )}
     </div>
   );
