@@ -13,4 +13,5 @@ export const ERROR_MESSAGE = {
   getUserError:
     "유저 정보를 가져오는 데 실패했습니다. 잠시 후 다시 시도해 주세요.",
   inputInvalid: "입력한 내용이 형식에 맞지 않습니다.",
+  questionInvalid: "5자 이상 적어주세요.",
 };
