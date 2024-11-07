@@ -1,10 +1,14 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
-import Button from "../common/button/Button";
-import { useFormState } from "react-dom";
-import { addQuestion } from "@/api/apis";
 import { usePathname } from "next/navigation";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useFormState } from "react-dom";
+
+import Button from "../common/button/Button";
+import { useToast } from "@/contexts/toastContext";
+import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
+import { addQuestion } from "@/api/qaApis";
+import { QAsType } from "./QuestionList";
 
 const selectList = [
   { value: "PRODUCT", name: "상품 문의" },
@@ -14,9 +18,11 @@ const selectList = [
 
 interface Props {
   setIsOpenQForm: Dispatch<SetStateAction<boolean>>;
+  setQas: Dispatch<SetStateAction<QAsType>>;
 }
 
-export default function QuestionForm({ setIsOpenQForm }: Props) {
+export default function QuestionForm({ setIsOpenQForm, setQas }: Props) {
+  const { openToast } = useToast();
   const productId = usePathname().split("/").pop();
   const [selected, setSelected] = useState("");
   const [state, formAction] = useFormState(addQuestion, {
@@ -24,13 +30,20 @@ export default function QuestionForm({ setIsOpenQForm }: Props) {
     message: "",
   });
 
-  if (state?.status === 404) {
-    throw new Error(state.message);
-  }
+  useEffect(() => {
+    if (state.status >= 400 && state.status < 500) {
+      openToast({ type: "ERROR", content: state.message });
+    } else if (state.status === 200) {
+      openToast({ type: "SUCCESS", content: TOAST_MESSAGE.MYPAGE.QUETION.ADD });
+      setIsOpenQForm(false);
+      setQas((prev) => ({
+        ...prev,
+        data: [state.data!, ...prev.data],
+        count: prev.count + 1,
+      }));
+    }
+  }, [state, openToast, setIsOpenQForm]);
 
-  if (state.status === 200) {
-    setIsOpenQForm(false);
-  }
   return (
     <div className="px-3 py-4 bg-background shadow-out rounded-xl">
       <form action={formAction}>

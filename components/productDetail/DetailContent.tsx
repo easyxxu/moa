@@ -6,7 +6,7 @@ import TabButton from "../common/button/TabButton";
 import Image from "next/image";
 import ProductReviews from "./ProductReviews";
 import QuestionForm from "./QuestionForm";
-import QuestionList from "./QuestionList";
+import QuestionList, { QAsType } from "./QuestionList";
 import ReturnExchangeInfo from "./ReturnExchangeInfo";
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
 export default function DetailContent({ description, image }: Props) {
   const scrollRef = useRef<(HTMLDivElement | null)[]>([]);
   const [isOpenQForm, setIsOpenQForm] = useState(false);
-
+  const [qas, setQas] = useState<QAsType>({ data: [], count: 0 });
   return (
     <div className="flex flex-col gap-10">
       <TabButton scrollRef={scrollRef} />
@@ -58,10 +58,10 @@ export default function DetailContent({ description, image }: Props) {
         </div>
         {isOpenQForm && (
           <div className="mt-4">
-            <QuestionForm setIsOpenQForm={setIsOpenQForm} />
+            <QuestionForm setIsOpenQForm={setIsOpenQForm} setQas={setQas} />
           </div>
         )}
-        <QuestionList />
+        <QuestionList setQas={setQas} qas={qas} />
       </div>
       {/* 반품/교환정보 */}
       <div ref={(ref) => (scrollRef.current[3] = ref)}>
