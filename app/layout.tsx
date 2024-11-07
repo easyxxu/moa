@@ -3,6 +3,7 @@ import "./globals.css";
 import { UserProvider } from "@/contexts/UserContext";
 import { ModalProvider } from "@/contexts/ModalContext";
 import { CartProvider } from "@/contexts/CartContext";
+import { ToastProvider } from "@/contexts/toastContext";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -31,9 +32,11 @@ export default function RootLayout({
       <CartProvider>
         <html lang="en" className={`${pretendard.variable}`}>
           <body className="bg-background font-pretendard">
+            <ToastProvider>
               <ModalProvider>
                 <div className="h-[100vh]">{children}</div>
               </ModalProvider>
+            </ToastProvider>
           </body>
         </html>
       </CartProvider>
