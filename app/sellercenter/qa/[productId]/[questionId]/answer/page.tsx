@@ -1,5 +1,4 @@
 import { getQuestionById } from "@/api/apis";
-import { answerTitleMap } from "../../page";
 import AnswerForm from "@/components/sellercenter/AnswerForm";
 import QuestionContent from "@/components/sellercenter/QuestionContent";
 
