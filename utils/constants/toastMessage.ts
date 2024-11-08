@@ -18,7 +18,7 @@ export const TOAST_MESSAGE = {
     },
     PROFILE: {
       EMAIL_CHANGE: "이메일이 변경되었습니다.",
-      CONTACT_CHANGE: "이름과 전화번호가 변경되었습니다.",
+      NAME_CONTACT_CHANGE: "회원정보를 수정하였습니다.",
     },
   },
   AUTH: {
