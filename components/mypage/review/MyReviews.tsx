@@ -27,7 +27,7 @@ export default async function MyReviews({ reviews }: Props) {
         reviews?.map((review) => (
           <li
             key={review.id}
-            className="p-4 transition-shadow duration-300 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
+            className="p-4 transition-shadow duration-300 border border-gray-200 rounded-lg shadow-sm hover:shadow-md flex justify-between"
           >
             <div>
               <p className="mb-2 text-sm font-light text-gray-500">
