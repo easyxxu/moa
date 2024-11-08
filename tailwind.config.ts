@@ -21,6 +21,12 @@ module.exports = {
         "font-hover": "#87A4AB",
         primary: "#D5E6EA",
         secondary: "#F2F7F8",
+        toast: {
+          error: "#ff4d4f",
+          info: "#1890ff",
+          success: "#52c41a",
+          warning: "#faad14",
+        },
       },
       boxShadow: {
         out: "3px 3px 5px rgba(0,0,0,0.2), -1.5px -1.5px 4px rgba(255,255,255)",
