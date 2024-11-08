@@ -2,7 +2,10 @@
 
 import { ErrorMsg, updateEmail } from "@/api/apis";
 import InputLabel from "@/components/common/InputLabel";
+import { useToast } from "@/contexts/toastContext";
 import { useUserState } from "@/contexts/UserContext";
+import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 import { useFormState, useFormStatus } from "react-dom";
 
 const SubmitButton = () => {
@@ -19,12 +22,22 @@ const SubmitButton = () => {
 };
 
 export default function ModifyEmail() {
+  const { openToast } = useToast();
   const nowEmail = useUserState().moreUserData?.email || "";
   const [state, formAction] = useFormState(updateEmail, {
     status: 0,
     message: "",
   });
 
+  if (state.status >= 400 && state.status < 500) {
+    openToast({ type: "ERROR", content: ERROR_MESSAGE.serverError });
+  }
+  if (state.status === 200) {
+    openToast({
+      type: "SUCCESS",
+      content: TOAST_MESSAGE.MYPAGE.PROFILE.EMAIL_CHANGE,
+    });
+  }
   return (
     <div className="w-full">
       <h2 className="mb-6 text-center">이메일 변경</h2>

@@ -9,6 +9,8 @@ import { deleteCartItem, updateQuantity } from "@/api/apis";
 import DeleteIcon from "@/public/assets/icon/icon-delete.svg";
 import { useCartCheckItems } from "@/contexts/CartContext";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/contexts/toastContext";
+import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 
 interface Props {
   item: CartItemInfo;
@@ -16,6 +18,7 @@ interface Props {
 }
 
 export default function CartTableItem({ item, isLastItem }: Props) {
+  const { openToast } = useToast();
   const router = useRouter();
   const { showModal, closeModal } = useModal();
   const { checkItem, uncheckItem, checkedItems, changeQuantity, allUncheck } =
@@ -43,14 +46,15 @@ export default function CartTableItem({ item, isLastItem }: Props) {
 
   const submitModifyQuantity = async (updatedQuantity: number) => {
     const data = await updateQuantity(item.id!, updatedQuantity);
-    setQuantity(data.quantity);
-    changeQuantity(item.id!, data.quantity);
+    setQuantity(data?.quantity!);
+    changeQuantity(item.id!, data?.quantity!);
     closeModal();
   };
 
   const handleDeleteCartItem = async () => {
     const res = await deleteCartItem(item.id!);
     closeModal();
+    openToast({ type: "SUCCESS", content: TOAST_MESSAGE.CART.DELETE });
   };
 
   const handleOpenDeleteModal = () => {

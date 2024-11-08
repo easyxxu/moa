@@ -11,6 +11,9 @@ import { addProduct, updateProduct } from "@/api/apis";
 import { createClient } from "@/utils/supabase/client";
 import { usePathname, useRouter } from "next/navigation";
 import { useUserState } from "@/contexts/UserContext";
+import { useToast } from "@/contexts/toastContext";
+import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
+import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 
 const ImageMaxCnt = 5;
 
@@ -19,6 +22,7 @@ export default function ProductManagement({
 }: {
   params: { mode: string[] };
 }) {
+  const { openToast } = useToast();
   const router = useRouter();
   const sellerName = useUserState().name!;
   const productId = parseInt(params.mode[1]);
@@ -123,10 +127,9 @@ export default function ProductManagement({
       });
       if (error) {
         console.error("상품 등록 실패", error);
-        return;
+        openToast({ type: "ERROR", content: ERROR_MESSAGE.serverError });
       }
-
-      console.log("상품 등록 성공!");
+      openToast({ type: "SUCCESS", content: TOAST_MESSAGE.SELLER.PRODUCT.ADD });
     }
 
     if (operationMode === "modify") {
@@ -156,9 +159,13 @@ export default function ProductManagement({
       );
       if (error) {
         console.error("상품 수정 실패: ", error);
+        openToast({ type: "ERROR", content: ERROR_MESSAGE.serverError });
         return;
       }
-      console.log("상품 수정 성공");
+      openToast({
+        type: "SUCCESS",
+        content: TOAST_MESSAGE.SELLER.PRODUCT.MODIFY,
+      });
       router.push("/sellercenter/product");
     }
   };

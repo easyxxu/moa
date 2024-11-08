@@ -12,6 +12,8 @@ import Button from "../../common/button/Button";
 import { addReview } from "@/api/apis";
 import { Tables } from "@/types/database.types";
 import { modifyReview } from "@/api/reviewApis";
+import { useToast } from "@/contexts/toastContext";
+import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 
 interface Props {
   reviewData?: Tables<"review">;
@@ -19,6 +21,7 @@ interface Props {
 }
 
 export default function ReviewForm({ reviewData, productId }: Props) {
+  const { openToast } = useToast();
   const router = useRouter();
   const currentPath = usePathname().split("/");
   const formMode = currentPath[3];
@@ -82,6 +85,7 @@ export default function ReviewForm({ reviewData, productId }: Props) {
       if (error) {
         throw error.message;
       }
+      openToast({ type: "SUCCESS", content: TOAST_MESSAGE.MYPAGE.REVIEW.ADD });
     } else {
       modifiedImgs.forEach((file, index) => {
         data.append(`images[${index}]`, file);
@@ -90,6 +94,10 @@ export default function ReviewForm({ reviewData, productId }: Props) {
       if (status > 400 && status < 500) {
         throw new Error(message);
       }
+      openToast({
+        type: "SUCCESS",
+        content: TOAST_MESSAGE.MYPAGE.REVIEW.MODIFY,
+      });
       router.push("/mypage/review");
     }
   };

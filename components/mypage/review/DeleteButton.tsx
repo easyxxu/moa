@@ -1,16 +1,20 @@
 "use client";
 
 import { deleteReview } from "@/api/reviewApis";
+import { useToast } from "@/contexts/toastContext";
+import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 
 interface Props {
   reviewId: number;
 }
 export default function DeleteButton({ reviewId }: Props) {
+  const { openToast } = useToast();
   const handleDelete = async () => {
     const res = await deleteReview(reviewId);
     if (res.status > 400 && res.status < 500) {
       throw new Error(res.message);
     }
+    openToast({ type: "SUCCESS", content: TOAST_MESSAGE.MYPAGE.REVIEW.DELETE });
   };
   return (
     <button

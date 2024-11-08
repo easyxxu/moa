@@ -3,18 +3,33 @@
 import { ErrorMsg, updateUserInfo } from "@/api/apis";
 import Button from "@/components/common/button/Button";
 import InputLabel from "@/components/common/InputLabel";
+import { useToast } from "@/contexts/toastContext";
+import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 import { useFormState } from "react-dom";
 
 export default function ModifyMyInfo() {
+  const { openToast } = useToast();
   const [state, formAction] = useFormState(updateUserInfo, {
     status: 0,
     message: "",
   });
 
-  if (state.status === 404) {
-    throw new Error(state.message);
+  if (state.status >= 400 || state.status < 500) {
+    openToast({
+      type: "ERROR",
+      content:
+        state.status === 400
+          ? ERROR_MESSAGE.required
+          : ERROR_MESSAGE.serverError,
+    });
   }
-
+  if (state.status === 200) {
+    openToast({
+      type: "SUCCESS",
+      content: TOAST_MESSAGE.MYPAGE.PROFILE.NAME_CONTACT_CHANGE,
+    });
+  }
   return (
     <div className="w-full">
       <h2 className="text-center mb-8">정보 수정하기</h2>
