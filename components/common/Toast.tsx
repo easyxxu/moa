@@ -22,7 +22,7 @@ export default function Toast({ type, content, onClose }: Props) {
     const closeTimer = setTimeout(() => {
       setAnimationClass("slide-right"); // 사라지는 애니메이션 설정
       setTimeout(onClose, 200); // 사라지는 애니메이션이 끝난 후 onClose 호출
-    }, 4000);
+    }, 3000);
 
     return () => clearTimeout(closeTimer);
   }, [onClose]);
