@@ -3,15 +3,22 @@
 import CardItem from "./CardItem";
 import Link from "next/link";
 import { Tables } from "@/types/database.types";
+import { useState } from "react";
+import { getProducts } from "@/api/productApis";
 
 interface CardListProps {
-  products: Tables<"product">[];
+  initialProducts: Tables<"product">[];
 }
 
-export default function CardList({ products }: CardListProps) {
+export default function CardList({ initialProducts }: CardListProps) {
+  const [products, setProducts] = useState(initialProducts);
+  const [page, setPage] = useState(1);
+  const loadProducts = async () => {
+    const res = await getProducts(page);
+  };
   return (
     <ul className="grid grid-cols-4 gap-7">
-      {products.map((product) => (
+      {initialProducts.map((product) => (
         <li key={product.id} className="w-64">
           <Link href={`/products/${product.id}`}>
             <CardItem
