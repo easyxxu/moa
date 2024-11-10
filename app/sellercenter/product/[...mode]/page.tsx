@@ -14,8 +14,12 @@ import { useUserState } from "@/contexts/UserContext";
 import { useToast } from "@/contexts/toastContext";
 import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import {
+  CATEGORY_OPTIONS,
+  CHARACTER_OPTIONS,
+} from "@/utils/constants/filterOptions";
 
-const ImageMaxCnt = 5;
+const IMAGE_MAX_CNT = 5;
 
 export default function ProductManagement({
   params,
@@ -32,7 +36,7 @@ export default function ProductManagement({
   const dragOverImgIdx = useRef<number | null>();
   const multipleImgRef = useRef<HTMLInputElement>(null);
   const [previewImgs, setPreviewImgs] = useState<string[]>(
-    Array(ImageMaxCnt).fill("")
+    Array(IMAGE_MAX_CNT).fill("")
   );
   const [imgFiles, setImgFiles] = useState<File[]>([]);
   const [modifiedImgs, setModifiedImgs] = useState<any[]>([]);
@@ -80,10 +84,10 @@ export default function ProductManagement({
 
     const filesArray = Array.from(files);
     setImgFiles((prevImgFiles) =>
-      [...prevImgFiles, ...filesArray].slice(0, ImageMaxCnt)
+      [...prevImgFiles, ...filesArray].slice(0, IMAGE_MAX_CNT)
     );
     setModifiedImgs((prevModifiedImg) =>
-      [...prevModifiedImg, ...filesArray].slice(0, ImageMaxCnt)
+      [...prevModifiedImg, ...filesArray].slice(0, IMAGE_MAX_CNT)
     );
     const updatePreviewImgs = [...previewImgs];
     const imgUrls = filesArray.map((file) => URL.createObjectURL(file));
@@ -213,7 +217,7 @@ export default function ProductManagement({
 
       const adjustedPreviewImgs = [
         ...data.image, // 실제 이미지 URL
-        ...Array(ImageMaxCnt - data.image.length).fill(""), // 빈 문자열로 채움
+        ...Array(IMAGE_MAX_CNT - data.image.length).fill(""), // 빈 문자열로 채움
       ];
 
       setPreviewImgs(adjustedPreviewImgs);
@@ -275,6 +279,52 @@ export default function ProductManagement({
           style="box"
           onChange={handleInput}
         />
+        <label
+          htmlFor="character"
+          className="block mb-1 text-sm font-medium text-gray-700"
+        >
+          상품 캐릭터
+        </label>
+        <select
+          id="character"
+          name="character"
+          defaultValue=""
+          className="block w-full px-3 py-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          required
+        >
+          <option value="" disabled>
+            캐릭터 종류를 선택해주세요.
+          </option>
+          {CHARACTER_OPTIONS.map((character, idx) => (
+            <option key={idx} value={character.name}>
+              {character.text}
+            </option>
+          ))}
+        </select>
+
+        <label
+          htmlFor="category"
+          className="block mt-4 mb-1 text-sm font-medium text-gray-700"
+        >
+          상품 카테고리
+        </label>
+        <select
+          id="category"
+          name="category"
+          defaultValue=""
+          className="block w-full px-3 py-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          required
+        >
+          <option value="" disabled>
+            카테고리를 선택해주세요.
+          </option>
+
+          {CATEGORY_OPTIONS.map((category, idx) => (
+            <option key={idx} value={category.name}>
+              {category.text}
+            </option>
+          ))}
+        </select>
 
         <label htmlFor="description" className="my-1 font-extralight">
           상품 설명
