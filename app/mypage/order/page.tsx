@@ -26,7 +26,7 @@ export default async function MyOrder() {
           <TableHeader headers={HEADER_TITLES} />
           <tbody>
             {orders?.map((order) => (
-              <tr className="border-b" key={order.id}>
+              <tr className="border-b border-gray-400" key={order.id}>
                 <td>
                   <Link href={`/mypage/order/${order.id}`}>
                     <OrderItem order={order} />

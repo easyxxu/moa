@@ -29,9 +29,9 @@ export default function CartTableHeader({
   }, [cartCount, checkedItems]);
 
   return (
-    <thead className="bg-primary rounded-2xl shadow-out">
+    <thead className="border-t-4 border-gray-900 border-y">
       <tr className="*:py-3">
-        <th className="rounded-l-2xl" scope="col">
+        <th className="rounded-l-sm" scope="col">
           <label htmlFor="allProduct" className="a11y-hidden">
             전체상품
           </label>
@@ -46,7 +46,7 @@ export default function CartTableHeader({
         <th scope="col">상품정보</th>
         <th scope="col">수량</th>
         <th scope="col">상품금액</th>
-        <th className="rounded-r-2xl" scope="col"></th>
+        <th className="rounded-r-sm" scope="col"></th>
       </tr>
     </thead>
   );

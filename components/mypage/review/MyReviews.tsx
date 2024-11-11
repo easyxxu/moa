@@ -27,7 +27,7 @@ export default async function MyReviews({ reviews }: Props) {
         reviews?.map((review) => (
           <li
             key={review.id}
-            className="p-4 transition-shadow duration-300 border border-gray-200 rounded-lg shadow-sm hover:shadow-md flex justify-between"
+            className="flex justify-between p-4 transition-shadow duration-300 border border-gray-400 rounded-lg shadow-sm hover:shadow-md"
           >
             <div>
               <p className="mb-2 text-sm font-light text-gray-500">
@@ -71,7 +71,7 @@ export default async function MyReviews({ reviews }: Props) {
                 </div>
               )}
             </div>
-            <div className="flex items-center gap-2 self-start">
+            <div className="flex items-center self-start gap-2">
               <Link
                 href={`/mypage/review/modify/${review.id}`}
                 className="relative px-3 py-2 text-sm font-medium after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:bg-black after:w-0 hover:after:w-full after:transition-all after:duration-300"

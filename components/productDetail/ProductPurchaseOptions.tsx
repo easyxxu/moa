@@ -74,7 +74,7 @@ export default function ProductPurchaseOptions({
       cartId = await createCart(userId!);
     }
 
-    const isInCart = await checkProductInCart(cartId); // 이미 장바구니에 담긴 물건인지 확인
+    const isInCart = await checkProductInCart(cartId!); // 이미 장바구니에 담긴 물건인지 확인
     if (isInCart) {
       showModal({
         type: "CONFIRM",
@@ -114,7 +114,7 @@ export default function ProductPurchaseOptions({
       <QuantityButton quantity={quantity} setQuantity={setQuantity} />
       <hr className="my-5" />
       <div className="flex items-center justify-between my-5">
-        <p className="font-semibold">총 상품 금액</p>
+        <p className="font-medium">총 상품 금액</p>
         <div className="flex items-center">
           <span className="mr-5">수량 : {quantity}</span>
           <span className="text-3xl before:content-[''] before:absolute before:w-px before:h-6 before:bg-font-hover before:-translate-x-2.5 before:translate-y-1.5">
@@ -136,7 +136,7 @@ export default function ProductPurchaseOptions({
             src={likedList?.includes(userId!) ? HeartIcon : UnHeartIcon}
             alt="좋아요"
           />
-          <p className="ml-1 text-font-grey font-extralight">{likedCnt}</p>
+          <p className="font-light">{likedCnt}</p>
         </Button>
         <Button
           type="button"

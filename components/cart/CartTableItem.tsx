@@ -108,10 +108,8 @@ export default function CartTableItem({ item, isLastItem }: Props) {
   return (
     <tr
       key={item.id}
-      className={`relative b-4 *:p-4 bg-white ${
-        isLastItem
-          ? "[&>td:first-child]:rounded-bl-2xl [&>td:last-child]:rounded-br-2xl"
-          : "border-b"
+      className={`relative b-4 *:p-4 ${
+        isLastItem ? "border-b border-gray-200" : ""
       }`}
     >
       <td>

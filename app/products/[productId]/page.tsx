@@ -44,7 +44,7 @@ export default async function ProductPage({
           alt={data.name}
           width={300}
           height={300}
-          className="w-2/5 shadow-out rounded-2xl"
+          className="w-2/5 rounded-sm"
         />
         <div className="flex flex-col justify-between w-3/5">
           <div>

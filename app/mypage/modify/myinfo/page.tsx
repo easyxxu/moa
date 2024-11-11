@@ -32,7 +32,7 @@ export default function ModifyMyInfo() {
   }
   return (
     <div className="w-full">
-      <h2 className="text-center mb-8">정보 수정하기</h2>
+      <h2 className="mb-8 text-center">정보 수정하기</h2>
       <form action={formAction} className="w-full">
         <InputLabel
           type="text"

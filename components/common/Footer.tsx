@@ -1,15 +1,15 @@
-import MoaLogo from "@/public/assets/moa-logo.svg";
+import MoaBarcode from "@/public/assets/moa-barcode.svg";
 import IconGithub from "@/public/assets/icon/icon-github.svg";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="py-10 text-gray-700 border-t border-border-grey shadow-borderBottom">
+    <footer className="py-10 text-gray-700 border-t border-border-grey shadow-borderBottom mt-44">
       <div className="grid grid-cols-1 gap-8 px-2 mx-auto my-0 max-w-7xl md:grid-cols-3">
         {/* 회사 정보 */}
         <div>
-          <Image src={MoaLogo} alt="모아 로고" width={120} height={100} />
+          <Image src={MoaBarcode} alt="모아 로고" width={120} height={100} />
           <address className="mt-4 text-sm not-italic">
             <p className="text-lg font-semibold">(주)MoA</p>
             <p>대표자: 홍길동</p>

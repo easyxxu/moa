@@ -34,7 +34,7 @@ export default function ProductNav() {
   }, []);
   return (
     <div
-      className={`bg-white sticky top-[88px] z-20 ${
+      className={`bg-white sticky top-[87px] z-20 ${
         isScrolled && !isProductDetailPage ? "shadow-md" : ""
       }`}
     >

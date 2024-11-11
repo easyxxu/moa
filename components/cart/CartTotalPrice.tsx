@@ -41,7 +41,7 @@ export default function CartTotalPrice() {
   );
 
   return (
-    <div className="w-full flex bg-primary shadow-out rounded-2xl justify-around *:py-12">
+    <div className="w-full flex border border-gray-900 shadow-md rounded-sm justify-around *:py-12">
       <div className="total-price-box">
         <p>총 상품금액</p>
         <p>

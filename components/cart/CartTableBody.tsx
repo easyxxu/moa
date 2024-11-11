@@ -14,7 +14,7 @@ export default function CartTableBody({ cartItems }: Props) {
       {Object.keys(cartItems).map((store) => (
         <>
           <tr className="bg-white">
-            <td colSpan={5} className="p-3 font-bold text-left rounded-t-2xl">
+            <td colSpan={5} className="p-3 font-bold text-left">
               {store}
             </td>
           </tr>
