@@ -21,7 +21,7 @@ export default function TabButton({
   useEffect(() => {
     const changeTabBtnStyle = () => {
       scrollRef.current.forEach((ref: HTMLDivElement | null, idx: number) => {
-        if (ref && ref.getBoundingClientRect().y < 53) {
+        if (ref && ref.getBoundingClientRect().y < 181) {
           setTabIdx(idx);
         }
       });
@@ -33,14 +33,16 @@ export default function TabButton({
   }, [scrollRef]);
 
   return (
-    <div className="sticky top-0 z-10 bg-background flex [&_button]:tab-btn-active">
+    <div className="bg-background flex [&_button]:tab-btn-active sticky top-[128px] z-10">
       {TabList.map((item, idx) => (
         <button
           key={idx}
           type="button"
           onClick={() => handleTabActive(idx)}
           className={`${
-            tabIdx === idx ? "border-b-primary font-semibold" : "border-inherit"
+            tabIdx === idx
+              ? "border-b-blue-500 font-semibold"
+              : "border-inherit"
           }`}
         >
           {item}

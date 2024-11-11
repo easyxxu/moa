@@ -8,11 +8,11 @@ export default function ProductLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div className="relative">
       <Header />
       <Category />
       <main className="mt-4 mb-10">{children}</main>
       <Footer />
-    </>
+    </div>
   );
 }
