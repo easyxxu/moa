@@ -6,7 +6,7 @@ import UnHeartIcon from "@/public/assets/icon/icon-unheart.svg";
 import { useUserState } from "@/contexts/UserContext";
 import { likeProduct } from "@/api/apis";
 import { useModal } from "@/contexts/ModalContext";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   id: number;
@@ -24,6 +24,7 @@ export default function CardItem({
   likedCnt,
   likedList,
 }: Props) {
+  const pathname = usePathname();
   const router = useRouter();
   const userState = useUserState();
   const userId = userState.id;
@@ -57,29 +58,27 @@ export default function CardItem({
   };
 
   return (
-    <div className="w-full shadow-out rounded-xl">
+    <div className="w-full transition duration-300 ease-in-out delay-75 rounded-sm shadow-md hover:shadow-lg hover:scale-105 ">
       <Image
         src={src}
         alt={name}
         width={300}
         height={300}
-        className="w-full rounded-t-xl aspect-square"
+        className="object-cover w-full rounded-sm aspect-square"
       />
-      <div className="flex items-center justify-between px-4 py-3 bg-white rounded-b-xl font-extralight">
-        <div>
-          <p>{name}</p>
+      <div className="flex items-center justify-between gap-1 px-3 py-3 text-sm font-normal bg-white rounded-b-xl">
+        <div className="w-4/5">
+          <p className="line-clamp-1">{name}</p>
           {price && <p>{price} 원</p>}
         </div>
-        {likedList && (
-          <div>
+        {!pathname.includes("mypage") && (
+          <div className="flex-shrink-0">
             <button type="button" onClick={handleLike}>
               <Image
                 src={likedList?.includes(userId!) ? HeartIcon : UnHeartIcon}
                 alt="좋아요"
               />
-              <p className="text-center text-md font-extralight text-font-grey">
-                {likedCnt}
-              </p>
+              <p className="text-center text-font-grey">{likedCnt}</p>
             </button>
           </div>
         )}

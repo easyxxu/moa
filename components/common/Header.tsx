@@ -19,10 +19,10 @@ export default function Header() {
     userState.userType === "SELLER" && currentPath.includes("/sellercenter");
   // console.log(userState);
   return (
-    <header className="border-b border-border-grey shadow-borderBottom">
+    <header className="sticky top-0 z-10 bg-white">
       {!isSellerCenter ? (
         <>
-          <div className="flex items-center justify-between py-5 mx-auto my-0 max-w-7xl">
+          <div className="flex items-center justify-between px-2 py-5 mx-auto my-0 max-w-7xl">
             <div className="flex items-center gap-9">
               <h1>
                 <Link href="/">

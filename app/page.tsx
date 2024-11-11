@@ -1,7 +1,7 @@
 import Header from "@/components/common/Header";
 import CardList from "@/components/card/CardList";
 import Footer from "@/components/common/Footer";
-import Category from "@/components/common/Category";
+import Category from "@/components/common/ProductNav";
 import { getProducts } from "@/api/productApis";
 
 export default async function Index() {
@@ -12,8 +12,8 @@ export default async function Index() {
   return (
     <div className="">
       <Header />
-      <main className="mx-auto my-4 max-w-7xl">
-        <Category />
+      <Category />
+      <main className="mt-4 mb-10">
         <CardList initialProducts={data?.products!} />
       </main>
       <Footer />

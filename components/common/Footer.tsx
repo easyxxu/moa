@@ -5,12 +5,12 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border-grey shadow-borderBottom py-10 text-gray-700 bg-gray-100">
-      <div className="mx-auto my-0 max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="py-10 text-gray-700 border-t border-border-grey shadow-borderBottom">
+      <div className="grid grid-cols-1 gap-8 px-2 mx-auto my-0 max-w-7xl md:grid-cols-3">
         {/* 회사 정보 */}
         <div>
           <Image src={MoaLogo} alt="모아 로고" width={120} height={100} />
-          <address className="not-italic mt-4 text-sm">
+          <address className="mt-4 text-sm not-italic">
             <p className="text-lg font-semibold">(주)MoA</p>
             <p>대표자: 홍길동</p>
             <p>사업자 등록번호: 123-45-67890</p>
@@ -22,7 +22,7 @@ export default function Footer() {
 
         {/* 고객 지원 */}
         <div className="text-sm">
-          <h3 className="text-lg font-semibold mb-4">고객 지원</h3>
+          <h3 className="mb-4 text-lg font-semibold">고객 지원</h3>
           <ul className="space-y-2">
             <li>
               <Link href="#" className="hover:underline">
@@ -49,8 +49,8 @@ export default function Footer() {
 
         {/* 소셜 미디어 및 깃허브 링크 */}
         <div className="text-sm">
-          <h3 className="text-lg font-semibold mb-4">팔로우하기</h3>
-          <ul className="flex space-x-4 items-center">
+          <h3 className="mb-4 text-lg font-semibold">팔로우하기</h3>
+          <ul className="flex items-center space-x-4">
             <li>
               <Link
                 href="https://github.com/easyxxu/moa"
@@ -67,7 +67,7 @@ export default function Footer() {
           </ul>
         </div>
       </div>
-      <div className="text-center text-xs text-gray-500 mt-10">
+      <div className="mt-10 text-xs text-center text-gray-500">
         <p>&copy; {new Date().getFullYear()} MoA. All rights reserved.</p>
       </div>
     </footer>

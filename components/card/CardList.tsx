@@ -17,9 +17,9 @@ export default function CardList({ initialProducts }: CardListProps) {
     const res = await getProducts(page);
   };
   return (
-    <ul className="grid grid-cols-4 gap-7">
+    <ul className="grid grid-cols-3 px-2 gap-7 md:grid-cols-4 lg:grid-cols-5">
       {initialProducts.map((product) => (
-        <li key={product.id} className="w-64">
+        <li key={product.id} className="">
           <Link href={`/products/${product.id}`}>
             <CardItem
               id={product.id}
