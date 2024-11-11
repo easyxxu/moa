@@ -24,7 +24,7 @@ export default function Navigation({ isLogin, isSeller }: Props) {
 
   return (
     <nav>
-      <ul className="flex gap-5">
+      <ul className="z-20 flex gap-5">
         {!isLogin ? (
           <>
             <li>
