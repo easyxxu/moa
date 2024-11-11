@@ -1,12 +1,14 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CHARACTER_OPTIONS } from "@/utils/constants/filterOptions";
 
 const CATEGORY_TITLE = ["BEST", "NEW", "CHARACTER"];
 
 export default function ProductNav() {
+  const pathname = usePathname();
+  const isProductDetailPage = /^\/products\/\d+$/.test(pathname);
   const { replace } = useRouter();
   const [isDropDownVisible, setIsDropDownVisible] = useState<boolean>(false);
   const [category, setCategory] = useState<string | null>(null);
@@ -24,17 +26,16 @@ export default function ProductNav() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 30);
+      setIsScrolled(window.scrollY > 50);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
   return (
     <div
-      className={`bg-white sticky top-[88px] z-10 ${
-        isScrolled ? "shadow-md" : ""
+      className={`bg-white sticky top-[88px] z-20 ${
+        isScrolled && !isProductDetailPage ? "shadow-md" : ""
       }`}
     >
       <div className="mx-auto max-w-7xl">
