@@ -14,7 +14,8 @@ export default function QuantityButton({ quantity, setQuantity }: Props) {
       <Button
         type="button"
         custom="relative w-12 h-12"
-        onClick={() => setQuantity((prev) => prev - 1)}
+        style="none"
+        onClick={() => setQuantity((prev) => (prev > 1 ? prev - 1 : prev))}
       >
         <span className="before:content-[''] before:absolute before:w-4 before:h-px before:bg-black before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2"></span>
       </Button>
