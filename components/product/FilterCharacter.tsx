@@ -7,12 +7,11 @@ import {
   CHARACTER_OPTIONS,
 } from "@/utils/constants/filterOptions";
 
-export default function SideCategory() {
+export default function FilterCharacter() {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const currentPath = usePathname();
   const selectedCharacter = searchParams.get("character");
-  const selectedCategory = searchParams.get("category");
 
   const handleFilter = (filterType: string, filterName: string) => {
     const params = new URLSearchParams(searchParams);
@@ -26,29 +25,17 @@ export default function SideCategory() {
 
   return (
     <div className="text-nowrap">
-      <p className="text-2xl font-semibold">캐릭터</p>
+      <p className="text-2xl font-semibold border-b-4 border-gray-900">
+        캐릭터
+      </p>
+
       <ul>
         {CHARACTER_OPTIONS.map((item, i) => (
-          <li key={i} className="py-1">
+          <li key={i} className="py-1.5">
             <button
               onClick={() => handleFilter("character", item.name)}
               className={`${
                 selectedCharacter === item.name ? "font-semibold" : ""
-              }`}
-            >
-              {item.text}
-            </button>
-          </li>
-        ))}
-      </ul>
-      <p className="text-2xl font-semibold">카테고리</p>
-      <ul>
-        {CATEGORY_OPTIONS.map((item, i) => (
-          <li key={i} className="py-1">
-            <button
-              onClick={() => handleFilter("category", item.name)}
-              className={`${
-                selectedCategory === item.name ? "font-semibold" : ""
               }`}
             >
               {item.text}

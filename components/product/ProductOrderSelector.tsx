@@ -32,11 +32,11 @@ export default function ProductOrderSelector() {
   };
 
   return (
-    <div className="relative inline-block">
+    <div className="relative border-l border-l-gray-500">
       <button
         type="button"
         onClick={() => setIsSelectBoxOpen((prev) => !prev)}
-        className="flex items-center justify-between w-32 px-2 py-2 text-gray-700 border rounded"
+        className="flex items-center justify-between w-32 px-3 py-2 text-gray-700"
       >
         {selectedOrderText}
         <Image
@@ -49,12 +49,12 @@ export default function ProductOrderSelector() {
       </button>
 
       {isSelectBoxOpen && (
-        <ul className="absolute w-full mt-2 bg-white border rounded shadow-lg">
+        <ul className="absolute right-0 z-10 w-full mt-1 bg-white rounded-sm shadow-lg">
           {ORDER_OPTIONS.map((option) => (
             <li
               key={option.name}
               onClick={() => handleSelectOrder(option.name)}
-              className="px-5 py-2 cursor-pointer text-nowrap hover:bg-gray-100"
+              className="px-5 py-2 cursor-pointer text-nowrap hover:text-blue-400"
             >
               {option.text}
             </li>
