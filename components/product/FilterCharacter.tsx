@@ -2,10 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import {
-  CATEGORY_OPTIONS,
-  CHARACTER_OPTIONS,
-} from "@/utils/constants/filterOptions";
+import { CHARACTER_OPTIONS } from "@/utils/constants/filterOptions";
 
 export default function FilterCharacter() {
   const searchParams = useSearchParams();
@@ -14,7 +11,7 @@ export default function FilterCharacter() {
   const selectedCharacter = searchParams.get("character");
 
   const handleFilter = (filterType: string, filterName: string) => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams();
     if (filterType && filterName) {
       params.set(filterType, filterName);
     } else {
