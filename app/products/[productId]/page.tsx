@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import DetailContent from "@/components/productDetail/DetailContent";
 import ProductPurchaseOptions from "@/components/productDetail/ProductPurchaseOptions";
 import StarRating from "@/components/common/StarRating";
+import ShopIcon from "@/public/assets/icon/icon-shop.svg";
 import { loadProductById } from "@/api/apis";
 
 type Props = {
@@ -36,10 +37,7 @@ export default async function ProductPage({
   if (!data) return;
 
   return (
-    <div className="space-y-4">
-      <div className="my-5">
-        <Link href={`/${data.seller_store}`}>{data.seller_store}</Link>
-      </div>
+    <div className="px-2 space-y-4">
       <div className="flex gap-12">
         <Image
           src={data.image[0]}
@@ -50,6 +48,10 @@ export default async function ProductPage({
         />
         <div className="flex flex-col justify-between w-3/5">
           <div>
+            <div className="flex gap-2 mb-2">
+              <Image src={ShopIcon} alt="샵 아이콘" width={20} height={20} />
+              {data.seller_store}
+            </div>
             <h2 className="mb-2">{data.name}</h2>
             <StarRating rating={data.average_rating!} size={24} />
           </div>
