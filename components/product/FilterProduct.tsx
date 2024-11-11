@@ -7,7 +7,7 @@ export default function FilterProduct() {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const currentPath = usePathname();
-  const selectedCategory = searchParams.get("category");
+  const selectedCategory = searchParams.get("category") || "all";
   const handleFilter = (filterType: string, filterName: string) => {
     const params = new URLSearchParams(searchParams);
     if (filterType && filterName) {
