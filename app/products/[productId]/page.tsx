@@ -15,7 +15,7 @@ export default async function ProductPage({
   if (!data) return;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="space-y-4">
       <div className="my-5">
         <Link href={`/${data.seller_store}`}>{data.seller_store}</Link>
       </div>
