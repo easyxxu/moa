@@ -1,9 +1,30 @@
-import DetailContent from "@/components/productDetail/DetailContent";
 import Image from "next/image";
 import Link from "next/link";
-import { loadProductById } from "@/api/apis";
+import type { Metadata } from "next";
+
+import DetailContent from "@/components/productDetail/DetailContent";
 import ProductPurchaseOptions from "@/components/productDetail/ProductPurchaseOptions";
 import StarRating from "@/components/common/StarRating";
+import { loadProductById } from "@/api/apis";
+
+type Props = {
+  params: Promise<{ productId: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const id = (await params).productId;
+
+  const res = await loadProductById(+id);
+
+  const productImage = res.data.image[0] || "";
+
+  return {
+    title: res.data.name,
+    openGraph: {
+      images: [productImage],
+    },
+  };
+}
 
 export default async function ProductPage({
   params,

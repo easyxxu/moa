@@ -11,8 +11,9 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "MoA",
+  description: "귀여운 것들을 모두 모아! 모아에서 귀여운 제품들을 만나보세요!",
+  openGraph: {},
 };
 
 const pretendard = localFont({
