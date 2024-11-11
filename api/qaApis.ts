@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 
 import { getUserInfo } from "./apis";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { revalidatePath } from "next/cache";
 
 /**
  * 작성자의 문의 GET API
@@ -158,5 +159,25 @@ export const deleteQuestion = async (questionId: number) => {
   return {
     status,
     message: "작성한 문의를 삭제했습니다.",
+  };
+};
+
+export const deleteAnswer = async (answerId: number) => {
+  const supabase = createClient();
+
+  const { error, status } = await supabase
+    .from("answer")
+    .delete()
+    .eq("id", answerId);
+
+  if (error) {
+    console.error("답변을 삭제하는 데 에러가 발생했습니다.", error);
+    return { status, message: ERROR_MESSAGE.serverError };
+  }
+
+  revalidatePath("/sellercenter/qa/[questionId]", "page");
+  return {
+    status,
+    message: "답변을 삭제했습니다.",
   };
 };
