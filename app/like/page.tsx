@@ -2,7 +2,7 @@
 
 import CardList from "@/components/card/CardList";
 import { useUserState } from "@/contexts/UserContext";
-import { Product } from "@/types/product";
+import { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 
@@ -17,7 +17,7 @@ export default function LikePage() {
   const supabase = createClient();
   const userState = useUserState();
   const userId = userState.id;
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Tables<"product">[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -30,7 +30,7 @@ export default function LikePage() {
         return;
       }
       const likedProducts = data.filter((item) =>
-        item.liked_list.includes(userId)
+        item.liked_list?.includes(userId!)
       );
       setProducts(likedProducts);
     };
@@ -43,7 +43,7 @@ export default function LikePage() {
       {products.length === 0 ? (
         <NoLikedProducts />
       ) : (
-        <CardList products={products} />
+        <CardList initialProducts={products!} />
       )}
     </>
   );
