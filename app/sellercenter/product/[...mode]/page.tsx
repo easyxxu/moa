@@ -238,7 +238,8 @@ export default function ProductManagement({
           </h3>
           <Button
             type="submit"
-            custom="bg-primary px-3 py-2 text-lg font-semibold"
+            custom="px-3 py-2 text-lg font-semibold"
+            style="point"
           >
             {operationMode === "add" ? "등록" : "수정"}
           </Button>

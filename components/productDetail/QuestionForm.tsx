@@ -89,12 +89,13 @@ export default function QuestionForm({ setIsOpenQForm, setQas }: Props) {
         <div className="flex justify-end gap-4 mt-4">
           <Button
             type="button"
-            custom="bg-secondary px-5 py-2"
+            style="line"
+            custom="px-5 py-2"
             onClick={() => setIsOpenQForm(false)}
           >
             취소
           </Button>
-          <Button type="submit" custom="bg-primary px-5 py-2">
+          <Button type="submit" style="point" custom="px-5 py-2">
             저장
           </Button>
         </div>

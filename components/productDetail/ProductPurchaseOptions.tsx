@@ -126,7 +126,12 @@ export default function ProductPurchaseOptions({
         </div>
       </div>
       <div className="flex gap-3">
-        <Button type="button" custom="w-14" onClick={handleLike}>
+        <Button
+          type="button"
+          custom="w-14 flex-col"
+          style="none"
+          onClick={handleLike}
+        >
           <Image
             src={likedList?.includes(userId!) ? HeartIcon : UnHeartIcon}
             alt="좋아요"
@@ -136,11 +141,12 @@ export default function ProductPurchaseOptions({
         <Button
           type="button"
           onClick={handleAddCart}
-          custom="w-1/2 py-3 font-semibold"
+          style="line"
+          custom="w-1/2 py-3"
         >
           장바구니 담기
         </Button>
-        <Button type="button" custom="w-1/2 py-3 bg-primary font-semibold">
+        <Button type="button" style="point" custom="w-1/2 py-3">
           바로 구매
         </Button>
       </div>

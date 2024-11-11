@@ -58,7 +58,8 @@ export default function Form({ children, formType, onSubmit }: FormProps) {
           {children}
           <Button
             type="submit"
-            custom="w-full bg-primary font-bold py-2 rounded-3xl mt-7"
+            style="point"
+            custom="w-full font-bold py-2 rounded-3xl mt-7"
           >
             {formType === "join" ? "회원가입" : "로그인"}
           </Button>

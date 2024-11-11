@@ -18,13 +18,14 @@ export default function ErrorPage({
   }, [error]);
 
   return (
-    <div className="flex flex-col gap-1 items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center h-screen gap-1">
       <Image src={ErrorIcon} alt="오류" />
       <p className="text-lg">데이터를 가져오는데 오류가 발생했습니다.</p>
       <Button
         onClick={() => reset()}
         type="button"
         custom="px-3 py-2 bg-primary font-semibold text-xl"
+        style="point"
       >
         다시 시도하기
       </Button>

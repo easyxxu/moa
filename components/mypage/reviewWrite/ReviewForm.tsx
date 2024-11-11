@@ -198,7 +198,7 @@ export default function ReviewForm({ reviewData, productId }: Props) {
           </div>
         ))}
       </div>
-      <Button type="submit" custom="px-3 py-2 bg-primary">
+      <Button type="submit" style="point" custom="px-3 py-2">
         작성
       </Button>
     </form>

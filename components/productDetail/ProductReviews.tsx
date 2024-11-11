@@ -125,7 +125,8 @@ export default function ProductReviews() {
           <Button
             onClick={handleMoreBtn}
             type="button"
-            custom="bg-primary px-10 py-1 font-semibold mt-6"
+            style="line"
+            custom="px-10 py-1 font-semibold mt-6"
           >
             더보기
           </Button>

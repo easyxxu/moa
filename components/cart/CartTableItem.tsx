@@ -145,7 +145,8 @@ export default function CartTableItem({ item, isLastItem }: Props) {
           {quantity}
           <Button
             type="button"
-            custom="px-6 py-2 bg-secondary font-semibold"
+            style="line"
+            custom="px-6 py-2 font-semibold"
             onClick={handleOpenQuantityModal}
           >
             수정
@@ -163,7 +164,8 @@ export default function CartTableItem({ item, isLastItem }: Props) {
           <Button
             onClick={handleOrderOneProduct}
             type="button"
-            custom="px-10 py-2 bg-primary font-semibold"
+            style="point"
+            custom="px-10 py-2 font-semibold"
           >
             주문하기
           </Button>

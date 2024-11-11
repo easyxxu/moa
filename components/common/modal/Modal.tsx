@@ -21,7 +21,7 @@ export default function Modal({
   const [updatequantity, setUpdateQuantity] = useState(quantity!);
 
   return (
-    <div className="fixed top-0 left-0 z-30 w-full h-full bg-background-modal">
+    <div className="fixed top-0 left-0 z-50 w-full h-full bg-background-modal">
       <div className="fixed flex -translate-x-1/2 -translate-y-1/2 bg-white w-80 rounded-xl h-1/4 top-1/2 left-1/2">
         <div className="relative flex flex-col items-center justify-between w-full h-full gap-3 p-8">
           <div className="flex flex-col justify-center flex-grow text-center whitespace-pre-line">
@@ -39,14 +39,16 @@ export default function Modal({
             <Button
               type="button"
               onClick={() => onConfirm(updatequantity!)}
-              custom="w-1/2 py-2 bg-primary font-semibold"
+              style="point"
+              custom="w-1/2 py-2 font-semibold"
             >
               {type === "QUANTITY" ? "수정" : "예"}
             </Button>
             <Button
               type="button"
               onClick={onCancel}
-              custom="w-1/2 py-2 bg-secondary font-semibold"
+              style="line"
+              custom="w-1/2 py-2 font-semibold"
             >
               {type === "QUANTITY" ? "취소" : "아니오"}
             </Button>

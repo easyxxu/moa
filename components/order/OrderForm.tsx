@@ -165,7 +165,8 @@ export default function OrderForm() {
                 />
                 <Button
                   type="button"
-                  custom="whitespace-nowrap bg-primary px-10 h-10"
+                  style="line"
+                  custom="whitespace-nowrap px-10 h-10"
                   onClick={handleOpenPostCodeModal}
                 >
                   우편번호 조회
@@ -240,7 +241,9 @@ export default function OrderForm() {
             </label>
           </div>
         </fieldset>
-        <button type="submit">결제</button>
+        <Button type="submit" style="point" custom="px-3 py-2">
+          결제
+        </Button>
       </form>
     </>
   );

@@ -66,8 +66,9 @@ function ButtonCell({ text, onClick }: ButtonProps) {
     <td>
       <Button
         type="button"
+        style="line"
         onClick={onClick}
-        custom="px-4 py-2 bg-background mx-auto"
+        custom="px-4 py-2 mx-auto"
       >
         {text}
       </Button>

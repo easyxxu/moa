@@ -52,7 +52,7 @@ export default function ModifyMyInfo() {
           custom="flex-grow"
           error={(state.error as ErrorMsg)?.phone}
         />
-        <Button type="submit" custom="bg-primary w-full py-2 mt-4">
+        <Button type="submit" style="point" custom="w-full py-2 mt-4">
           저장
         </Button>
       </form>
