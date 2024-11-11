@@ -30,7 +30,7 @@ export default function ProductNav() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  // console.log(window.scrollY);
+
   return (
     <div
       className={`bg-white sticky top-[88px] z-10 ${
