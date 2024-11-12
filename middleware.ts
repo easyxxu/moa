@@ -20,5 +20,7 @@ export const config = {
     "/join",
     "/sellercenter/:path*",
     "/mypage/:path*",
+    "/cart",
+    "/order",
   ],
 };

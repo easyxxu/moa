@@ -1,4 +1,5 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { User } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
 
 export const updateSession = async (request: NextRequest) => {
@@ -63,14 +64,14 @@ function setCookie(
 
 const AUTH_PATHS = {
   GUEST_ONLY: ["/login", "/join"],
-  USER_ONLY: ["/mypage", "/sellercenter"],
-  SELLER_RESTRICTED: "/mypage",
+  USER_ONLY: ["/mypage", "/sellercenter", "/order"],
+  SELLER_RESTRICTED: ["/cart", "/mypage", "/order"],
   BUYER_RESTRICTED: "/sellercenter",
 };
 
 // 접근 권한 체크
 function redirectAuthorization(
-  user: any,
+  user: User | null,
   userType: "BUYER" | "SELLER" | undefined,
   request: NextRequest,
   url: URL
@@ -99,7 +100,9 @@ function redirectAuthorization(
   }
   if (
     userType === "SELLER" &&
-    nextUrl.pathname.startsWith(AUTH_PATHS.SELLER_RESTRICTED)
+    AUTH_PATHS.SELLER_RESTRICTED.some((page) =>
+      nextUrl.pathname.startsWith(page)
+    )
   ) {
     url.pathname = "/";
     return NextResponse.redirect(url);
