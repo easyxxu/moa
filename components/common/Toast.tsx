@@ -29,7 +29,7 @@ export default function Toast({ type, content, onClose }: Props) {
 
   return (
     <div
-      className={`border-b-4 ${animationClass} ${TYPE_COLOR[type]} bg-white fixed top-0 right-0 z-50 px-4 py-4 flex gap-5 justify-between`}
+      className={`border-b-4 ${animationClass} ${TYPE_COLOR[type]} bg-white fixed top-0 right-0 z-50 px-4 py-4 flex gap-5 justify-between shadow-lg`}
     >
       <p>{content}</p>
       <button type="button" className="">

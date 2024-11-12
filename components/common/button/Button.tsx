@@ -19,7 +19,7 @@ export default function Button({
   switch (style) {
     case "point":
       styleCss =
-        "rounded-sm bg-blue-500 text-white transition-shadow duration-300 hover:shadow-md";
+        "rounded-sm bg-black text-white transition-shadow duration-300 hover:shadow-md";
       break;
     case "line":
       styleCss =

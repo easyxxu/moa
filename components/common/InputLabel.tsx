@@ -46,7 +46,7 @@ export default function InputLabel({
             name={fieldName}
             type={type}
             value={value}
-            className="px-4 py-2 bg-white inner-box"
+            className="px-4 py-2 border border-gray-400"
             placeholder={placeholder}
             required
             onChange={onChange}
@@ -61,7 +61,7 @@ export default function InputLabel({
               id={fieldId}
               name={fieldName}
               type={type}
-              className="w-full px-2 pt-3 pb-1 border-b-2 peer bg-inherit focus:outline-none focus:border-b-font-hover"
+              className="w-full px-2 pt-3 pb-1 border-b border-gray-400 peer bg-inherit focus:outline-none focus:border-b-blue-500"
               placeholder={placeholder}
               required
               onChange={onChange}

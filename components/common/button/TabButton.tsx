@@ -33,16 +33,14 @@ export default function TabButton({
   }, [scrollRef]);
 
   return (
-    <div className="bg-background flex [&_button]:tab-btn-active sticky top-[128px] z-10">
+    <div className="bg-background flex [&_button]:tab-btn-active sticky top-[127px] z-10">
       {TabList.map((item, idx) => (
         <button
           key={idx}
           type="button"
           onClick={() => handleTabActive(idx)}
           className={`${
-            tabIdx === idx
-              ? "border-b-blue-500 font-semibold"
-              : "border-inherit"
+            tabIdx === idx ? "border-b-black font-semibold" : "border-inherit"
           }`}
         >
           {item}
