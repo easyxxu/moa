@@ -1,11 +1,8 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
-import { type NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const updateSession = async (request: NextRequest) => {
-  // This `try/catch` block is only here for the interactive tutorial.
-  // Feel free to remove once you have Supabase connected.
   try {
-    // Create an unmodified response
     let response = NextResponse.next({
       request: {
         headers: request.headers,
@@ -21,54 +18,32 @@ export const updateSession = async (request: NextRequest) => {
             return request.cookies.get(name)?.value;
           },
           set(name: string, value: string, options: CookieOptions) {
-            // If the cookie is updated, update the cookies for the request and response
-            request.cookies.set({
-              name,
-              value,
-              ...options,
-            });
-            response = NextResponse.next({
-              request: {
-                headers: request.headers,
-              },
-            });
-            response.cookies.set({
-              name,
-              value,
-              ...options,
-            });
+            setCookie(request, name, value, options);
           },
           remove(name: string, options: CookieOptions) {
-            // If the cookie is removed, update the cookies for the request and response
-            request.cookies.set({
-              name,
-              value: "",
-              ...options,
-            });
-            response = NextResponse.next({
-              request: {
-                headers: request.headers,
-              },
-            });
-            response.cookies.set({
-              name,
-              value: "",
-              ...options,
-            });
+            setCookie(request, name, "", options);
           },
         },
-      },
+      }
     );
 
-    // This will refresh session if expired - required for Server Components
-    // https://supabase.com/docs/guides/auth/server-side/nextjs
-    await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const userType = user?.user_metadata.user_type;
+    const url = request.nextUrl.clone();
+
+    const redirectResponse = redirectAuthorization(
+      user,
+      userType,
+      request,
+      url
+    );
+    if (redirectResponse) return redirectResponse;
 
     return response;
   } catch (e) {
-    // If you are here, a Supabase client could not be created!
-    // This is likely because you have not set up environment variables.
-    // Check out http://localhost:3000 for Next Steps.
     return NextResponse.next({
       request: {
         headers: request.headers,
@@ -76,3 +51,58 @@ export const updateSession = async (request: NextRequest) => {
     });
   }
 };
+
+function setCookie(
+  request: NextRequest,
+  name: string,
+  value: string,
+  options: CookieOptions
+) {
+  request.cookies.set({ name, value, ...options });
+}
+
+const AUTH_PATHS = {
+  GUEST_ONLY: ["/login", "/join"],
+  USER_ONLY: ["/mypage", "/sellercenter"],
+  SELLER_RESTRICTED: "/mypage",
+  BUYER_RESTRICTED: "/sellercenter",
+};
+
+// 접근 권한 체크
+function redirectAuthorization(
+  user: any,
+  userType: "BUYER" | "SELLER" | undefined,
+  request: NextRequest,
+  url: URL
+) {
+  const { nextUrl } = request;
+  if (
+    !user &&
+    AUTH_PATHS.USER_ONLY.some((page) => nextUrl.pathname.startsWith(page))
+  ) {
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+  if (
+    user &&
+    AUTH_PATHS.GUEST_ONLY.some((page) => nextUrl.pathname.startsWith(page))
+  ) {
+    url.pathname = "/";
+    return NextResponse.redirect(url);
+  }
+  if (
+    userType === "BUYER" &&
+    nextUrl.pathname.startsWith(AUTH_PATHS.BUYER_RESTRICTED)
+  ) {
+    url.pathname = "/";
+    return NextResponse.redirect(url);
+  }
+  if (
+    userType === "SELLER" &&
+    nextUrl.pathname.startsWith(AUTH_PATHS.SELLER_RESTRICTED)
+  ) {
+    url.pathname = "/";
+    return NextResponse.redirect(url);
+  }
+  return null;
+}
