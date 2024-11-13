@@ -66,24 +66,20 @@ export default function ReviewForm({ reviewData, productId }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.content.length < 15 || formData.starRating === 0) {
-      /**
-       * TODO toast 알림 추가
-       *  */
-      return;
-    }
+
     const data = new FormData();
     data.append("content", formData.content);
     data.append("starRating", String(formData.starRating));
     data.append("orderItemId", String(formData.orderItemId));
 
-    if (formMode === "add") {
+    if (formMode === "write") {
       imgFiles.forEach((file, index) => {
         data.append(`images[${index}]`, file);
       });
-      const error = await addReview(productId!, data);
-      if (error) {
-        throw error.message;
+      const res = await addReview(productId!, data);
+      if (res && res.status! >= 400 && res.status! < 500) {
+        openToast({ type: "ERROR", content: res.message });
+        return;
       }
       openToast({ type: "SUCCESS", content: TOAST_MESSAGE.MYPAGE.REVIEW.ADD });
     } else {
@@ -91,8 +87,9 @@ export default function ReviewForm({ reviewData, productId }: Props) {
         data.append(`images[${index}]`, file);
       });
       const { status, message } = await modifyReview(reviewId, data);
-      if (status > 400 && status < 500) {
-        throw new Error(message);
+      if (status >= 400 && status < 500) {
+        openToast({ type: "ERROR", content: message });
+        return;
       }
       openToast({
         type: "SUCCESS",
@@ -127,7 +124,7 @@ export default function ReviewForm({ reviewData, productId }: Props) {
   }, []);
 
   return (
-    <form className="flex flex-col w-full gap-2" onSubmit={handleSubmit}>
+    <form className="flex flex-col w-full gap-4" onSubmit={handleSubmit}>
       <label htmlFor="content" className="font-medium">
         리뷰 내용 ({contentLength}/15)
         <br />
@@ -138,7 +135,7 @@ export default function ReviewForm({ reviewData, productId }: Props) {
       <textarea
         id="content"
         name="content"
-        className="h-24 px-4 py-3 resize-none shadow-in rounded-xl"
+        className="h-24 px-4 py-3 border border-gray-500 rounded-sm resize-none"
         onChange={handleReviewContent}
         value={formData.content}
       />
@@ -169,7 +166,7 @@ export default function ReviewForm({ reviewData, productId }: Props) {
         multiple
       />
       <div className="flex gap-4">
-        <div className="flex items-center justify-center w-40 h-40 bg-background shadow-in rounded-xl">
+        <div className="flex items-center justify-center w-40 h-40 border border-gray-500 rounded-sm bg-background">
           <button
             type="button"
             onClick={() => multipleImgRef.current?.click()}
