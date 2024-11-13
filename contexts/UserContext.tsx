@@ -39,7 +39,7 @@ async function fetchUserData() {
   try {
     const res = await fetch("/api/auth/user");
     const data = await res.json();
-    if (data.status === 200) {
+    if (res.status === 200) {
       return data;
     } else {
       throw new Error(`data.message`);
@@ -112,6 +112,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           isLogin: true,
           moreUserData: data.userData.user,
         });
+      }
+      if (!data) {
+        dispatch({ type: "LOGOUT" });
       }
     }
 
