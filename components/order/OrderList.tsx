@@ -4,11 +4,11 @@ import { useCartCheckItems } from "@/contexts/CartContext";
 import TableCell from "../table/TableItem";
 import { useEffect, useState } from "react";
 import { loadProductById } from "@/api/apis";
-import { Product } from "@/types/product";
+import { Tables } from "@/types/database.types";
 
 export default function OrderList() {
   const { checkedItems } = useCartCheckItems();
-  const [orderItems, setOrderItems] = useState<Product[]>([]);
+  const [orderItems, setOrderItems] = useState<Tables<"product">[]>([]);
 
   useEffect(() => {
     const getProductData = () => {
@@ -21,7 +21,7 @@ export default function OrderList() {
   }, []);
 
   return (
-    <tbody className="bg-white">
+    <tbody className="">
       <tr className="h-1" />
       {orderItems.map((item, idx) => (
         <tr
