@@ -8,7 +8,7 @@ import Form from "@/components/authForm/Form";
 import InputLabel from "@/components/common/InputLabel";
 
 import { loginAction } from "@/api/apis";
-import { useUserDispatch, useUserState } from "@/contexts/UserContext";
+import { useUserDispatch } from "@/contexts/UserContext";
 
 export default function Login() {
   const [state, formAction] = useFormState(loginAction, {});
@@ -32,22 +32,24 @@ export default function Login() {
   }, [state.code]);
 
   return (
-    <Form formType="login" onSubmit={formAction}>
-      <InputLabel
-        labelText="이메일"
-        fieldName="email"
-        fieldId="email"
-        type="text"
-        style="line"
-      />
-      <InputLabel
-        labelText="비밀번호"
-        fieldName="password"
-        fieldId="password"
-        type="password"
-        style="line"
-      />
-      <p className="text-sm text-red-400">{state.errorMsg?.login}</p>
-    </Form>
+    <div className="relative flex justify-center h-full">
+      <Form formType="login" onSubmit={formAction}>
+        <InputLabel
+          labelText="이메일"
+          fieldName="email"
+          fieldId="email"
+          type="text"
+          style="line"
+        />
+        <InputLabel
+          labelText="비밀번호"
+          fieldName="password"
+          fieldId="password"
+          type="password"
+          style="line"
+        />
+        <p className="text-sm text-red-400">{state.errorMsg?.login}</p>
+      </Form>
+    </div>
   );
 }
