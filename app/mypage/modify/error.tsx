@@ -15,13 +15,13 @@ export default function Error({
     console.error("나 error.tsx!!", error);
   }, [error]);
   return (
-    <div className="w-full flex flex-col gap-4 items-center">
-      <h2>정보를 수정하는데 문제가 발생했습니다.</h2>
-      <p>{error.message}</p>
+    <div className="flex flex-col items-center justify-center w-full h-full gap-4">
+      <h2>서버에서 문제가 발생했습니다.</h2>
       <Button
         type="button"
+        style="point"
         onClick={() => reset()}
-        custom="bg-primary px-3 py-2"
+        custom="px-3 py-2"
       >
         새로고침하기
       </Button>
