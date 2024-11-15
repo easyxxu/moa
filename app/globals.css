@@ -14,11 +14,8 @@
   input::placeholder {
     @apply text-font-grey;
   }
-  input:focus {
-    @apply outline-font-hover outline-2 outline-offset-1;
-  }
   input[type="radio"] {
-    @apply appearance-none w-4 h-4 rounded-full mr-2 border border-neutral-400 checked:border-primary checked:border-4 transition-all;
+    @apply appearance-none w-4 h-4 rounded-full mr-2 border border-neutral-400 checked:border-blue-400 checked:border-4 transition-all;
   }
   input[type="checkbox"] {
     @apply appearance-none cursor-pointer;
