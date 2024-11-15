@@ -48,13 +48,13 @@
     @apply *:first:text-lg text-center;
   }
   .order-form-label {
-    @apply flex justify-between items-center border-b;
+    @apply flex justify-between items-center border-b border-gray-300;
   }
   .order-form-input {
-    @apply w-4/5 h-10 my-4 shadow-in rounded-2xl px-2;
+    @apply w-4/5 h-10 my-4 border border-gray-300 px-2;
   }
   .order-form-input-tel {
-    @apply w-full h-10 my-4 shadow-in rounded-2xl px-2;
+    @apply w-full h-10 my-4 border border-gray-300 px-2;
   }
   .a11y-hidden {
     clip: rect(1px, 1px, 1px, 1px);
