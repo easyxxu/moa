@@ -12,8 +12,8 @@ import {
   checkCartItem,
   createCart,
   getCartId,
-  likeProduct,
-} from "@/api/apis";
+} from "@/api/cartApis";
+import { likeProduct } from "@/api/productApis";
 import { useModal } from "@/contexts/ModalContext";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -85,11 +85,7 @@ export default function ProductPurchaseOptions({
       return;
     }
 
-    const { data, error } = await addCartItem({
-      cartId,
-      productId,
-      quantity,
-    });
+    const { data, error } = await addCartItem(cartId!, productId, quantity);
     if (!error) {
       showModal({
         type: "CONFIRM",
