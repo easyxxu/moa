@@ -57,6 +57,10 @@ export async function POST(req: Request) {
     });
   } catch (e) {
     console.log("order error: ", e);
-    return e;
+    return NextResponse.json({
+      status: 500,
+      message: "Internal server error",
+      error: e,
+    });
   }
 }
