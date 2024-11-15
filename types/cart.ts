@@ -1,6 +1,6 @@
-import { Product } from "./product";
+import { Tables } from "./database.types";
 
-export interface CartItemInfo extends Product {
+export interface CartItemInfo extends Tables<'product'> {
   quantity: number;
   cartItemId: number;
 }
