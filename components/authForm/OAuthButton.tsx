@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import KaKaoIcon from "@/public/assets/icon/icon-kakao.svg";
@@ -11,19 +10,12 @@ import { Provider } from "@supabase/supabase-js";
 interface Props {
   formType: "login" | "join";
 }
-export default function OAuthButton({ formType }: Props) {
-  const router = useRouter();
-  const handleSignInWithOAuth = async (provider: Provider) => {
-    const res = await signInWithOAuth(provider);
 
-    if (res.status === 404) {
-      console.log("OAuth Error");
-      router.push("/auth");
-    }
-    if (res.status === 200) {
-      router.push(res.data?.url!);
-    }
+export default function OAuthButton({ formType }: Props) {
+  const handleSignInWithOAuth = async (provider: Provider) => {
+    await signInWithOAuth(provider);
   };
+
   return (
     <div className="w-full space-y-2 text-sm">
       <button

@@ -12,15 +12,15 @@ export const signInWithOAuth = async (provider: Provider) => {
     options: {
       queryParams: {
         access_type: "offline",
-        prompt: "login",
+        prompt: "consent",
       },
       redirectTo: "http://localhost:3000/auth/callback",
     },
   });
-  console.log("#data: ", data);
+
   if (error) {
-    console.log("#error: ", error);
-    return { status: 404, message: ERROR_MESSAGE.serverError, error };
+    console.log("#server error: ", error);
+    redirect("/auth/callback");
   }
-  return { status: 200, data };
+  redirect(data.url);
 };
