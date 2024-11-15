@@ -2,7 +2,43 @@
 
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { createClient } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
+interface ProductForm {
+  name: string;
+  price: number;
+  stock: number;
+  description: string;
+  image: string[];
+  seller_store: string;
+  shipping_fee: number;
+}
+
+export async function addProduct(formData: ProductForm) {
+  const supabase = createClient();
+
+  // const image = formData.image;
+  // console.log("#입력된 formData: ", formData);
+
+  const { error } = await supabase.from("product").insert({ ...formData });
+
+  if (error) {
+    return error;
+  }
+
+  redirect("/sellercenter/product");
+}
+
+export async function updateProduct(formData: any, productId: number) {
+  const supabase = createClient();
+  const { error } = await supabase
+    .from("product")
+    .update({ ...formData })
+    .eq("id", productId);
+
+  return error;
+}
 /**
  * 상품 GET
  *
@@ -67,4 +103,82 @@ export const getProducts = async (
       totalCount: count,
     },
   };
+};
+
+export async function loadProductById(productId: number) {
+  const supabase = createClient();
+  const { data, error, status } = await supabase
+    .from("product")
+    .select()
+    .eq("id", productId)
+    .single();
+
+  if (error) {
+    console.log("상품 ID별 정보를 불러오는데 실패했습니다.", error);
+    return {
+      status,
+      message: "상품 ID별 정보를 불러오는데 실패했습니다.",
+      error,
+    };
+  }
+
+  return { data };
+}
+export const likeProduct = async (productId: number) => {
+  const supabase = createClient();
+
+  // userId 불러오기
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    console.log("getUser() error: ", userError);
+    throw new Error("User not authenticated");
+  }
+
+  const userId = user?.id;
+  // 이미 좋아요를 누른적이 있는지 체크
+  const { data: productData, error: productError } = await supabase
+    .from("product")
+    .select("liked_list")
+    .eq("id", productId)
+    .single();
+
+  const likedList = productData?.liked_list || [];
+
+  const hasLiked = likedList.includes(userId);
+
+  if (hasLiked) {
+    // 이미 눌렀다면 좋아요 취소 실행
+    const updatedLikedList = likedList.filter((id: string) => id !== userId);
+    const { error: updatedError } = await supabase
+      .from("product")
+      .update({ liked_list: updatedLikedList })
+      .eq("id", productId);
+
+    if (updatedError) {
+      throw new Error(`Failed to remove like ${updatedError}`);
+    }
+    revalidatePath("/");
+    revalidatePath("/products/[productId]", "page");
+
+    return { success: true, liked: false, message: "좋아요 취소 완료" };
+  } else {
+    const updatedLikedList = [...likedList, userId];
+
+    const { error: updateError } = await supabase
+      .from("product")
+      .update({ liked_list: updatedLikedList })
+      .eq("id", productId);
+
+    if (updateError) {
+      throw new Error(`Failed to add like :${updateError.message}`);
+    }
+
+    revalidatePath("/");
+    revalidatePath("/products/[productId]", "page");
+    return { success: true, liked: true, message: "좋아요 완료" };
+  }
 };

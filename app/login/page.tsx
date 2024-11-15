@@ -7,11 +7,11 @@ import { useRouter } from "next/navigation";
 import Form from "@/components/authForm/Form";
 import InputLabel from "@/components/common/InputLabel";
 
-import { loginAction } from "@/api/apis";
 import { useUserDispatch } from "@/contexts/UserContext";
+import { userLogin } from "@/api/userApis";
 
 export default function Login() {
-  const [state, formAction] = useFormState(loginAction, {});
+  const [state, formAction] = useFormState(userLogin, {});
   const userDispatch = useUserDispatch();
   const router = useRouter();
 

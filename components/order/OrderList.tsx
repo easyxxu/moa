@@ -3,7 +3,7 @@
 import { useCartCheckItems } from "@/contexts/CartContext";
 import TableCell from "../table/TableItem";
 import { useEffect, useState } from "react";
-import { loadProductById } from "@/api/apis";
+import { loadProductById } from "@/api/productApis";
 import { Tables } from "@/types/database.types";
 
 export default function OrderList() {
@@ -14,7 +14,7 @@ export default function OrderList() {
     const getProductData = () => {
       checkedItems.map(async (item) => {
         const { data } = await loadProductById(item.itemId);
-        setOrderItems((prev) => [...prev, data]);
+        setOrderItems((prev) => [...prev, data!]);
       });
     };
     getProductData();

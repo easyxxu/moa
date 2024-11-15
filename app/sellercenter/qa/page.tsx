@@ -1,4 +1,4 @@
-import { getSellerProductsWithQuestions } from "@/api/apis";
+import { getSellerProductsWithQuestions } from "@/api/qaApis";
 import TableHeader from "@/components/table/TableHeader";
 import TableCell from "@/components/table/TableItem";
 import Link from "next/link";

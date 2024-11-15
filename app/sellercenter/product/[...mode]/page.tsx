@@ -7,7 +7,7 @@ import Button from "@/components/common/button/Button";
 import InputLabel from "@/components/common/InputLabel";
 import ImagePreview from "@/components/sellercenter/ImagePreview";
 
-import { addProduct, updateProduct } from "@/api/apis";
+import { addProduct, updateProduct } from "@/api/productApis";
 import { createClient } from "@/utils/supabase/client";
 import { usePathname, useRouter } from "next/navigation";
 import { useUserState } from "@/contexts/UserContext";

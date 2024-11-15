@@ -1,4 +1,4 @@
-import { getCartId, getCartItem } from "@/api/apis";
+import { getCartId, getCartItem } from "@/api/cartApis";
 import CartNoBuyer from "@/components/cart/CartNoBuyer";
 import CartNoItem from "@/components/cart/CartNoItem";
 import CartTable from "@/components/cart/CartTable";

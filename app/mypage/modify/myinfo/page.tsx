@@ -1,11 +1,12 @@
 "use client";
 
-import { ErrorMsg, updateUserInfo } from "@/api/apis";
+import { ErrorMsg, updateUserInfo } from "@/api/userApis";
 import Button from "@/components/common/button/Button";
 import InputLabel from "@/components/common/InputLabel";
 import { useToast } from "@/contexts/toastContext";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
+import { useEffect } from "react";
 import { useFormState } from "react-dom";
 
 export default function ModifyMyInfo() {

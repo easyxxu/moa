@@ -4,11 +4,10 @@ import { useFormState } from "react-dom";
 
 import Form from "@/components/authForm/Form";
 import InputLabel from "@/components/common/InputLabel";
-
-import { joinAction } from "@/api/apis";
+import { userJoin } from "@/api/userApis";
 
 export default function Join() {
-  const [state, formAction] = useFormState(joinAction, {});
+  const [state, formAction] = useFormState(userJoin, {});
 
   return (
     <div className="flex justify-center h-screen my-10">

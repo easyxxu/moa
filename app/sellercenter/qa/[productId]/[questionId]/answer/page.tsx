@@ -1,4 +1,4 @@
-import { getQuestionById } from "@/api/apis";
+import { getQuestionById } from "@/api/qaApis";
 import AnswerForm from "@/components/sellercenter/AnswerForm";
 import QuestionContent from "@/components/sellercenter/QuestionContent";
 

@@ -2,8 +2,9 @@
 
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { createClient } from "@/utils/supabase/server";
-import { uploadImgs } from "./apis";
+import { uploadImgs } from "./imageApis";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 /** 유저의 전체 작성 리뷰 조회 API */
 export const getReviewsWithProductByUser = async () => {
@@ -50,7 +51,6 @@ export const getOrderItemWithProduct = async (orderItemId: number) => {
     .eq("id", orderItemId)
     .single();
 
-  console.log(data);
   if (error) {
     console.error("getOrderWithProduct 에러", error);
     return { status, message: ERROR_MESSAGE.serverError };
@@ -75,6 +75,72 @@ export const getReviewById = async (reviewId: number) => {
 
   return { status, message: "리뷰를 가져오는 데 성공했습니다.", data };
 };
+
+export const addReview = async (productId: number, formData: FormData) => {
+  const supabase = createClient();
+
+  const content = formData.get("content") as string;
+  const starRating = Number(formData.get("starRating")) as number;
+  const orderItemId = Number(formData.get("orderItemId")) as number;
+  const images = [];
+  for (let i = 0; i < 3; i++) {
+    const image = formData.get(`images[${i}]`) as File | null;
+    if (image) {
+      images.push(image);
+    }
+  }
+
+  if (!content || content.trim().length === 0 || content.length < 15) {
+    return { status: 400, message: "리뷰는 최소 15자 이상 작성해주세요." };
+  }
+  if (starRating === 0) {
+    return { status: 400, message: "별점을 선택해주세요." };
+  }
+  let uploadedImgUrls;
+
+  // 이미지 storage에 업로드
+  if (images.length !== 0) {
+    uploadedImgUrls = await uploadImgs(images, "review");
+  }
+
+  //review 작성
+  const { data, error, status } = await supabase
+    .from("review")
+    .insert({
+      content: content,
+      order_item_id: orderItemId,
+      product_id: productId,
+      star_rating: starRating,
+      images: uploadedImgUrls || null,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.log("리뷰를 작성 실패했습니다", error);
+    return { status, message: "리뷰를 작성하는데 실패했습니다.", error };
+  }
+  // order_item 업데이트
+  const { error: updatedError, status: updatedStatus } = await supabase
+    .from("order_item")
+    .update({
+      review_id: data.id,
+      review_status: true,
+    })
+    .eq("id", orderItemId);
+
+  if (updatedError) {
+    console.log("order_item 업데이트 실패", updatedError);
+    return {
+      updatedStatus,
+      message: "order_item 업데이트 실패",
+      updatedError,
+    };
+  }
+  console.log("리뷰 작성 완료 ", data);
+  redirect("/mypage/review");
+};
+
 /** 리뷰 수정 API */
 export const modifyReview = async (reviewId: number, formData: FormData) => {
   const supabase = createClient();
@@ -82,7 +148,21 @@ export const modifyReview = async (reviewId: number, formData: FormData) => {
   const starRating = Number(formData.get("starRating")) as number;
   const files: File[] = [];
   const prevImages: string[] = [];
+  console.log("modify", content, content.length);
+  // form validation
+  if (!content || content.trim().length === 0 || content.length < 15) {
+    return {
+      status: 400,
+      message: "리뷰는 최소 15자 이상 작성해주세요.",
+    };
+  }
 
+  if (starRating === 0) {
+    return {
+      status: 400,
+      message: "별점을 선택해주세요.",
+    };
+  }
   for (let i = 0; i < 3; i++) {
     const image = formData.get(`images[${i}]`) as File | string | null;
     if (image instanceof File) {

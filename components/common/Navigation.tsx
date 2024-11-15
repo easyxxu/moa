@@ -11,8 +11,8 @@ import LogoutIcon from "@/public/assets/icon/icon-logout.svg";
 import ShopIcon from "@/public/assets/icon/icon-shop.svg";
 import LikeIcon from "@/public/assets/icon/icon-like.svg";
 
-import { logOutAction } from "@/api/apis";
 import { useUserDispatch } from "@/contexts/UserContext";
+import { userLogOut } from "@/api/userApis";
 
 interface Props {
   isLogin: boolean;
@@ -74,7 +74,7 @@ export default function Navigation({ isLogin, isSeller }: Props) {
                       style="none"
                       custom="w-12 h-12"
                       onClick={async () => {
-                        await logOutAction();
+                        await userLogOut();
                         userDispatch({
                           type: "LOGOUT",
                         });
@@ -94,7 +94,7 @@ export default function Navigation({ isLogin, isSeller }: Props) {
                       style="none"
                       custom="w-12 h-12"
                       onClick={async () => {
-                        await logOutAction();
+                        await userLogOut();
                         userDispatch({
                           type: "LOGOUT",
                         });

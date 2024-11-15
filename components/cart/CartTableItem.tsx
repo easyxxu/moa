@@ -5,7 +5,7 @@ import Image from "next/image";
 import Button from "../common/button/Button";
 import { useModal } from "@/contexts/ModalContext";
 import { useEffect, useState } from "react";
-import { deleteCartItem, updateQuantity } from "@/api/apis";
+import { deleteCartItem, updateQuantity } from "@/api/cartApis";
 import DeleteIcon from "@/public/assets/icon/icon-delete.svg";
 import { useCartCheckItems } from "@/contexts/CartContext";
 import { useRouter } from "next/navigation";

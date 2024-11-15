@@ -2,9 +2,10 @@
 
 import { createClient } from "@/utils/supabase/server";
 
-import { getUserInfo } from "./apis";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { getUserInfo } from "./userApis";
 
 /**
  * 작성자의 문의 GET API
@@ -180,4 +181,138 @@ export const deleteAnswer = async (answerId: number) => {
     status,
     message: "답변을 삭제했습니다.",
   };
+};
+export const getSellerProductsWithQuestions = async () => {
+  const supabase = createClient();
+
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+
+  if (userError) {
+    console.error("유저 정보를 불러오는데 실패했습니다.", userError);
+    return {
+      status: 404,
+      message: ERROR_MESSAGE.serverError,
+    };
+  }
+
+  const { data: products, error: productError } = await supabase
+    .from("product")
+    .select(
+      `
+    *,
+    question(*)
+  `
+    )
+    .eq("seller_id", userData.user?.id);
+
+  if (productError) {
+    console.error("판매자의 상품을 불러오는데 실패했습니다.", productError);
+    return { status: 404, message: ERROR_MESSAGE.serverError };
+  }
+
+  return {
+    status: 200,
+    message: "데이터를 불러오는데 성공했습니다.",
+    data: products,
+  };
+};
+
+export const getQuestionsByProductId = async (productId: number) => {
+  const supabase = createClient();
+  const { data: productData, error: productError } = await supabase
+    .from("product")
+    .select()
+    .eq("id", productId)
+    .single();
+
+  if (productError) {
+    console.error("상품 정보를 불러오는데 실패했습니다.", productError);
+    return {
+      status: 404,
+      message: ERROR_MESSAGE.serverError,
+    };
+  }
+  const { data: questionData, error: questionError } = await supabase
+    .from("question")
+    .select()
+    .eq("product_id", productId)
+    .order("id");
+
+  if (questionError) {
+    console.error("상품별 문의를 불러오는데 실패했습니다.", questionError);
+    return { status: 404, message: ERROR_MESSAGE.serverError };
+  }
+
+  return {
+    status: 200,
+    message: "데이터를 불러오는데 성공했습니다.",
+    data: { product: productData, questions: questionData },
+  };
+};
+
+export const getQuestionById = async (questionId: number) => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("question")
+    .select(`*, answer!question_answer_id_fkey(*)`)
+    .eq("id", questionId)
+    .single();
+
+  if (error) {
+    console.error("문의를 불러오는 데 실패했습니다.", error);
+    return { status: 404, message: ERROR_MESSAGE.serverError, error };
+  }
+
+  return { status: 200, message: "데이터를 불러오는 데 성공했습니다.", data };
+};
+
+export const addAnswer = async (
+  prevState: any,
+  formData: FormData
+): Promise<any> => {
+  const supabase = createClient();
+  const content = formData.get("answer") as string;
+  const questionId = formData.get("questionId") as string;
+  const productId = formData.get("productId") as string;
+
+  // 답변 작성
+  const { data, error, status } = await supabase
+    .from("answer")
+    .insert({ content, question_id: +questionId })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("문의에 대한 답변을 작성하는 데 실패했습니다.", error);
+    return {
+      status,
+      message: ERROR_MESSAGE.serverError,
+      error,
+    };
+  }
+  // 문의 상태 업데이트
+  const {
+    data: updateData,
+    error: updateError,
+    status: updateStatus,
+  } = await supabase
+    .from("question")
+    .update({
+      answer_id: data?.id,
+      answer_status: true,
+    })
+    .eq("id", data.question_id)
+    .select();
+
+  if (updateError) {
+    console.error("문의 상태를 업데이트하는 데 실패했습니다.", updateError);
+    return {
+      status: updateStatus,
+      message: ERROR_MESSAGE.serverError,
+      error: updateError,
+    };
+  }
+
+  revalidatePath("/sellercenter/qa/[productId]", "layout");
+  redirect(`/sellercenter/qa/${productId}/${questionId}`);
 };

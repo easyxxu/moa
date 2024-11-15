@@ -1,4 +1,4 @@
-import { getQuestionsByProductId } from "@/api/apis";
+import { getQuestionsByProductId } from "@/api/qaApis";
 import TableHeader from "@/components/table/TableHeader";
 import TableCell from "@/components/table/TableItem";
 import { answerTitleMap } from "@/utils/answerTitleMap";

@@ -1,6 +1,6 @@
 "use client";
 
-import { ErrorMsg, updateEmail } from "@/api/apis";
+import { ErrorMsg, updateEmail } from "@/api/userApis";
 import InputLabel from "@/components/common/InputLabel";
 import { useToast } from "@/contexts/toastContext";
 import { useUserState } from "@/contexts/UserContext";

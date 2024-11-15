@@ -6,7 +6,7 @@ import DetailContent from "@/components/productDetail/DetailContent";
 import ProductPurchaseOptions from "@/components/productDetail/ProductPurchaseOptions";
 import StarRating from "@/components/common/StarRating";
 import ShopIcon from "@/public/assets/icon/icon-shop.svg";
-import { loadProductById } from "@/api/apis";
+import { loadProductById } from "@/api/productApis";
 
 type Props = {
   params: Promise<{ productId: string }>;
@@ -17,10 +17,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const res = await loadProductById(+id);
 
-  const productImage = res.data.image[0] || "";
+  const productImage = res.data?.image[0] || "";
 
   return {
-    title: res.data.name,
+    title: res.data?.name,
     openGraph: {
       images: [productImage],
     },

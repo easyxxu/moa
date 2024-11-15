@@ -1,4 +1,4 @@
-import { getQuestionById } from "@/api/apis";
+import { getQuestionById } from "@/api/qaApis";
 import DeleteButton from "@/components/mypage/qa/DeleteButton";
 import { answerTitleMap } from "@/utils/answerTitleMap";
 

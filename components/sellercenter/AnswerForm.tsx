@@ -1,6 +1,6 @@
 "use client";
 
-import { addAnswer } from "@/api/apis";
+import { addAnswer } from "@/api/qaApis";
 import { useFormState } from "react-dom";
 
 interface Props {

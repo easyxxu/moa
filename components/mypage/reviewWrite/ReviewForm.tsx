@@ -9,7 +9,7 @@ import ImageIcon from "@/public/assets/icon/icon-image.svg";
 import DeleteIcon from "@/public/assets/icon/icon-delete.svg";
 import Button from "../../common/button/Button";
 
-import { addReview } from "@/api/apis";
+import { addReview } from "@/api/reviewApis";
 import { Tables } from "@/types/database.types";
 import { modifyReview } from "@/api/reviewApis";
 import { useToast } from "@/contexts/toastContext";

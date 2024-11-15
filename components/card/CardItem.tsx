@@ -4,7 +4,7 @@ import Image from "next/image";
 import HeartIcon from "@/public/assets/icon/icon-heart.svg";
 import UnHeartIcon from "@/public/assets/icon/icon-unheart.svg";
 import { useUserState } from "@/contexts/UserContext";
-import { likeProduct } from "@/api/apis";
+import { likeProduct } from "@/api/productApis";
 import { useModal } from "@/contexts/ModalContext";
 import { usePathname, useRouter } from "next/navigation";
 
