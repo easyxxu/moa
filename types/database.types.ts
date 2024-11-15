@@ -9,42 +9,89 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      answer: {
+        Row: {
+          content: string
+          created_at: string
+          id: number
+          question_id: number
+          writer_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: number
+          question_id: number
+          writer_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: number
+          question_id?: number
+          writer_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "answer_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "question"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "answer_writer_id_fkey"
+            columns: ["writer_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cart: {
         Row: {
           created_at: string
           id: number
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
-          user_id?: string | null
+          user_id?: string
         }
         Update: {
           created_at?: string
           id?: number
-          user_id?: string | null
+          user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "cart_user_id_fkey1"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       cart_item: {
         Row: {
-          cart_id: number | null
+          cart_id: number
           id: number
-          product_id: number | null
-          quantity: number | null
+          product_id: number
+          quantity: number
         }
         Insert: {
-          cart_id?: number | null
+          cart_id: number
           id?: number
-          product_id?: number | null
-          quantity?: number | null
+          product_id: number
+          quantity: number
         }
         Update: {
-          cart_id?: number | null
+          cart_id?: number
           id?: number
-          product_id?: number | null
-          quantity?: number | null
+          product_id?: number
+          quantity?: number
         }
         Relationships: [
           {
@@ -66,51 +113,48 @@ export type Database = {
       order: {
         Row: {
           created_at: string
-          customer_address: string | null
+          customer_address: string
           customer_delivery_message: string | null
-          customer_email: string | null
-          customer_id: string | null
-          customer_name: string | null
-          customer_phone: string | null
+          customer_email: string
+          customer_id: string
+          customer_name: string
+          customer_phone: string
           id: number
-          order_items: Json[] | null
-          order_name: string | null
-          order_status: string | null
-          payment_method: string | null
-          payment_status: string | null
-          total_price: number | null
+          order_name: string
+          order_status: string
+          payment_method: string
+          payment_status: string
+          total_price: number
         }
         Insert: {
           created_at?: string
-          customer_address?: string | null
+          customer_address: string
           customer_delivery_message?: string | null
-          customer_email?: string | null
-          customer_id?: string | null
-          customer_name?: string | null
-          customer_phone?: string | null
+          customer_email: string
+          customer_id?: string
+          customer_name: string
+          customer_phone: string
           id?: number
-          order_items?: Json[] | null
-          order_name?: string | null
-          order_status?: string | null
-          payment_method?: string | null
-          payment_status?: string | null
-          total_price?: number | null
+          order_name: string
+          order_status: string
+          payment_method: string
+          payment_status: string
+          total_price: number
         }
         Update: {
           created_at?: string
-          customer_address?: string | null
+          customer_address?: string
           customer_delivery_message?: string | null
-          customer_email?: string | null
-          customer_id?: string | null
-          customer_name?: string | null
-          customer_phone?: string | null
+          customer_email?: string
+          customer_id?: string
+          customer_name?: string
+          customer_phone?: string
           id?: number
-          order_items?: Json[] | null
-          order_name?: string | null
-          order_status?: string | null
-          payment_method?: string | null
-          payment_status?: string | null
-          total_price?: number | null
+          order_name?: string
+          order_status?: string
+          payment_method?: string
+          payment_status?: string
+          total_price?: number
         }
         Relationships: [
           {
@@ -125,33 +169,33 @@ export type Database = {
       order_item: {
         Row: {
           id: number
-          item_id: number | null
-          order_id: number | null
-          price: number | null
-          quantity: number | null
+          item_id: number
+          order_id: number
+          price: number
+          quantity: number
           review_id: number | null
           review_status: boolean
-          shipping_fee: number | null
+          shipping_fee: number
         }
         Insert: {
           id?: number
-          item_id?: number | null
-          order_id?: number | null
-          price?: number | null
-          quantity?: number | null
+          item_id: number
+          order_id: number
+          price: number
+          quantity: number
           review_id?: number | null
           review_status?: boolean
-          shipping_fee?: number | null
+          shipping_fee: number
         }
         Update: {
           id?: number
-          item_id?: number | null
-          order_id?: number | null
-          price?: number | null
-          quantity?: number | null
+          item_id?: number
+          order_id?: number
+          price?: number
+          quantity?: number
           review_id?: number | null
           review_status?: boolean
-          shipping_fee?: number | null
+          shipping_fee?: number
         }
         Relationships: [
           {
@@ -179,52 +223,55 @@ export type Database = {
       }
       product: {
         Row: {
-          category: string[] | null
+          average_rating: number | null
+          category: string | null
+          character: string
           created_at: string
           description: string | null
           id: number
-          image: string[] | null
-          liked_count: number | null
+          image: string[]
+          liked_count: number
           liked_list: string[] | null
-          name: string | null
-          price: number | null
+          name: string
+          price: number
           seller_id: string
-          seller_store: string | null
-          shipping_fee: number | null
-          stock: number | null
-          updated_at: string | null
+          seller_store: string
+          shipping_fee: number
+          stock: number
         }
         Insert: {
-          category?: string[] | null
+          average_rating?: number | null
+          category?: string | null
+          character: string
           created_at?: string
           description?: string | null
           id?: number
-          image?: string[] | null
-          liked_count?: number | null
+          image: string[]
+          liked_count?: number
           liked_list?: string[] | null
-          name?: string | null
-          price?: number | null
+          name: string
+          price: number
           seller_id?: string
-          seller_store?: string | null
-          shipping_fee?: number | null
-          stock?: number | null
-          updated_at?: string | null
+          seller_store: string
+          shipping_fee: number
+          stock: number
         }
         Update: {
-          category?: string[] | null
+          average_rating?: number | null
+          category?: string | null
+          character?: string
           created_at?: string
           description?: string | null
           id?: number
-          image?: string[] | null
-          liked_count?: number | null
+          image?: string[]
+          liked_count?: number
           liked_list?: string[] | null
-          name?: string | null
-          price?: number | null
+          name?: string
+          price?: number
           seller_id?: string
-          seller_store?: string | null
-          shipping_fee?: number | null
-          stock?: number | null
-          updated_at?: string | null
+          seller_store?: string
+          shipping_fee?: number
+          stock?: number
         }
         Relationships: [
           {
@@ -238,30 +285,58 @@ export type Database = {
       }
       question: {
         Row: {
-          answer_status: string
+          answer_id: number | null
+          answer_status: boolean
           content: string
           created_at: string
           id: number
+          product_id: number
           title: string
-          user_id: string
+          writer_id: string
         }
         Insert: {
-          answer_status: string
+          answer_id?: number | null
+          answer_status: boolean
           content: string
           created_at?: string
           id?: number
+          product_id: number
           title: string
-          user_id: string
+          writer_id?: string
         }
         Update: {
-          answer_status?: string
+          answer_id?: number | null
+          answer_status?: boolean
           content?: string
           created_at?: string
           id?: number
+          product_id?: number
           title?: string
-          user_id?: string
+          writer_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "question_answer_id_fkey"
+            columns: ["answer_id"]
+            isOneToOne: false
+            referencedRelation: "answer"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "question_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "question_writer_id_fkey"
+            columns: ["writer_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       review: {
         Row: {
@@ -271,8 +346,8 @@ export type Database = {
           images: string[] | null
           order_item_id: number
           product_id: number
-          star_rating: number | null
-          user_id: string
+          star_rating: number
+          writer_id: string
         }
         Insert: {
           content: string
@@ -281,8 +356,8 @@ export type Database = {
           images?: string[] | null
           order_item_id: number
           product_id: number
-          star_rating?: number | null
-          user_id?: string
+          star_rating: number
+          writer_id?: string
         }
         Update: {
           content?: string
@@ -291,8 +366,8 @@ export type Database = {
           images?: string[] | null
           order_item_id?: number
           product_id?: number
-          star_rating?: number | null
-          user_id?: string
+          star_rating?: number
+          writer_id?: string
         }
         Relationships: [
           {
@@ -309,31 +384,41 @@ export type Database = {
             referencedRelation: "product"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "review_writer_id_fkey"
+            columns: ["writer_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
         ]
       }
       user: {
         Row: {
           created_at: string
-          email: string | null
+          email: string
           id: string
-          name: string | null
+          name: string
           phone: string | null
+          profile_img: string | null
           user_type: string | null
         }
         Insert: {
           created_at?: string
-          email?: string | null
+          email: string
           id: string
-          name?: string | null
+          name: string
           phone?: string | null
+          profile_img?: string | null
           user_type?: string | null
         }
         Update: {
           created_at?: string
-          email?: string | null
+          email?: string
           id?: string
-          name?: string | null
+          name?: string
           phone?: string | null
+          profile_img?: string | null
           user_type?: string | null
         }
         Relationships: []
