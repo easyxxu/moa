@@ -15,21 +15,23 @@ export default function ModifyMyInfo() {
     message: "",
   });
 
-  if (state.status >= 400 || state.status < 500) {
-    openToast({
-      type: "ERROR",
-      content:
-        state.status === 400
-          ? ERROR_MESSAGE.required
-          : ERROR_MESSAGE.serverError,
-    });
-  }
-  if (state.status === 200) {
-    openToast({
-      type: "SUCCESS",
-      content: TOAST_MESSAGE.MYPAGE.PROFILE.NAME_CONTACT_CHANGE,
-    });
-  }
+  useEffect(() => {
+    if (state.status >= 400 && state.status < 500) {
+      openToast({
+        type: "ERROR",
+        content:
+          state.status === 400
+            ? ERROR_MESSAGE.required
+            : ERROR_MESSAGE.serverError,
+      });
+    }
+    if (state.status === 200) {
+      openToast({
+        type: "SUCCESS",
+        content: TOAST_MESSAGE.MYPAGE.PROFILE.NAME_CONTACT_CHANGE,
+      });
+    }
+  }, [state, openToast]);
   return (
     <div className="w-full">
       <h2 className="mb-8 text-center">정보 수정하기</h2>
