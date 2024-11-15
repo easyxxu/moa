@@ -50,7 +50,9 @@ export default function Header() {
                 />
               </Link>
             </h1>
-            <h2 className="text-4xl text-black">판매자센터</h2>
+            <h2 className="text-2xl text-black">
+              {userState.name}님의 판매자센터
+            </h2>
           </div>
         </header>
       )}
