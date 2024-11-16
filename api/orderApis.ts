@@ -47,6 +47,34 @@ export const getOrderByUser = async () => {
   };
 };
 
+export const updateOrderStatus = async (
+  orderName: string,
+  orderStatus: string
+) => {
+  const supabase = createClient();
+
+  const { status, data, error } = await supabase
+    .from("order")
+    .update({ order_status: orderStatus })
+    .eq("order_name", orderName)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("주문 상태를 업데이트하는 데 실패했습니다.", error);
+    return {
+      status,
+      message: ERROR_MESSAGE.serverError,
+    };
+  }
+
+  return {
+    status,
+    message: "주문 상태를 업데이트했습니다.",
+    data,
+  };
+};
+
 export const getOrderWithProductInfoByOrderName = async (orderName: string) => {
   const supabase = createClient();
 
