@@ -71,7 +71,7 @@ export default function CardItem({
           <p className="line-clamp-1">{name}</p>
           {price && <p>{price} 원</p>}
         </div>
-        {!pathname.includes("mypage") && (
+        {!pathname.includes("mypage") && !pathname.includes("order") && (
           <div className="flex-shrink-0">
             <button type="button" onClick={handleLike}>
               <Image
