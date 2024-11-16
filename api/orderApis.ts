@@ -46,3 +46,18 @@ export const getOrderByUser = async () => {
     data: orders,
   };
 };
+
+export const getOrderWithProductInfoByOrderName = async (orderName: string) => {
+  const supabase = createClient();
+
+  const { status, data, error } = await supabase
+    .from("order")
+    .select(`*, order_item(*, product(*))`)
+    .eq("order_name", orderName)
+    .single();
+  if (error) {
+    console.error("getOrderByOrderName Error", error, status);
+    return { status, message: ERROR_MESSAGE.serverError };
+  }
+  return { status, message: "주문 정보를 불러왔습니다.", data };
+};
