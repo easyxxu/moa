@@ -1,14 +1,14 @@
 import { CartItem } from "@/contexts/CartContext";
 import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 const PORTONE_API_SECRET = process.env.PORTONE_API_SECRET;
 
 export async function POST(req: Request) {
+  const { origin } = new URL(req.url);
   const supabase = createClient();
   const data = await req.json();
-  console.log("받아온 Req Data: ", data);
+
   try {
     const { paymentId, order } = data;
 
@@ -123,10 +123,9 @@ export async function POST(req: Request) {
             })
           );
 
-          // revalidatePath("/cart");
-          return NextResponse.json({
-            message: "Payment completed successfully",
-          });
+          return NextResponse.redirect(
+            `${origin}/order/complete/${order.orderName}`
+          );
         }
       }
     } else {
