@@ -4,10 +4,14 @@ import Button from "../common/button/Button";
 import PostCode from "./PostCode";
 import { useCartCheckItems } from "@/contexts/CartContext";
 import PortOne, { PaymentRequest } from "@portone/browser-sdk/v2";
+import { useToast } from "@/contexts/toastContext";
+import { updateOrderStatus } from "@/api/orderApis";
+import { useRouter } from "next/navigation";
 
 export default function OrderForm() {
   const { checkedItems, price } = useCartCheckItems();
-
+  const router = useRouter();
+  const { openToast } = useToast();
   const createOrderName = () => {
     const now = new Date();
     const year = now.getFullYear();
@@ -59,7 +63,7 @@ export default function OrderForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // 이미 주문서가 작성되었다면 새로 생성하지 않도록 해야함
+
     const res = await fetch("/api/order", {
       method: "POST",
       headers: {
@@ -67,13 +71,14 @@ export default function OrderForm() {
       },
       body: JSON.stringify(formData),
     });
-    const data = await res.json();
-    console.log("#주문 생성 결과: ", data);
 
     const paymentId = `${crypto.randomUUID()}`;
     const paymentRequest: PaymentRequest = {
       storeId: "store-09c98e73-7dff-49ce-8683-6b5c6330d392",
-      channelKey: "channel-key-4efd5333-08b9-4c38-ad43-f7c634b925a2",
+      channelKey:
+        formData.payment === "CARD"
+          ? "channel-key-4efd5333-08b9-4c38-ad43-f7c634b925a2"
+          : "channel-key-3a191af9-1a08-4e30-84f8-b904b2d8da13",
       paymentId: paymentId,
       orderName: formData.orderName,
       totalAmount: formData.totalPrice,
@@ -87,17 +92,21 @@ export default function OrderForm() {
       },
     };
 
-    if (data.status == 200) {
+    if (res.status == 200) {
       // 결제 요청
       const res = await PortOne.requestPayment(paymentRequest);
-      console.log("#결제 res: ", res);
 
       if (res?.code != null) {
         // 오류 발생
-        return alert(res.message);
+        openToast({
+          type: "ERROR",
+          content: "결제를 처리하는 데 실패했습니다. 다시 시도해주세요.",
+        });
+        await updateOrderStatus(formData.orderName, "PAYMENT_FAILED");
+        return;
       }
 
-      const notified = await fetch(`/api/payment/complete`, {
+      const completeRes = await fetch(`/api/payment/complete`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -105,14 +114,15 @@ export default function OrderForm() {
           order: formData,
         }),
       });
-      console.log(notified);
+      router.push(completeRes.url);
     }
   };
+
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <p className="text-2xl font-semibold my-3">주문서 작성</p>
-        <div className="flex flex-col border-t mb-3">
+        <p className="my-3 text-2xl font-semibold">주문서 작성</p>
+        <div className="flex flex-col mb-3 border-t border-gray-900">
           <label className="order-form-label">
             주문자명
             <input
@@ -152,7 +162,7 @@ export default function OrderForm() {
           <label className="order-form-label">
             배송 주소
             <div className="w-4/5 [&>input]:order-form-input-tel ">
-              <div className="flex gap-3 items-center">
+              <div className="flex items-center gap-3">
                 <input
                   type="text"
                   id="postCode"
@@ -208,7 +218,7 @@ export default function OrderForm() {
         </div>
         <fieldset className="py-3">
           <legend className="text-lg font-semibold">결제방식</legend>
-          <div className="flex gap-4 items-center border-t border-b py-3">
+          <div className="flex items-center gap-4 py-3 border-t border-b">
             <label>
               <input
                 type="radio"
@@ -219,7 +229,7 @@ export default function OrderForm() {
               />
               <span className="align-middle">신용 / 체크 카드</span>
             </label>
-            <label>
+            {/* <label>
               <input
                 type="radio"
                 name="payment"
@@ -228,7 +238,7 @@ export default function OrderForm() {
                 onChange={handleInput}
               />
               <span className="align-middle">무통장입금</span>
-            </label>
+            </label> */}
             <label>
               <input
                 type="radio"
