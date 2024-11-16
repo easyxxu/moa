@@ -1,4 +1,5 @@
 import { CartItem } from "@/contexts/CartContext";
+import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
@@ -7,9 +8,39 @@ export async function POST(req: Request) {
 
   try {
     const data = await req.json();
-    console.log("POST request data:", data);
 
-    const { data: orderData, error: orderError } = await supabase
+    // 동일 주문서 여부 확인(주문서 재생성을 막기 위함)
+    const {
+      status,
+      data: existOrderData,
+      error: existOrderError,
+    } = await supabase.from("order").select().eq("order_name", data.orderName);
+
+    if (existOrderError) {
+      console.error(
+        "이미 존재하는 주문서인지 확인하는 데 실패했습니다.",
+        existOrderError
+      );
+      return NextResponse.json(
+        {
+          message: ERROR_MESSAGE.serverError,
+        },
+        { status }
+      );
+    }
+
+    if (existOrderData.length !== 0) {
+      return NextResponse.json(
+        { message: "이미 주문서가 생성되었습니다." },
+        { status: 200 }
+      );
+    }
+
+    const {
+      data: orderData,
+      error: orderError,
+      status: orderStatus,
+    } = await supabase
       .from("order")
       .insert({
         order_name: data.orderName,
@@ -26,11 +57,13 @@ export async function POST(req: Request) {
       .select();
 
     if (orderError || !orderData) {
-      return NextResponse.json({
-        status: orderError?.code || 500,
-        message: "Order creation failed",
-        error: orderError,
-      });
+      return NextResponse.json(
+        {
+          message: "Order creation failed",
+          error: orderError,
+        },
+        { status: orderStatus }
+      );
     }
 
     const orderId = orderData[0].id;
@@ -51,16 +84,20 @@ export async function POST(req: Request) {
         }
       })
     );
-    return NextResponse.json({
-      status: 200,
-      message: "Order created successfully",
-    });
+    return NextResponse.json(
+      {
+        message: "Order created successfully",
+      },
+      { status: 200 }
+    );
   } catch (e) {
     console.log("order error: ", e);
-    return NextResponse.json({
-      status: 500,
-      message: "Internal server error",
-      error: e,
-    });
+    return NextResponse.json(
+      {
+        message: "Internal server error",
+        error: e,
+      },
+      { status: 500 }
+    );
   }
 }
