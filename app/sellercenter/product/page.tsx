@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 import TableHeader from "@/components/table/TableHeader";
 import TableCell from "@/components/table/TableItem";
-import PlusIcon from "@/public/assets/icon/icon-plus-round.svg";
+import PlusIcon from "@/public/assets/icon/icon-add-product.svg";
 
 import { useUserState } from "@/contexts/UserContext";
 
@@ -59,15 +59,15 @@ export default function ProductDashboard() {
   }, []);
 
   return (
-    <div className="w-full bg-white shadow-md">
+    <div className="">
       <Link href="/sellercenter/product/add">
-        <div className="flex items-center justify-center gap-2 px-3 py-4 font-semibold text-white transition-colors bg-gray-300 hover:bg-gray-400">
+        <div className="flex items-center justify-center gap-2 px-3 py-4 font-semibold transition-colors border-black hover:bg-gray-200">
           <Image
             src={PlusIcon}
             alt="상품 등록 아이콘"
             className="w-6 h-6"
-            width={30}
-            height={30}
+            width={36}
+            height={36}
           />
           상품 등록
         </div>
