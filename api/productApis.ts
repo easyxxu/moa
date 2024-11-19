@@ -2,6 +2,7 @@
 
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { createClient } from "@/utils/supabase/server";
+import { PostgrestSingleResponse } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -13,6 +14,8 @@ interface ProductForm {
   image: string[];
   seller_store: string;
   shipping_fee: number;
+  character: string;
+  category: string;
 }
 
 export async function addProduct(formData: ProductForm) {
@@ -54,7 +57,7 @@ export const getProducts = async (
   page: number = 1,
   character?: string,
   category?: string,
-  order: string = "mostOrder"
+  order: string = "mostOrders"
 ) => {
   const supabase = createClient();
   const start = (page - 1) * 20;
@@ -62,6 +65,7 @@ export const getProducts = async (
 
   // default
   let query = supabase.from("product").select().range(start, end);
+  let mostOrderQuery;
 
   if (character) {
     query = query.eq("character", character);
@@ -73,7 +77,16 @@ export const getProducts = async (
   if (order) {
     switch (order) {
       case "mostOrders":
-        query = query.order("created_at", { ascending: false });
+        mostOrderQuery = supabase
+          .rpc("get_product_with_order_count", undefined, { count: "exact" }) // 주문 수 기준으로 정렬
+          .order("order_count", { ascending: false });
+        if (character) {
+          mostOrderQuery = mostOrderQuery.eq("product_character", character);
+        }
+        if (category && category !== "all") {
+          mostOrderQuery = mostOrderQuery.eq("category", category);
+        }
+
         break;
       case "highestPrice":
         query = query.order("price", { ascending: false });
@@ -89,7 +102,23 @@ export const getProducts = async (
         break;
     }
   }
+  if (order === "mostOrders") {
+    const { status, data, error, count }: any = await mostOrderQuery;
+
+    if (error) {
+      return {
+        status,
+        message: ERROR_MESSAGE.serverError,
+      };
+    }
+    return {
+      status: 200,
+      message: "상품을 불러오는 데 성공했습니다.",
+      data: { products: data, totalCount: count },
+    };
+  }
   const { data: products, error, status, count } = await query;
+
   if (error) {
     console.error("getProduct ERROR", error);
     return { status, message: ERROR_MESSAGE.serverError };
