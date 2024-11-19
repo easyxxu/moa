@@ -223,7 +223,7 @@ export type Database = {
       }
       product: {
         Row: {
-          average_rating: number | null
+          average_rating: number
           category: string
           character: string
           created_at: string
@@ -240,7 +240,7 @@ export type Database = {
           stock: number
         }
         Insert: {
-          average_rating?: number | null
+          average_rating?: number
           category: string
           character: string
           created_at?: string
@@ -257,7 +257,7 @@ export type Database = {
           stock: number
         }
         Update: {
-          average_rating?: number | null
+          average_rating?: number
           category?: string
           character?: string
           created_at?: string
