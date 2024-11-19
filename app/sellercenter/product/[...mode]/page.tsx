@@ -46,6 +46,8 @@ export default function ProductManagement({
     stock: 0,
     shipping_fee: 0,
     description: "",
+    character: "",
+    category: "",
   });
   const dragStart = (e: DragEvent, position: number) => {
     dragImgIdx.current = position;
@@ -108,7 +110,9 @@ export default function ProductManagement({
   };
 
   const handleInput = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setProductInfo((prev) => ({ ...prev, [name]: value }));
@@ -198,7 +202,9 @@ export default function ProductManagement({
     const getProductData = async () => {
       const { data } = await supabase
         .from("product")
-        .select("name, price, stock, shipping_fee, description, image")
+        .select(
+          "name, price, stock, shipping_fee, description, image, category, character"
+        )
         .eq("id", productId)
         .single();
       // console.log("#data:", data);
@@ -213,6 +219,8 @@ export default function ProductManagement({
         stock: data.stock,
         shipping_fee: data.shipping_fee,
         description: data.description || "",
+        category: data.category,
+        character: data.character,
       });
 
       const adjustedPreviewImgs = [
@@ -227,10 +235,9 @@ export default function ProductManagement({
       getProductData();
     }
   }, []);
-  // console.log("imgFiles:", imgFiles);
-  // console.log("modifiedImgs:", modifiedImgs);
+
   return (
-    <div className="w-full px-4 py-1 mb-10">
+    <div className="w-full px-4 py-5 mb-20">
       <form className="flex flex-col gap-1" onSubmit={handleSubmit}>
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-3xl font-semibold">
@@ -292,6 +299,7 @@ export default function ProductManagement({
           defaultValue=""
           className="block w-full px-3 py-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           required
+          onChange={handleInput}
         >
           <option value="" disabled>
             캐릭터 종류를 선택해주세요.
@@ -315,12 +323,13 @@ export default function ProductManagement({
           defaultValue=""
           className="block w-full px-3 py-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           required
+          onChange={handleInput}
         >
           <option value="" disabled>
             카테고리를 선택해주세요.
           </option>
 
-          {CATEGORY_OPTIONS.map((category, idx) => (
+          {CATEGORY_OPTIONS.slice(1).map((category, idx) => (
             <option key={idx} value={category.name}>
               {category.text}
             </option>
