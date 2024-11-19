@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ArrowIcon from "@/public/assets/icon/icon-arrow.svg";
 import { ORDER_OPTIONS } from "@/utils/constants/filterOptions";
@@ -10,6 +10,7 @@ import { ORDER_OPTIONS } from "@/utils/constants/filterOptions";
 export default function ProductOrderSelector() {
   const searchParams = useSearchParams();
   const currentPath = usePathname();
+  const currentFilter = searchParams.get("order");
   const { replace } = useRouter();
   const [isSelectBoxOpen, setIsSelectBoxOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(ORDER_OPTIONS[0].name);
@@ -20,7 +21,7 @@ export default function ProductOrderSelector() {
 
   const handleSelectOrder = (name: string) => {
     setSelectedOrder(name);
-    setIsSelectBoxOpen(false); // 옵션 선택 후 select box 닫기
+    setIsSelectBoxOpen(false);
     const params = new URLSearchParams(searchParams);
 
     if (name) {
@@ -31,6 +32,13 @@ export default function ProductOrderSelector() {
     replace(`${currentPath}?${params.toString()}`);
   };
 
+  useEffect(() => {
+    if (currentFilter) {
+      setSelectedOrder(currentFilter);
+    } else {
+      setSelectedOrder(ORDER_OPTIONS[0].name);
+    }
+  }, [currentFilter]);
   return (
     <div className="relative border-l border-l-gray-500">
       <button
