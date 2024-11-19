@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/utils/supabase/server";
 import { loadProductById } from "./productApis";
 import { CartItemInfo, GroupedCartItems } from "@/types/cart";
+import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 
 export async function createCart(userId: string) {
   const supabase = createClient();
@@ -63,25 +64,39 @@ export async function checkCartItem(cartId: number, productId: number) {
 export async function getCartItem(cartId: number) {
   const supabase = createClient();
 
-  const { data: cartItems, error } = await supabase
+  const {
+    data: cartItems,
+    error,
+    status,
+  } = await supabase
     .from("cart_item")
     .select()
     .eq("cart_id", cartId)
     .order("product_id");
 
-  if (cartItems?.length === 0 || !cartItems) return;
+  if (error) {
+    console.error(error);
+    return { status, message: ERROR_MESSAGE.serverError };
+  }
+
+  if (cartItems?.length === 0 || !cartItems)
+    return {
+      status: 200,
+      message: "장바구니에 담긴 상품이 없습니다.",
+      data: null,
+    };
 
   /**
    ** 상품정보+수량을 같이 리턴함
    */
-  const cartItemsInfo = await Promise.all(
+  const cartItemsInfo: CartItemInfo[] = await Promise.all(
     cartItems.map(
       async (item: { id: number; product_id: number; quantity: number }) => {
         const { data: productInfo } = await loadProductById(item.product_id);
         return {
           quantity: item.quantity,
           cartItemId: item.id,
-          ...productInfo,
+          ...productInfo!,
         };
       }
     )
