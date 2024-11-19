@@ -224,7 +224,7 @@ export type Database = {
       product: {
         Row: {
           average_rating: number | null
-          category: string | null
+          category: string
           character: string
           created_at: string
           description: string | null
@@ -241,7 +241,7 @@ export type Database = {
         }
         Insert: {
           average_rating?: number | null
-          category?: string | null
+          category: string
           character: string
           created_at?: string
           description?: string | null
@@ -258,7 +258,7 @@ export type Database = {
         }
         Update: {
           average_rating?: number | null
-          category?: string | null
+          category?: string
           character?: string
           created_at?: string
           description?: string | null
@@ -428,7 +428,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_product_with_order_count: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          product_id: number
+          name: string
+          price: number
+          image: string[]
+          category: string
+          product_character: string
+          created_at: string
+          liked_count: number
+          order_count: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
