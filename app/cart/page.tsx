@@ -29,7 +29,7 @@ export default async function CartPage() {
     <div className="flex flex-col w-full">
       <h2 className="mb-4 text-center">장바구니</h2>
       <table>
-        <CartTable cartItems={cartData.cart} cartCount={cartData.count} />
+        <CartTable cartItems={cartData.cart!} cartCount={cartData.count!} />
       </table>
       <CartTotalPrice />
       <Link
