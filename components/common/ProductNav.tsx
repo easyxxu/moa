@@ -1,10 +1,15 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CHARACTER_OPTIONS } from "@/utils/constants/filterOptions";
+import Link from "next/link";
 
-const CATEGORY_TITLE = ["BEST", "NEW", "CHARACTER"];
+const CATEGORYS = [
+  { text: "BEST", src: "order=mostOrders" },
+  { text: "NEW", src: "order=latest" },
+  { text: "CHARACTER", src: "" },
+];
 
 export default function ProductNav() {
   const pathname = usePathname();
@@ -49,13 +54,13 @@ export default function ProductNav() {
           }}
           className="flex gap-4 px-2 pb-2 text-2xl cursor-pointer font-extralight"
         >
-          {CATEGORY_TITLE.map((title, i) => (
+          {CATEGORYS.map((category, i) => (
             <li
               key={i}
-              onMouseEnter={() => setCategory(title)}
+              onMouseEnter={() => setCategory(category.text)}
               className="transition-colors duration-200 hover:text-blue-500"
             >
-              {title}
+              <Link href={`/products?${category.src}`}>{category.text}</Link>
             </li>
           ))}
         </ul>
@@ -66,11 +71,11 @@ export default function ProductNav() {
             onMouseLeave={() => setIsDropDownVisible(false)}
             className="fixed left-0 w-full bg-white shadow-md"
           >
-            <ul className="mx-auto max-w-7xl">
+            <ul className="mx-auto mb-2 max-w-7xl">
               {CHARACTER_OPTIONS.map((option, idx) => (
                 <li
                   key={idx}
-                  className="px-2 py-1.5 transition-colors duration-200 cursor-pointer hover:text-blue-500"
+                  className="px-2 py-2 transition-colors duration-200 cursor-pointer hover:text-blue-500"
                   value={option.name}
                   onClick={() =>
                     handleMoveFilterPage(
