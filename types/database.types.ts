@@ -439,6 +439,7 @@ export type Database = {
           character_name: string
           created_at: string
           liked_count: number
+          liked_list: string[]
           order_count: number
         }[]
       }
