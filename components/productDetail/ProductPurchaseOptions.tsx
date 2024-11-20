@@ -33,7 +33,11 @@ export default function ProductPurchaseOptions({
   const userState = useUserState();
   const userId = userState.id;
   const isLogin = userState.isLogin;
-  const isBuyer = userState.userType === "BUYER";
+  const isBuyer =
+    userState.userType === "BUYER" ||
+    userState.moreUserData?.app_metadata.provider === "kakao" ||
+    userState.moreUserData?.app_metadata.provider === "google";
+
   const { showModal, closeModal } = useModal();
   const [priceByQuantity, setPriceByQuantity] = useState(price);
   const [quantity, setQuantity] = useState(1);
