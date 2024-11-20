@@ -73,9 +73,21 @@ export default function ProductPurchaseOptions({
       return;
     }
     let cartId;
-    cartId = await getCartId(userId!);
+    const { status, message, data: cartIdData } = await getCartId(userId!);
+    if (status >= 400 && status < 500) {
+      throw new Error(message);
+    }
+    cartId = cartIdData?.id;
     if (!cartId) {
-      cartId = await createCart(userId!);
+      const {
+        status: createCartStatus,
+        message: createCartMsg,
+        data: createCartData,
+      } = await createCart(userId!);
+      if (createCartStatus >= 400 && createCartStatus < 500) {
+        throw new Error(createCartMsg);
+      }
+      cartId = createCartData?.id;
     }
 
     const isInCart = await checkProductInCart(cartId!); // 이미 장바구니에 담긴 물건인지 확인

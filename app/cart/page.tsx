@@ -11,30 +11,42 @@ export default async function CartPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  /**
-   * TODO Logout 상태일 때 처리하기
-   */
 
   const isLogin = user !== null ? true : false;
   const isSeller = user?.user_metadata.user_type === "SELLER";
 
   if (!isLogin || isSeller) return <CartNoBuyer />;
 
-  const cartId = await getCartId(user!.id);
-  const { status, message, data } = await getCartItem(cartId!);
+  // 장바구니 ID 가져오기
+  const { status, message, data } = await getCartId(user!.id);
   if (status !== 200) {
     throw new Error(message);
+  }
+  const cartId = data?.id;
+
+  // 장바구니 아이템 가져오기
+  let cartItem = null;
+  if (cartId) {
+    const {
+      status: getCartItemStatus,
+      message: getCartItemMsg,
+      data: cartItemData,
+    } = await getCartItem(cartId);
+    if (getCartItemStatus !== 200) {
+      throw new Error(getCartItemMsg);
+    }
+    cartItem = cartItemData;
   }
 
   return (
     <div className="flex flex-col w-full">
       <h2 className="mb-4 text-center">장바구니</h2>
-      {!data || data.count === 0 ? (
+      {!cartId || !cartItem || cartItem.count === 0 ? (
         <CartNoItem />
       ) : (
         <>
           <table>
-            <CartTable cartItems={data.cart} cartCount={data.count!} />
+            <CartTable cartItems={cartItem.cart} cartCount={cartItem.count!} />
           </table>
           <CartTotalPrice />
           <Link

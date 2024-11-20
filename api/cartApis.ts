@@ -8,7 +8,7 @@ import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 
 export async function createCart(userId: string) {
   const supabase = createClient();
-  const { data, error } = await supabase
+  const { status, data, error } = await supabase
     .from("cart")
     .insert({ user_id: userId })
     .select()
@@ -16,20 +16,40 @@ export async function createCart(userId: string) {
 
   if (error) {
     console.error("createCart Error: ", error);
-    return;
+    return { status, message: ERROR_MESSAGE.serverError };
   }
-  return data?.id;
+  return {
+    status,
+    message: "장바구니를 생성했습니다.",
+    data: { id: data?.id },
+  };
 }
 
 export async function getCartId(userId: string) {
   const supabase = createClient();
-  const { data, error } = await supabase
+  const { status, data, error } = await supabase
     .from("cart")
     .select("id")
     .eq("user_id", userId)
     .single();
-  // if (!data) console.log("no data");
-  return data?.id;
+
+  if (!data && error && error.details === "The result contains 0 rows") {
+    return {
+      status: 200,
+      message: "생성된 장바구니가 없습니다.",
+      data: { id: null },
+    };
+  }
+  if (error) {
+    console.error("getCartId error: ", error);
+    return { status, message: ERROR_MESSAGE.serverError };
+  }
+
+  return {
+    status,
+    message: "장바구니 ID를 가져왔습니다.",
+    data: { id: data?.id },
+  };
 }
 
 export async function addCartItem(
@@ -113,7 +133,11 @@ export async function getCartItem(cartId: number) {
     }, {});
   };
 
-  return { status, message: '장바구니 아이템을 불러오는 데 성공했습니다.', data:{count: cartItems?.length, cart: groupBySellerStore(cartItemsInfo) }};
+  return {
+    status,
+    message: "장바구니 아이템을 불러오는 데 성공했습니다.",
+    data: { count: cartItems?.length, cart: groupBySellerStore(cartItemsInfo) },
+  };
 }
 
 export const deleteCartItem = async (productId: number) => {
