@@ -8,7 +8,7 @@ export default function CartNoBuyer() {
       </p>
       <Link
         href="/login"
-        className="px-3 py-2 font-semibold bg-primary outer-box"
+        className="px-3 py-2 font-semibold bg-black rounded-sm text-white"
       >
         로그인 하러가기
       </Link>
