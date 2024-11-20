@@ -113,7 +113,7 @@ export async function getCartItem(cartId: number) {
     }, {});
   };
 
-  return { count: cartItems?.length, cart: groupBySellerStore(cartItemsInfo) };
+  return { status, message: '장바구니 아이템을 불러오는 데 성공했습니다.', data:{count: cartItems?.length, cart: groupBySellerStore(cartItemsInfo) }};
 }
 
 export const deleteCartItem = async (productId: number) => {

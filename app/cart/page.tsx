@@ -21,23 +21,30 @@ export default async function CartPage() {
   if (!isLogin || isSeller) return <CartNoBuyer />;
 
   const cartId = await getCartId(user!.id);
-  const cartData = await getCartItem(cartId!);
-
-  if (!cartData || cartData.count === 0) return <CartNoItem />;
+  const { status, message, data } = await getCartItem(cartId!);
+  if (status !== 200) {
+    throw new Error(message);
+  }
 
   return (
     <div className="flex flex-col w-full">
       <h2 className="mb-4 text-center">장바구니</h2>
-      <table>
-        <CartTable cartItems={cartData.cart!} cartCount={cartData.count!} />
-      </table>
-      <CartTotalPrice />
-      <Link
-        href="/order"
-        className="self-center w-1/5 py-4 my-10 text-2xl text-center text-white transition-shadow bg-blue-500 rounded-sm duration-300font-semibold hover:shadow-md "
-      >
-        주문하기
-      </Link>
+      {!data || data.count === 0 ? (
+        <CartNoItem />
+      ) : (
+        <>
+          <table>
+            <CartTable cartItems={data.cart} cartCount={data.count!} />
+          </table>
+          <CartTotalPrice />
+          <Link
+            href="/order"
+            className="self-center w-1/5 py-4 my-10 text-2xl text-center text-white transition-shadow bg-blue-500 rounded-sm duration-300font-semibold hover:shadow-md "
+          >
+            주문하기
+          </Link>
+        </>
+      )}
     </div>
   );
 }
