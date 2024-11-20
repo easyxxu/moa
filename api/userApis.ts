@@ -167,7 +167,7 @@ export async function userLogOut() {
 
 export const signInWithOAuth = async (provider: Provider) => {
   const supabase = createClient();
-  console.log("defaultUrl: ", defaultUrl);
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
@@ -183,7 +183,7 @@ export const signInWithOAuth = async (provider: Provider) => {
     console.log("#server error: ", error);
     redirect("/auth/callback");
   }
-  console.log("data: ", data, data.url);
+
   redirect(data.url);
 };
 
