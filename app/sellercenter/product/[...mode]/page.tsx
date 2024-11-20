@@ -295,8 +295,9 @@ export default function ProductManagement({
         </label>
         <select
           id="character"
-          name="character"
+          name="character_name"
           defaultValue=""
+          value={productInfo.character_name}
           className="block w-full px-3 py-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           required
           onChange={handleInput}
@@ -321,6 +322,7 @@ export default function ProductManagement({
           id="category"
           name="category"
           defaultValue=""
+          value={productInfo.category}
           className="block w-full px-3 py-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           required
           onChange={handleInput}
