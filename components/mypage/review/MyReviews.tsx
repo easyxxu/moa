@@ -22,7 +22,7 @@ export default async function MyReviews({ reviews }: Props) {
   return (
     <ul className="space-y-6">
       {reviews?.length === 0 ? (
-        <p className="text-center">주문 내역이 없습니다.</p>
+        <p className="text-center">작성한 리뷰가 없습니다.</p>
       ) : (
         reviews?.map((review) => (
           <li
