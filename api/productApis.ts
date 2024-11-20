@@ -14,7 +14,7 @@ interface ProductForm {
   image: string[];
   seller_store: string;
   shipping_fee: number;
-  character: string;
+  character_name: string;
   category: string;
 }
 
@@ -68,7 +68,7 @@ export const getProducts = async (
   let mostOrderQuery;
 
   if (character) {
-    query = query.eq("character", character);
+    query = query.eq("character_name", character);
   }
   if (category && category !== "all") {
     query = query.eq("category", category);
@@ -81,7 +81,7 @@ export const getProducts = async (
           .rpc("get_product_with_order_count", undefined, { count: "exact" }) // 주문 수 기준으로 정렬
           .order("order_count", { ascending: false });
         if (character) {
-          mostOrderQuery = mostOrderQuery.eq("product_character", character);
+          mostOrderQuery = mostOrderQuery.eq("character_name", character);
         }
         if (category && category !== "all") {
           mostOrderQuery = mostOrderQuery.eq("category", category);
@@ -106,6 +106,7 @@ export const getProducts = async (
     const { status, data, error, count }: any = await mostOrderQuery;
 
     if (error) {
+      console.error("mostOrdersQuery error: ", error);
       return {
         status,
         message: ERROR_MESSAGE.serverError,
@@ -117,6 +118,7 @@ export const getProducts = async (
       data: { products: data, totalCount: count },
     };
   }
+
   const { data: products, error, status, count } = await query;
 
   if (error) {

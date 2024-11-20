@@ -46,7 +46,7 @@ export default function ProductManagement({
     stock: 0,
     shipping_fee: 0,
     description: "",
-    character: "",
+    character_name: "",
     category: "",
   });
   const dragStart = (e: DragEvent, position: number) => {
@@ -203,7 +203,7 @@ export default function ProductManagement({
       const { data } = await supabase
         .from("product")
         .select(
-          "name, price, stock, shipping_fee, description, image, category, character"
+          "name, price, stock, shipping_fee, description, image, category, character_name"
         )
         .eq("id", productId)
         .single();
@@ -220,7 +220,7 @@ export default function ProductManagement({
         shipping_fee: data.shipping_fee,
         description: data.description || "",
         category: data.category,
-        character: data.character,
+        character_name: data.character_name,
       });
 
       const adjustedPreviewImgs = [

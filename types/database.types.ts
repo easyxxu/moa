@@ -225,7 +225,7 @@ export type Database = {
         Row: {
           average_rating: number
           category: string
-          character: string
+          character_name: string
           created_at: string
           description: string | null
           id: number
@@ -242,7 +242,7 @@ export type Database = {
         Insert: {
           average_rating?: number
           category: string
-          character: string
+          character_name: string
           created_at?: string
           description?: string | null
           id?: number
@@ -259,7 +259,7 @@ export type Database = {
         Update: {
           average_rating?: number
           category?: string
-          character?: string
+          character_name?: string
           created_at?: string
           description?: string | null
           id?: number
@@ -431,12 +431,12 @@ export type Database = {
       get_product_with_order_count: {
         Args: Record<PropertyKey, never>
         Returns: {
-          product_id: number
+          id: number
           name: string
           price: number
           image: string[]
           category: string
-          product_character: string
+          character_name: string
           created_at: string
           liked_count: number
           order_count: number
