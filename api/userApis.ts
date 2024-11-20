@@ -183,6 +183,7 @@ export const signInWithOAuth = async (provider: Provider) => {
     console.log("#server error: ", error);
     redirect("/auth/callback");
   }
+  console.log("data: ", data, data.url);
   redirect(data.url);
 };
 
