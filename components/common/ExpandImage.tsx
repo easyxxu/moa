@@ -20,7 +20,7 @@ export default function ExpandImage({ images, order, onClose }: Props) {
     setImageOrder((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
   return (
-    <div className="fixed top-0 left-0 z-10 w-full h-full bg-background-modal">
+    <div className="fixed top-0 left-0 z-50 w-full h-full bg-background-modal">
       <div className="flex flex-col items-center justify-center h-full">
         <div className="flex items-center h-3/4">
           <Image
