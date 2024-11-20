@@ -5,9 +5,10 @@ import { ModalProvider } from "@/contexts/ModalContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { ToastProvider } from "@/contexts/toastContext";
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+export const defaultUrl =
+  process.env.NODE_ENV === "production"
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000";
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),

@@ -5,6 +5,7 @@ import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { emailRegex, passwordRegex } from "@/utils/constants/validation";
 import { createClient } from "@/utils/supabase/server";
 import { Provider, User } from "@supabase/supabase-js";
+import { defaultUrl } from "@/app/layout";
 
 export type ErrorMsg = {
   email?: string;
@@ -174,7 +175,7 @@ export const signInWithOAuth = async (provider: Provider) => {
         access_type: "offline",
         prompt: "consent",
       },
-      redirectTo: "http://localhost:3000/auth/callback",
+      redirectTo: `${defaultUrl}/auth/callback`,
     },
   });
 
