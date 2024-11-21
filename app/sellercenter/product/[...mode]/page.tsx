@@ -243,13 +243,23 @@ export default function ProductManagement({
           <h3 className="text-3xl font-semibold">
             상품 {operationMode === "add" ? "등록" : "수정"}
           </h3>
-          <Button
-            type="submit"
-            custom="px-3 py-2 text-lg font-semibold"
-            style="point"
-          >
-            {operationMode === "add" ? "등록" : "수정"}
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              custom="px-3 py-2 text-lg font-semibold"
+              style="line"
+              onClick={() => router.push("/sellercenter/product")}
+            >
+              취소
+            </Button>
+            <Button
+              type="submit"
+              custom="px-3 py-2 text-lg font-semibold"
+              style="point"
+            >
+              {operationMode === "add" ? "등록" : "수정"}
+            </Button>
+          </div>
         </div>
         <InputLabel
           type="text"
@@ -287,10 +297,7 @@ export default function ProductManagement({
           style="box"
           onChange={handleInput}
         />
-        <label
-          htmlFor="character"
-          className="block mb-1 text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="character" className="mb-1 ">
           상품 캐릭터
         </label>
         <select
@@ -298,7 +305,7 @@ export default function ProductManagement({
           name="character_name"
           defaultValue=""
           value={productInfo.character_name}
-          className="block w-full px-3 py-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          className="w-full px-2 py-2 border border-gray-300 rounded-sm"
           required
           onChange={handleInput}
         >
@@ -314,7 +321,7 @@ export default function ProductManagement({
 
         <label
           htmlFor="category"
-          className="block mt-4 mb-1 text-sm font-medium text-gray-700"
+          className="mt-4 mb-1 text-sm font-medium text-gray-700"
         >
           상품 카테고리
         </label>
@@ -323,7 +330,7 @@ export default function ProductManagement({
           name="category"
           defaultValue=""
           value={productInfo.category}
-          className="block w-full px-3 py-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          className="w-full px-2 py-2 border border-gray-300 rounded-sm"
           required
           onChange={handleInput}
         >
@@ -338,7 +345,7 @@ export default function ProductManagement({
           ))}
         </select>
 
-        <label htmlFor="description" className="my-1 font-extralight">
+        <label htmlFor="description" className="my-1">
           상품 설명
         </label>
         <textarea
@@ -346,12 +353,12 @@ export default function ProductManagement({
           name="description"
           value={productInfo.description}
           onChange={handleInput}
-          className="h-40 p-3 bg-white shadow-in rounded-2xl"
+          className="h-40 p-3 bg-white border border-gray-300 rounded-sm"
         />
-        <label htmlFor="image" className="my-1 font-extralight">
+        <label htmlFor="image" className="my-1">
           상품 이미지
         </label>
-        <div className="mb-1 font-extralight">
+        <div className="mb-1 text-sm">
           <p>- 이미지의 첫번째 사진이 상품의 대표이미지입니다.</p>
           <p>- 이미지는 최대 5장까지 업로드할 수 있습니다.</p>
         </div>
@@ -369,7 +376,7 @@ export default function ProductManagement({
           {previewImgs.map((img, idx) => (
             <div
               key={idx}
-              className="relative w-1/5 bg-white aspect-square shadow-in rounded-2xl"
+              className="relative w-1/5 bg-white border border-gray-300 rounded-sm aspect-square"
             >
               <ImagePreview
                 src={img}
