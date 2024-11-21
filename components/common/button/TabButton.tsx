@@ -13,7 +13,7 @@ export default function TabButton({
 
   const handleTabActive = (idx: number) => {
     setTabIdx(idx);
-    const y = scrollRef.current[idx]?.offsetTop! - 52;
+    const y = scrollRef.current[idx]?.offsetTop! - 180;
     window.scrollTo(0, y);
   };
 
