@@ -11,7 +11,7 @@ export default function FilterCharacter() {
   const selectedCharacter = searchParams.get("character");
 
   const handleFilter = (filterType: string, filterName: string) => {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams);
     if (filterType && filterName) {
       params.set(filterType, filterName);
     } else {
@@ -21,12 +21,12 @@ export default function FilterCharacter() {
   };
 
   return (
-    <div className="text-nowrap">
-      <p className="text-2xl font-semibold border-b-4 border-gray-900">
+    <div className="text-nowrap w-36">
+      <p className="text-2xl px-1 py-0.5 font-semibold border-b-4 border-gray-900">
         캐릭터
       </p>
 
-      <ul>
+      <ul className="py-2 px-1">
         {CHARACTER_OPTIONS.map((item, i) => (
           <li key={i} className="py-1.5">
             <button
