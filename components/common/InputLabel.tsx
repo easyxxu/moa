@@ -37,7 +37,7 @@ export default function InputLabel({
   readOnly,
 }: InputLabelProps) {
   return (
-    <div className={`flex flex-col gap-1 font-extralight ${custom}`}>
+    <div className={`flex flex-col gap-1 ${custom}`}>
       {style === "box" ? (
         <>
           <label htmlFor={fieldId}>{labelText}</label>
@@ -46,7 +46,7 @@ export default function InputLabel({
             name={fieldName}
             type={type}
             value={value}
-            className="px-4 py-2 border border-gray-300"
+            className="px-2 py-2 border border-gray-300 rounded-sm"
             placeholder={placeholder}
             required
             onChange={onChange}
@@ -61,7 +61,7 @@ export default function InputLabel({
               id={fieldId}
               name={fieldName}
               type={type}
-              className="w-full px-2 pt-3 pb-1 border-b border-gray-400 peer bg-inherit focus:outline-none focus:border-b-blue-500"
+              className="w-full px-1.5 pt-3 pb-1 border-b border-gray-400 peer bg-inherit focus:outline-none focus:border-b-blue-500"
               placeholder={placeholder}
               required
               onChange={onChange}
@@ -69,7 +69,7 @@ export default function InputLabel({
             />
             <label
               htmlFor={fieldId}
-              className="absolute transition-all left-2 bottom-2 text-md peer-focus:text-sm peer-focus:bottom-7 peer-valid:text-sm peer-valid:bottom-7"
+              className="absolute transition-all left-1.5 bottom-2 text-md peer-focus:text-sm peer-focus:bottom-7 peer-valid:text-sm peer-valid:bottom-7"
             >
               {labelText}
             </label>
