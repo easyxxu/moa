@@ -32,7 +32,7 @@ export default function ImagePreview({
     <>
       <button
         type="button"
-        className="absolute p-2 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 rounded-2xl shadow-out bg-primary"
+        className="absolute p-2 -translate-x-1/2 -translate-y-1/2 rounded-sm top-1/2 left-1/2 hover:bg-gray-100"
         onClick={onClick}
       >
         <Image src={ImageIcon} alt="이미지 추가" />
@@ -42,7 +42,7 @@ export default function ImagePreview({
           <Image
             src={src}
             alt={alt}
-            className="absolute w-full h-full border cursor-pointer rounded-2xl"
+            className="absolute w-full h-full cursor-pointer"
             width={100}
             height={100}
             onClick={onClick}
@@ -55,7 +55,7 @@ export default function ImagePreview({
           <button
             type="button"
             onClick={() => onDelete(idx)}
-            className="absolute top-0 right-0 -translate-x-2 translate-y-2"
+            className="absolute top-0 right-0 -translate-x-2 translate-y-2 rounded-sm hover:bg-gray-100"
           >
             <Image src={DeleteIcon} alt="이미지 삭제" />
           </button>
