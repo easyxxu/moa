@@ -36,13 +36,13 @@ export default TableCell;
 // 하위 컴포넌트
 function TextWithImgCell({ src, text, quantity, price }: TextWithImgProps) {
   return (
-    <td className="flex items-center justify-start gap-5 px-8 py-4">
+    <td className="flex items-center justify-start gap-5 px-4 py-4">
       <Image
         src={src}
         alt={text as string}
         width={200}
         height={200}
-        className="w-16 h-16 rounded shadow-out"
+        className="w-16 h-16 shadow-sm"
       />
       <div>
         <p>{text}</p>
