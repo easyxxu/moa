@@ -47,7 +47,8 @@ export default function ProductDashboard() {
       const { data, error } = await supabase
         .from("product")
         .select()
-        .eq("seller_id", userId!);
+        .eq("seller_id", userId!)
+        .order("created_at", { ascending: false });
 
       if (error) {
         console.error(error);
@@ -59,7 +60,7 @@ export default function ProductDashboard() {
   }, []);
 
   return (
-    <div className="">
+    <div className="mb-14">
       <Link href="/sellercenter/product/add">
         <div className="flex items-center justify-center gap-2 px-3 py-4 font-semibold transition-colors border-black hover:bg-gray-200">
           <Image
