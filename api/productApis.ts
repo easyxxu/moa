@@ -2,7 +2,6 @@
 
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { createClient } from "@/utils/supabase/server";
-import { PostgrestSingleResponse } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -55,6 +54,7 @@ export async function updateProduct(formData: any, productId: number) {
 
 export const getProducts = async (
   page: number = 1,
+  searchKeyword?: string,
   character?: string,
   category?: string,
   order: string = "mostOrders"
@@ -67,6 +67,13 @@ export const getProducts = async (
   let query = supabase.from("product").select().range(start, end);
   let mostOrderQuery;
 
+  if (searchKeyword) {
+    const keywords = searchKeyword
+      .split(" ")
+      .map((word) => `'${word}'`)
+      .join(" & ");
+    query = query.textSearch("name", keywords);
+  }
   if (character) {
     query = query.eq("character_name", character);
   }
@@ -80,6 +87,13 @@ export const getProducts = async (
         mostOrderQuery = supabase
           .rpc("get_product_with_order_count", undefined, { count: "exact" }) // 주문 수 기준으로 정렬
           .order("order_count", { ascending: false });
+        if (searchKeyword) {
+          const keywords = searchKeyword
+            .split(" ")
+            .map((word) => `'${word}'`)
+            .join(" & ");
+          mostOrderQuery = mostOrderQuery.textSearch("name", keywords);
+        }
         if (character) {
           mostOrderQuery = mostOrderQuery.eq("character_name", character);
         }
@@ -118,9 +132,7 @@ export const getProducts = async (
       data: { products: data, totalCount: count },
     };
   }
-
   const { data: products, error, status, count } = await query;
-
   if (error) {
     console.error("getProduct ERROR", error);
     return { status, message: ERROR_MESSAGE.serverError };
