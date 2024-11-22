@@ -21,6 +21,7 @@ interface InputLabelProps {
   custom?: string;
   /** input의 readOnly 속성 */
   readOnly?: boolean;
+  defaultValue?: string | number;
 }
 
 export default function InputLabel({
@@ -35,6 +36,7 @@ export default function InputLabel({
   onChange,
   custom,
   readOnly,
+  defaultValue,
 }: InputLabelProps) {
   return (
     <div className={`flex flex-col gap-1 ${custom}`}>
@@ -51,6 +53,7 @@ export default function InputLabel({
             required
             onChange={onChange}
             readOnly={readOnly}
+            defaultValue={defaultValue}
           />
           <span className="text-sm text-red-600">{error}</span>
         </>
@@ -66,6 +69,7 @@ export default function InputLabel({
               required
               onChange={onChange}
               readOnly={readOnly}
+              defaultValue={defaultValue}
             />
             <label
               htmlFor={fieldId}

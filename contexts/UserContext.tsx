@@ -32,8 +32,13 @@ interface LoginAction {
 interface LogoutAction {
   type: "LOGOUT";
 }
-
-type UserAction = LoginAction | LogoutAction;
+interface UpdateAction {
+  type: "UPDATE";
+  payload: {
+    name: string;
+  };
+}
+type UserAction = LoginAction | LogoutAction | UpdateAction;
 
 async function fetchUserData() {
   try {
@@ -72,6 +77,11 @@ function userReducer(state: AuthUser, action: UserAction): AuthUser {
         isLogin: false,
         moreUserData: null,
       };
+    case "UPDATE":
+      return {
+        ...state,
+        name: action.payload.name,
+      };
     default:
       throw new Error(`Unhandled action type :${action}`);
   }
@@ -96,24 +106,16 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     async function loadUserData() {
       const data = await fetchUserData();
       if (data && data.userData) {
-        dispatch({
-          type: "LOGIN",
-          payload: {
-            id: data.userData.user.id,
-            name: data.userData.user.user_metadata.name,
-            userType: data.userData.user.user_metadata.user_type,
-            moreUserData: data.userData.user,
-          },
-        });
-        setUserData({
+        const userPayload = {
           id: data.userData.user.id,
           name: data.userData.user.user_metadata.name,
-          userType: data.userData.user.user_metadata.user_ype,
-          isLogin: true,
+          userType: data.userData.user.user_metadata.user_type,
           moreUserData: data.userData.user,
-        });
-      }
-      if (!data) {
+        };
+
+        dispatch({ type: "LOGIN", payload: userPayload });
+        setUserData({ ...userPayload, isLogin: true });
+      } else {
         dispatch({ type: "LOGOUT" });
       }
     }

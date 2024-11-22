@@ -332,6 +332,65 @@ export const updateUserInfo = async (
   return { status: 200, message: "회원정보를 수정하였습니다." };
 };
 
+export const updateSellerInfo = async (prevState: any, formData: FormData) => {
+  const supabase = createClient();
+  const name = formData.get("name") as string;
+  const errorMsg: ErrorMsg = {};
+
+  if (!name || name.trim().length === 0) {
+    errorMsg.name = ERROR_MESSAGE.required;
+  }
+  if (Object.keys(errorMsg).length > 0) {
+    return {
+      status: 400,
+      message: errorMsg,
+    };
+  }
+
+  // auth update
+  const { data: authData, error: authUserError } =
+    await supabase.auth.updateUser({
+      data: {
+        name,
+      },
+    });
+
+  if (authUserError) {
+    console.error("Auth 수정 실패: ", authUserError);
+    return {
+      status: 404,
+      message: ERROR_MESSAGE.serverError,
+      error: authUserError,
+    };
+  }
+  console.log("1. Auth 수정 성공", authData);
+
+  // user update
+  const { data: userData, error: userError } = await supabase
+    .from("user")
+    .update({
+      name,
+    })
+    .eq("id", authData.user?.id)
+    .select("name")
+    .single();
+
+  if (userError) {
+    console.error("판매자정보 수정 실패: ", userError);
+    return {
+      status: 404,
+      message: ERROR_MESSAGE.serverError,
+      error: userError,
+    };
+  }
+  console.log("2. 판매자정보 수정 성공", userData);
+
+  return {
+    status: 200,
+    message: "판매자정보를 수정하였습니다.",
+    data: { name: userData.name },
+  };
+};
 export const getUserInfo = async () => {
   const supabase = createClient();
   const { data, error } = await supabase.auth.getUser();
