@@ -1,6 +1,6 @@
 import NotAvailableYet from "@/components/common/NotAvailableYet";
 
-export default function OrderDashboard() {
+export default function CouponPage() {
   return (
     <div className="h-full">
       <NotAvailableYet />
