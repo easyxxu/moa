@@ -9,6 +9,7 @@ import Navigation from "./Navigation";
 import MoaLogo from "@/public/assets/moa-logo.svg";
 
 import { useUserState } from "@/contexts/UserContext";
+import { Suspense } from "react";
 
 export default function Header() {
   const userState = useUserState();
@@ -33,7 +34,9 @@ export default function Header() {
                   />
                 </Link>
               </h1>
-              <SearchInput />
+              <Suspense>
+                <SearchInput />
+              </Suspense>
             </div>
             <Navigation isLogin={isLogin} isSeller={isSeller} />
           </div>
