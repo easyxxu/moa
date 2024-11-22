@@ -4,6 +4,7 @@ import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { getUserInfo } from "./userApis";
 
 interface ProductForm {
   name: string;
@@ -224,4 +225,39 @@ export const likeProduct = async (productId: number) => {
     revalidatePath("/products/[productId]", "page");
     return { success: true, liked: true, message: "좋아요 완료" };
   }
+};
+
+export const getStockCount = async () => {
+  const supabase = createClient();
+
+  const res = await getUserInfo();
+  if (res.status !== 200 || !res.user) {
+    return {
+      status: res.status,
+      message: res.message,
+    };
+  }
+  const { status, data, error } = await supabase
+    .from("product")
+    .select()
+    .eq("seller_id", res.user.id);
+  if (error) {
+    console.error("판매자의 상품을 불러오는 데 실패했습니다.", error);
+    return { status, message: ERROR_MESSAGE.serverError };
+  }
+
+  const lowStockProducts = data.filter(
+    (product) => product.stock <= 3 && product.stock > 0
+  );
+  const outOfStockProducts = data.filter((product) => product.stock === 0);
+
+  // 결과 반환
+  return {
+    status: 200,
+    message: "상품 수량 정보 조회를 성공했습니다.",
+    data: {
+      lowStockCount: lowStockProducts.length,
+      outOfStockCount: outOfStockProducts.length,
+    },
+  };
 };

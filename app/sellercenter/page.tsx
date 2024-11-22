@@ -6,12 +6,39 @@ import Image from "next/image";
 import Link from "next/link";
 import { BarChart, LineChart } from "@/components/sellercenter/Chart";
 import { getOrderDataWithChartFormat } from "@/api/chartApis";
+import { getStockCount } from "@/api/productApis";
+import { getSellerProductsWithQuestions } from "@/api/qaApis";
 
 export default async function SellerCenter() {
   const { status, message, data } = await getOrderDataWithChartFormat();
   if ((status >= 400 && status < 500) || !data) {
     throw new Error(message);
   }
+  // 매진 임박 상품 개수 알림
+  const {
+    status: getStockStatus,
+    message: getStockMsg,
+    data: getStockCountData,
+  } = await getStockCount();
+  if (getStockStatus >= 400 && getStockStatus < 500) {
+    throw new Error(getStockMsg);
+  }
+  // 답변 대기 개수 알림
+  const {
+    status: productsWithQuestionStatus,
+    message: productsWithQuestionMsg,
+    data: productsWithQuestionData,
+  } = await getSellerProductsWithQuestions();
+  if (productsWithQuestionStatus === 404) {
+    throw new Error(productsWithQuestionMsg);
+  }
+  let waitingQuestionsCount = 0;
+  productsWithQuestionData?.forEach(
+    (product) =>
+      (waitingQuestionsCount += product.question.filter(
+        (q) => !q.answer_status
+      ).length)
+  );
   return (
     <div className="px-4 py-4 space-y-10">
       <div className="flex gap-10">
@@ -49,7 +76,7 @@ export default async function SellerCenter() {
                     href="/sellercenter/qa"
                     className="text-red-400 underline underline-offset-2"
                   >
-                    5
+                    {waitingQuestionsCount}
                   </Link>{" "}
                   건
                 </div>
@@ -70,7 +97,7 @@ export default async function SellerCenter() {
                     href="/sellercenter/product"
                     className="text-red-400 underline underline-offset-2"
                   >
-                    3
+                    {getStockCountData?.lowStockCount}
                   </Link>{" "}
                   개
                 </div>
@@ -80,7 +107,7 @@ export default async function SellerCenter() {
                     href="/sellercenter/product"
                     className="text-red-400 underline underline-offset-2"
                   >
-                    2
+                    {getStockCountData?.outOfStockCount}
                   </Link>{" "}
                   개
                 </div>
