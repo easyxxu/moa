@@ -124,18 +124,24 @@ export default function CartTableItem({ item, isLastItem }: Props) {
           className="bg-[url('/assets/icon/icon-check-box.svg')] w-5 h-5 checked:bg-[url('/assets/icon/icon-check-box-fill.svg')]"
         />
       </td>
-      <td className="flex gap-3">
-        <Image
-          src={item.image[0]}
-          alt={item.name}
-          width={200}
-          height={200}
-          className="rounded"
-        />
-        <div className="text-start">
-          <p className="font-semibold">{item.name}</p>
-          <p className="font-bold">{item.price.toLocaleString()} 원</p>
-          <p>배송비 {item.shipping_fee.toLocaleString()} 원</p>
+      <td>
+        <div className="flex gap-3">
+          <Link href={`/products/${item.id}`}>
+            <Image
+              src={item.image[0]}
+              alt={item.name}
+              width={200}
+              height={200}
+              className="rounded"
+            />
+          </Link>
+          <div className="text-start">
+            <Link href={`/products/${item.id}`}>
+              <p className="font-semibold">{item.name}</p>
+            </Link>
+            <p className="font-bold">{item.price.toLocaleString()} 원</p>
+            <p>배송비 {item.shipping_fee.toLocaleString()} 원</p>
+          </div>
         </div>
       </td>
       <td>
