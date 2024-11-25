@@ -24,7 +24,7 @@ export const getOrderDataWithChartFormat = async () => {
       `
     price,
     order(created_at),
-    product!inner(seller_id)
+    product!inner()
   `
     )
     .eq("product.seller_id", userId!)
