@@ -20,7 +20,13 @@ export const getOrderDataWithChartFormat = async () => {
 
   const { status, data, error } = await supabase
     .from("order_item")
-    .select(`price, product(), order(created_at)`)
+    .select(
+      `
+    price,
+    order(created_at),
+    product!inner(seller_id)
+  `
+    )
     .eq("product.seller_id", userId!)
     .gte("order.created_at", sixMonthsAgo.toISOString());
 
