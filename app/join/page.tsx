@@ -1,13 +1,27 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useFormState } from "react-dom";
+import { useEffect } from "react";
 
 import Form from "@/components/authForm/Form";
 import InputLabel from "@/components/common/InputLabel";
 import { userJoin } from "@/api/userApis";
+import { useUserDispatch } from "@/contexts/UserContext";
 
 export default function Join() {
-  const [state, formAction] = useFormState(userJoin, {});
+  const router = useRouter();
+  const userDispatch = useUserDispatch();
+  const [state, formAction] = useFormState(userJoin, {
+    status: 0,
+  });
+
+  useEffect(() => {
+    if (state.status === 200) {
+      userDispatch?.login();
+      router.push("/");
+    }
+  }, [state.status]);
 
   return (
     <div className="flex justify-center h-screen my-10">

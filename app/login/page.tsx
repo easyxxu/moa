@@ -11,25 +11,18 @@ import { useUserDispatch } from "@/contexts/UserContext";
 import { userLogin } from "@/api/userApis";
 
 export default function Login() {
-  const [state, formAction] = useFormState(userLogin, {});
+  const [state, formAction] = useFormState(userLogin, {
+    status: 0,
+  });
   const userDispatch = useUserDispatch();
   const router = useRouter();
 
   useEffect(() => {
-    if (state.code === "SUCCESS") {
-      const userData = {
-        id: state.userData?.id!,
-        name: state.userData?.name!,
-        userType: state.userData?.user_type!,
-        moreUserData: state.userData?.moreUserData!,
-      };
-      userDispatch({
-        type: "LOGIN",
-        payload: userData,
-      });
+    if (state.status === 200) {
+      userDispatch?.login();
       router.push("/");
     }
-  }, [state.code]);
+  }, [state.status]);
 
   return (
     <div className="relative flex justify-center h-full">

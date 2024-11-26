@@ -48,7 +48,7 @@ export default function ProductPurchaseOptions({
     closeModal();
   };
   const redirectToLoginWithLogout = () => {
-    userDispatch({ type: "LOGOUT" });
+    userDispatch?.logout();
     router.push("/login");
     closeModal();
   };

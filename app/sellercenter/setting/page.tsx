@@ -15,7 +15,7 @@ export default function SettingDashboard() {
 
   useEffect(() => {
     if (state?.status === 200) {
-      userDispatch({ type: "UPDATE", payload: { name: state.data?.name! } });
+      userDispatch?.updateUser(state.data?.name!);
     }
   }, [state]);
 

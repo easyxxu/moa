@@ -1,15 +1,9 @@
 "use client";
 
+import { getUserInfo } from "@/api/userApis";
 import { User } from "@supabase/supabase-js";
 
-import {
-  createContext,
-  Dispatch,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 
 interface AuthUser {
   id: string | null;
@@ -32,33 +26,41 @@ interface LoginAction {
 interface LogoutAction {
   type: "LOGOUT";
 }
+
 interface UpdateAction {
   type: "UPDATE";
   payload: {
     name: string;
   };
 }
+
 type UserAction = LoginAction | LogoutAction | UpdateAction;
 
 async function fetchUserData() {
   try {
-    const res = await fetch("/api/auth/user");
-    const data = await res.json();
-    if (res.status === 200) {
+    const { status, message, data } = await getUserInfo();
+    if (status === 200) {
       return data;
     } else {
-      throw new Error(`data.message`);
+      throw message;
     }
   } catch (e) {
     console.log("Error fetching user data: ", e);
-    return null;
+    throw new Error(`${e}`);
   }
 }
+
+const initialUser: AuthUser = {
+  id: null,
+  name: null,
+  isLogin: false,
+  userType: "LOGGED_OUT",
+  moreUserData: null,
+};
 
 function userReducer(state: AuthUser, action: UserAction): AuthUser {
   switch (action.type) {
     case "LOGIN":
-      console.log("Login");
       return {
         ...state,
         id: action.payload.id,
@@ -68,15 +70,8 @@ function userReducer(state: AuthUser, action: UserAction): AuthUser {
         isLogin: true,
       };
     case "LOGOUT":
-      console.log("logout");
-      return {
-        ...state,
-        id: null,
-        name: null,
-        userType: "LOGGED_OUT",
-        isLogin: false,
-        moreUserData: null,
-      };
+      return initialUser;
+
     case "UPDATE":
       return {
         ...state,
@@ -87,45 +82,50 @@ function userReducer(state: AuthUser, action: UserAction): AuthUser {
   }
 }
 
-const initialUser: AuthUser = {
-  id: null,
-  name: null,
-  userType: "LOGGED_OUT",
-  isLogin: false,
-  moreUserData: null,
-};
-
 const UserContext = createContext(initialUser);
-const UserDispatchContext = createContext<Dispatch<UserAction>>(() => null);
+const UserDispatchContext = createContext<{
+  login: () => Promise<void>;
+  logout: () => void;
+  updateUser: (name: string) => void;
+} | null>(null);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-  const [userData, setUserData] = useState(initialUser);
-  const [state, dispatch] = useReducer(userReducer, userData);
+  const [state, dispatch] = useReducer(userReducer, initialUser);
+
+  async function loadUserData() {
+    const data = await fetchUserData();
+    if (data) {
+      const userPayload = {
+        id: data.id,
+        name: data.user_metadata.name,
+        userType: data.user_metadata.user_type,
+        moreUserData: data,
+      };
+      dispatch({ type: "LOGIN", payload: userPayload });
+    } else {
+      dispatch({ type: "LOGOUT" });
+    }
+  }
+
+  const login = async () => {
+    await loadUserData();
+  };
+
+  const logout = () => {
+    dispatch({ type: "LOGOUT" });
+  };
+
+  const updateUser = (name: string) => {
+    dispatch({ type: "UPDATE", payload: { name } });
+  };
 
   useEffect(() => {
-    async function loadUserData() {
-      const data = await fetchUserData();
-      if (data && data.userData) {
-        const userPayload = {
-          id: data.userData.user.id,
-          name: data.userData.user.user_metadata.name,
-          userType: data.userData.user.user_metadata.user_type,
-          moreUserData: data.userData.user,
-        };
-
-        dispatch({ type: "LOGIN", payload: userPayload });
-        setUserData({ ...userPayload, isLogin: true });
-      } else {
-        dispatch({ type: "LOGOUT" });
-      }
-    }
-
     loadUserData();
   }, []);
 
   return (
     <UserContext.Provider value={state}>
-      <UserDispatchContext.Provider value={dispatch}>
+      <UserDispatchContext.Provider value={{ login, logout, updateUser }}>
         {children}
       </UserDispatchContext.Provider>
     </UserContext.Provider>

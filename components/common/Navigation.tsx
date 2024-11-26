@@ -75,9 +75,7 @@ export default function Navigation({ isLogin, isSeller }: Props) {
                       custom="w-12 h-12"
                       onClick={async () => {
                         await userLogOut();
-                        userDispatch({
-                          type: "LOGOUT",
-                        });
+                        userDispatch?.logout();
                       }}
                     >
                       <Image src={LogoutIcon} alt="로그아웃" />
@@ -95,9 +93,7 @@ export default function Navigation({ isLogin, isSeller }: Props) {
                       custom="w-12 h-12"
                       onClick={async () => {
                         await userLogOut();
-                        userDispatch({
-                          type: "LOGOUT",
-                        });
+                        userDispatch?.logout();
                       }}
                     >
                       <Image src={LogoutIcon} alt="로그아웃" />

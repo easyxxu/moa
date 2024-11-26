@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { emailRegex, passwordRegex } from "@/utils/constants/validation";
 import { createClient } from "@/utils/supabase/server";
-import { Provider, User } from "@supabase/supabase-js";
+import { Provider } from "@supabase/supabase-js";
 import { defaultUrl } from "@/app/layout";
 
 export type ErrorMsg = {
@@ -20,10 +20,13 @@ export type State = {
   errorMsg?: ErrorMsg;
 };
 
+export type JoinState = State & {
+  status: number;
+};
 export async function userJoin(
   prevState: State,
   formData: FormData
-): Promise<State> {
+): Promise<JoinState> {
   const userType = formData.get("userType") as string;
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -53,9 +56,6 @@ export async function userJoin(
   if (isNaN(Number(phone))) {
     errorMsg.phone = ERROR_MESSAGE.phoneInvalid;
   }
-  // if (Object.keys(errorMsg).length > 0) {
-  //   return { errorMsg };
-  // }
 
   const { error } = await supabase.auth.signUp({
     email,
@@ -87,19 +87,15 @@ export async function userJoin(
   }
 
   if (Object.keys(errorMsg).length > 0) {
-    return { errorMsg };
+    return { status: 404, errorMsg };
   }
-  return redirect("/login");
+  return {
+    status: 200,
+  };
 }
 
 export type LoginState = State & {
-  code?: "SUCCESS" | "FAILED";
-  userData?: {
-    id: string;
-    name: string;
-    user_type: "BUYER" | "SELLER";
-    moreUserData: User;
-  };
+  status: number;
 };
 
 export async function userLogin(
@@ -127,11 +123,11 @@ export async function userLogin(
     errorMsg.login = ERROR_MESSAGE.loginInvalid;
   }
 
-  const { data: userData, error: userError } = await supabase
-    .from("user")
-    .select()
-    .eq("id", data.user?.id!)
-    .single();
+  const {
+    status,
+    data: userData,
+    error: userError,
+  } = await supabase.from("user").select().eq("id", data.user?.id!).single();
 
   if (userError) {
     errorMsg.login = ERROR_MESSAGE.getUserError;
@@ -142,17 +138,11 @@ export async function userLogin(
   }
 
   if (Object.keys(errorMsg).length > 0) {
-    return { code: "FAILED", errorMsg };
+    return { status, errorMsg };
   }
 
   return {
-    code: "SUCCESS",
-    userData: {
-      id: data.user?.id!,
-      name: data.user?.user_metadata.name,
-      user_type: data.user?.user_metadata.user_type,
-      moreUserData: data.user!,
-    },
+    status: 200,
   };
 }
 
@@ -218,7 +208,7 @@ export const updateEmail = async (
         email: newEmail,
       },
     });
-  console.log("authData:", authData, authUserError);
+
   if (authUserError?.code === "email_exists") {
     errorMsg.email = ERROR_MESSAGE.emailAlreadyExists;
     return {
@@ -391,23 +381,35 @@ export const updateSellerInfo = async (prevState: any, formData: FormData) => {
     data: { name: userData.name },
   };
 };
+
 export const getUserInfo = async () => {
   const supabase = createClient();
-  const { data, error } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (!user && error?.status === 400) {
+    console.log("유저가 로그아웃된 상태입니다.");
+    return {
+      status: 200,
+      message: "유저가 로그아웃된 상태입니다.",
+      data: null,
+    };
+  }
 
   if (error) {
     console.error("유저 정보를 불러오는 데 실패했습니다.", error);
     return {
-      status: 404,
-      message: "유저 정보를 불러오는 데 실패했습니다.",
-      error,
+      status: error.status || 404,
+      message: ERROR_MESSAGE.serverError,
     };
   }
 
-  console.log(data);
+  // console.log(data);
   return {
     status: 200,
     message: "유저 정보를 불러오는 데 성공했습니다.",
-    user: data.user,
+    data: user,
   };
 };
