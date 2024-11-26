@@ -13,7 +13,7 @@ export const getOrderDataWithChartFormat = async () => {
   const supabase = createClient();
 
   const res = await getUserInfo();
-  const userId = res.user?.id;
+  const userId = res.data?.id;
 
   const sixMonthsAgo = new Date();
   sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);

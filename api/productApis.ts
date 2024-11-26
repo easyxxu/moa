@@ -231,7 +231,7 @@ export const getStockCount = async () => {
   const supabase = createClient();
 
   const res = await getUserInfo();
-  if (res.status !== 200 || !res.user) {
+  if (res.status !== 200 || !res.data) {
     return {
       status: res.status,
       message: res.message,
@@ -240,7 +240,7 @@ export const getStockCount = async () => {
   const { status, data, error } = await supabase
     .from("product")
     .select()
-    .eq("seller_id", res.user.id);
+    .eq("seller_id", res.data.id);
   if (error) {
     console.error("판매자의 상품을 불러오는 데 실패했습니다.", error);
     return { status, message: ERROR_MESSAGE.serverError };
