@@ -11,6 +11,7 @@ import { useCartCheckItems } from "@/contexts/CartContext";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/contexts/toastContext";
 import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
+import Link from "next/link";
 
 interface Props {
   item: CartItemInfo;
