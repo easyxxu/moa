@@ -12,7 +12,7 @@ import Button from "../../common/button/Button";
 import { addReview } from "@/api/reviewApis";
 import { Tables } from "@/types/database.types";
 import { modifyReview } from "@/api/reviewApis";
-import { useToast } from "@/contexts/toastContext";
+import { useToast } from "@/contexts/ToastContext";
 import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 
 interface Props {

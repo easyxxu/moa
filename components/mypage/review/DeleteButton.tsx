@@ -1,7 +1,7 @@
 "use client";
 
 import { deleteReview } from "@/api/reviewApis";
-import { useToast } from "@/contexts/toastContext";
+import { useToast } from "@/contexts/ToastContext";
 import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 
 interface Props {

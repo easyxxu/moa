@@ -3,7 +3,7 @@
 import { ErrorMsg, updateUserInfo } from "@/api/userApis";
 import Button from "@/components/common/button/Button";
 import InputLabel from "@/components/common/InputLabel";
-import { useToast } from "@/contexts/toastContext";
+import { useToast } from "@/contexts/ToastContext";
 import { useUserState } from "@/contexts/UserContext";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";

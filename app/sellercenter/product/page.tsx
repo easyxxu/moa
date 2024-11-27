@@ -13,7 +13,7 @@ import { useUserState } from "@/contexts/UserContext";
 
 import { createClient } from "@/utils/supabase/client";
 import { Tables } from "@/types/database.types";
-import { useToast } from "@/contexts/toastContext";
+import { useToast } from "@/contexts/ToastContext";
 import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 

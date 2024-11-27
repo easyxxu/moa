@@ -4,7 +4,7 @@ import Button from "../common/button/Button";
 import PostCode from "./PostCode";
 import { useCartCheckItems } from "@/contexts/CartContext";
 import PortOne, { PaymentRequest } from "@portone/browser-sdk/v2";
-import { useToast } from "@/contexts/toastContext";
+import { useToast } from "@/contexts/ToastContext";
 import { updateOrderStatus } from "@/api/orderApis";
 import { useRouter } from "next/navigation";
 

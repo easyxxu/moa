@@ -11,7 +11,7 @@ import { addProduct, updateProduct } from "@/api/productApis";
 import { createClient } from "@/utils/supabase/client";
 import { usePathname, useRouter } from "next/navigation";
 import { useUserState } from "@/contexts/UserContext";
-import { useToast } from "@/contexts/toastContext";
+import { useToast } from "@/contexts/ToastContext";
 import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import {

@@ -3,7 +3,7 @@ import "./globals.css";
 import { UserProvider } from "@/contexts/UserContext";
 import { ModalProvider } from "@/contexts/ModalContext";
 import { CartProvider } from "@/contexts/CartContext";
-import { ToastProvider } from "@/contexts/toastContext";
+import { ToastProvider } from "@/contexts/ToastContext";
 
 export const defaultUrl =
   process.env.NODE_ENV === "production"
