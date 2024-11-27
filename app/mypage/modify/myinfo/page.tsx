@@ -4,12 +4,16 @@ import { ErrorMsg, updateUserInfo } from "@/api/userApis";
 import Button from "@/components/common/button/Button";
 import InputLabel from "@/components/common/InputLabel";
 import { useToast } from "@/contexts/toastContext";
+import { useUserState } from "@/contexts/UserContext";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
 
 export default function ModifyMyInfo() {
+  const router = useRouter();
+  const userInfo = useUserState();
   const { openToast } = useToast();
   const [state, formAction] = useFormState(updateUserInfo, {
     status: 0,
@@ -31,6 +35,7 @@ export default function ModifyMyInfo() {
         type: "SUCCESS",
         content: TOAST_MESSAGE.MYPAGE.PROFILE.NAME_CONTACT_CHANGE,
       });
+      router.push("/mypage");
     }
   }, [state, openToast]);
   return (
@@ -45,6 +50,7 @@ export default function ModifyMyInfo() {
           style="box"
           custom="flex-grow"
           error={(state.error as ErrorMsg)?.name}
+          defaultValue={userInfo.name!}
         />
         <InputLabel
           type="text"
@@ -54,6 +60,7 @@ export default function ModifyMyInfo() {
           style="box"
           custom="flex-grow"
           error={(state.error as ErrorMsg)?.phone}
+          defaultValue={userInfo.moreUserData?.user_metadata.phone}
         />
         <Button type="submit" style="point" custom="w-full py-2 mt-4">
           저장
