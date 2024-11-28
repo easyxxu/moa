@@ -67,9 +67,7 @@ export default function Menu() {
           className="flex items-center gap-2 px-2 py-3 transition-colors duration-200 rounded-sm hover:bg-gray-200"
           onClick={async () => {
             await userLogOut();
-            userDispatch({
-              type: "LOGOUT",
-            });
+            userDispatch?.logout();
           }}
         >
           <Image
