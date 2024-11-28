@@ -6,39 +6,7 @@ import ResultIcon from "@/public/assets/icon/icon-result-round-white.svg";
 import { useCartCheckItems } from "@/contexts/CartContext";
 
 export default function CartTotalPrice() {
-  const { checkedItems, price } = useCartCheckItems();
-
-  const productsPrice = checkedItems.reduce((acc, cur) => {
-    //  각 store별로 배송비는 한번만 추가
-    const existingStore = acc.find((item) => item.store === cur.store);
-
-    if (existingStore) {
-      existingStore.totalPrice += cur.price * cur.quantity;
-    } else {
-      acc.push({
-        store: cur.store,
-        totalPrice: cur.price * cur.quantity,
-        shippingFee: cur.shipping_fee,
-      });
-    }
-
-    return acc;
-  }, [] as { store: string; totalPrice: number; shippingFee: number }[]);
-
-  const totalProductPrice = productsPrice.reduce(
-    (sum, item) => sum + item.totalPrice,
-    0
-  );
-
-  const totalShippingFee = productsPrice.reduce(
-    (sum, item) => sum + item.shippingFee,
-    0
-  );
-
-  const finalPrice = productsPrice.reduce(
-    (sum, item) => sum + item.totalPrice + item.shippingFee,
-    0
-  );
+  const { price } = useCartCheckItems();
 
   return (
     <div className="w-full flex border border-gray-900 shadow-md rounded-sm justify-around *:py-12">
