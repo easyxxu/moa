@@ -63,7 +63,6 @@ export const getProducts = async (
   const supabase = createClient();
   const start = (page - 1) * 20;
   const end = start + 19;
-
   // default
   let query = supabase.from("product").select().range(start, end);
   let mostOrderQuery;
@@ -86,7 +85,7 @@ export const getProducts = async (
     switch (order) {
       case "mostOrders":
         mostOrderQuery = supabase
-          .rpc("get_product_with_order_count", undefined, { count: "exact" }) // 주문 수 기준으로 정렬
+          .rpc("get_product_with_order_count") // 주문 수 기준으로 정렬
           .order("order_count", { ascending: false });
         if (searchKeyword) {
           const keywords = searchKeyword
@@ -119,7 +118,6 @@ export const getProducts = async (
   }
   if (order === "mostOrders") {
     const { status, data, error, count }: any = await mostOrderQuery;
-
     if (error) {
       console.error("mostOrdersQuery error: ", error);
       return {
@@ -127,6 +125,7 @@ export const getProducts = async (
         message: ERROR_MESSAGE.serverError,
       };
     }
+
     return {
       status: 200,
       message: "상품을 불러오는 데 성공했습니다.",
