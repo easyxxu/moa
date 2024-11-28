@@ -1,4 +1,5 @@
 import { CartItem } from "@/contexts/CartContext";
+import { OrderItem } from "@/contexts/DirectOrderContext";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
@@ -68,25 +69,64 @@ export async function POST(req: Request) {
 
     const orderId = orderData[0].id;
 
-    await Promise.all(
-      data.orderItems.map(async (item: CartItem) => {
-        const { error: orderItemError } = await supabase
-          .from("order_item")
-          .insert({
-            order_id: orderId,
-            item_id: item.itemId,
-            quantity: item.quantity,
-            price: item.price,
-            shipping_fee: item.shipping_fee,
-          });
-        if (orderItemError) {
-          console.log("Order item insertion failed: ", orderItemError);
+    const orderItemResults = await Promise.all(
+      data.orderItems.map(async (item: CartItem | OrderItem) => {
+        try {
+          const { status, error: orderItemError } = await supabase
+            .from("order_item")
+            .insert({
+              order_id: orderId,
+              item_id: item.itemId,
+              quantity: item.quantity,
+              price: item.price,
+              shipping_fee: item.shippingFee,
+            });
+
+          if (orderItemError) {
+            console.error("개별 주문 항목 삽입 중 오류 발생: ", orderItemError);
+            return {
+              success: false,
+              status,
+              message: "Order item insertion error",
+              error: orderItemError,
+            };
+          }
+
+          return {
+            success: true,
+            status,
+            message: "Order item inserted successfully",
+          };
+        } catch (e) {
+          console.error("삽입 작업 중 예상치 못한 오류 발생: ", e);
+          return {
+            success: false,
+            status: 500,
+            message: "Unexpected error occurred",
+            error: e,
+          };
         }
       })
     );
+
+    // order_item 추가 결과
+    const failedItems = orderItemResults.filter((result) => !result.success);
+
+    if (failedItems.length > 0) {
+      console.error("실패한 주문 항목: ", failedItems);
+      return NextResponse.json(
+        {
+          message: "Some order items failed to insert",
+          failedItems,
+        },
+        { status: 400 } 
+      );
+    }
+
+    // 모든 작업이 성공적으로 완료된 경우
     return NextResponse.json(
       {
-        message: "Order created successfully",
+        message: "All order items inserted successfully",
       },
       { status: 200 }
     );

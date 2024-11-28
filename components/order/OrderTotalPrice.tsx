@@ -1,8 +1,14 @@
 "use client";
 import { useCartCheckItems } from "@/contexts/CartContext";
+import { useDirectOrder } from "@/contexts/DirectOrderContext";
+import { usePathname } from "next/navigation";
 
 export default function OrderTotalPrice() {
-  const { price } = useCartCheckItems();
+  const pathname = usePathname();
+  const orderType = pathname.split("/").pop();
+  const { price: cartOrderPrice } = useCartCheckItems();
+  const { price: directOrderPrice } = useDirectOrder();
+  const price = orderType === "directOrder" ? directOrderPrice : cartOrderPrice;
 
   return (
     <div className="flex justify-end gap-4 px-10 py-2 border-gray-900 border-y">

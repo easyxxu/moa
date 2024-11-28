@@ -5,17 +5,32 @@ import TableCell from "../table/TableItem";
 import { useEffect, useState } from "react";
 import { loadProductById } from "@/api/productApis";
 import { Tables } from "@/types/database.types";
+import { useDirectOrder } from "@/contexts/DirectOrderContext";
+import { usePathname } from "next/navigation";
 
 export default function OrderList() {
+  const pathname = usePathname();
+  const orderType = pathname.split("/").pop();
   const { checkedItems } = useCartCheckItems();
+  const { orderItem } = useDirectOrder();
   const [orderItems, setOrderItems] = useState<Tables<"product">[]>([]);
-
   useEffect(() => {
-    const getProductData = () => {
-      checkedItems.map(async (item) => {
+    const getProductData = async () => {
+      if (orderType === "directOrder" && orderItem) {
+        const { data } = await loadProductById(orderItem.itemId);
+        if (data) {
+          setOrderItems([data]);
+        }
+        return;
+      }
+
+      const fetchData = checkedItems.map(async (item) => {
         const { data } = await loadProductById(item.itemId);
-        setOrderItems((prev) => [...prev, data!]);
+        return data;
       });
+
+      const results = await Promise.all(fetchData);
+      setOrderItems(results.filter(Boolean) as Tables<"product">[]);
     };
     getProductData();
   }, []);
@@ -38,13 +53,20 @@ export default function OrderList() {
             src={item.image[0]}
             text={item.name}
             price={item.price}
-            quantity={checkedItems[idx].quantity}
+            quantity={
+              orderType === "directOrder"
+                ? orderItem?.quantity
+                : checkedItems[idx].quantity
+            }
           />
           <TableCell.TextCell text="0" />
           <TableCell.TextCell text={item.shipping_fee.toLocaleString()} />
           <TableCell.TextCell
             text={`${(
-              item.price * checkedItems[idx].quantity
+              item.price *
+              (orderType === "directOrder"
+                ? orderItem?.quantity!
+                : checkedItems[idx].quantity)
             ).toLocaleString()} 원`}
           />
         </tr>

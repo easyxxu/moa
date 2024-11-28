@@ -16,15 +16,18 @@ import {
 import { likeProduct } from "@/api/productApis";
 import { useModal } from "@/contexts/ModalContext";
 import { usePathname, useRouter } from "next/navigation";
+import { useDirectOrder } from "@/contexts/DirectOrderContext";
 
 interface Props {
   price: number;
+  shippingFee: number;
   likedCnt: number;
   likedList: string[] | null;
 }
 
 export default function ProductPurchaseOptions({
   price,
+  shippingFee,
   likedCnt,
   likedList,
 }: Props) {
@@ -39,6 +42,7 @@ export default function ProductPurchaseOptions({
     userState.moreUserData?.app_metadata.provider === "google";
 
   const { showModal, closeModal } = useModal();
+  const { addOrderItem } = useDirectOrder();
   const [priceByQuantity, setPriceByQuantity] = useState(price);
   const [quantity, setQuantity] = useState(1);
   const userDispatch = useUserDispatch();
@@ -120,6 +124,30 @@ export default function ProductPurchaseOptions({
     const res = await likeProduct(productId);
     console.log("#res: ", res);
   };
+  const handleNowBuy = () => {
+    if (!isLogin) {
+      showModal({
+        type: "CONFIRM",
+        content: "로그인이 필요한 서비스입니다. \n로그인 하시겠습니까?",
+        onConfirm: () => redirectToLogin(),
+      });
+      return;
+    } else if (!isBuyer) {
+      showModal({
+        type: "CONFIRM",
+        content: "구매자로 로그인해주세요. \n로그인 하시겠습니까?",
+        onConfirm: () => redirectToLoginWithLogout(),
+      });
+      return;
+    }
+    addOrderItem({
+      itemId: productId,
+      quantity,
+      price,
+      shippingFee,
+    });
+    router.push("/order/directOrder");
+  };
   return (
     <>
       <hr className="my-5" />
@@ -158,7 +186,12 @@ export default function ProductPurchaseOptions({
         >
           장바구니 담기
         </Button>
-        <Button type="button" style="point" custom="w-1/2 py-3">
+        <Button
+          type="button"
+          style="point"
+          custom="w-1/2 py-3"
+          onClick={handleNowBuy}
+        >
           바로 구매
         </Button>
       </div>

@@ -1,34 +1,30 @@
 "use client";
+
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+
 import Button from "../common/button/Button";
 import PostCode from "./PostCode";
+
 import { useCartCheckItems } from "@/contexts/CartContext";
-import PortOne, { PaymentRequest } from "@portone/browser-sdk/v2";
 import { useToast } from "@/contexts/ToastContext";
+import { useDirectOrder } from "@/contexts/DirectOrderContext";
+import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { createOrderName } from "@/utils/createOrderName";
+import PortOne, { PaymentRequest } from "@portone/browser-sdk/v2";
 import { updateOrderStatus } from "@/api/orderApis";
-import { useRouter } from "next/navigation";
 
 export default function OrderForm() {
-  const { checkedItems, price } = useCartCheckItems();
+  const pathname = usePathname();
   const router = useRouter();
   const { openToast } = useToast();
-  const createOrderName = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    const seconds = String(now.getSeconds()).padStart(2, "0");
+  const { checkedItems, price: cartOrderPrice } = useCartCheckItems();
+  const { orderItem, price: directOrderPrice } = useDirectOrder();
+  const orderType = pathname.split("/").pop();
+  const price = orderType === "directOrder" ? directOrderPrice : cartOrderPrice;
 
-    // crypto.randomUUID()로 UUID 생성 후 앞 8자리만 사용
-    const shortUUID = crypto.randomUUID().split("-")[0];
-
-    const orderName = `${year}${month}${day}_${hours}${minutes}${seconds}_${shortUUID}`;
-
-    return orderName;
-  };
   const [formData, setFormData] = useState({
+    orderType: orderType!,
     orderName: createOrderName(),
     name: "",
     email: "",
@@ -38,19 +34,23 @@ export default function OrderForm() {
     detailAddress: "",
     deliveryMessage: "",
     payment: "",
-    orderItems: checkedItems,
+    orderItems: orderType === "directOrder" ? [orderItem!] : checkedItems,
     totalPrice: price.totalPrice,
   });
-
   const [postCodeModal, setPostCodeModal] = useState(false);
-
   const [phone, setPhone] = useState("");
+
   const handleInputTel = (e: React.ChangeEvent<HTMLInputElement>) => {
     const onlyNumbers = e.target.value.replace(/\D/g, "");
     setPhone(onlyNumbers);
   };
+
   const handleOpenPostCodeModal = () => {
     setPostCodeModal(true);
+  };
+
+  const handleAddress = (postCode: string, defaultAddress: string) => {
+    setFormData((prev) => ({ ...prev, postCode, defaultAddress }));
   };
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,6 +64,7 @@ export default function OrderForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // 주문서 생성
     const res = await fetch("/api/order", {
       method: "POST",
       headers: {
@@ -88,7 +89,6 @@ export default function OrderForm() {
         fullName: formData.name,
         email: formData.email,
         phoneNumber: formData.phone,
-        // zipcode: formData.postCode,
       },
     };
 
@@ -112,9 +112,16 @@ export default function OrderForm() {
         body: JSON.stringify({
           paymentId: paymentId,
           order: formData,
+          orderType,
         }),
       });
       router.push(completeRes.url);
+    } else {
+      console.log(res);
+      openToast({
+        type: "ERROR",
+        content: ERROR_MESSAGE.serverError,
+      });
     }
   };
 
@@ -183,7 +190,7 @@ export default function OrderForm() {
                 </Button>
                 {postCodeModal && (
                   <PostCode
-                    setFormData={setFormData}
+                    handleAddress={handleAddress}
                     setPostCodeModal={setPostCodeModal}
                   />
                 )}
@@ -229,16 +236,6 @@ export default function OrderForm() {
               />
               <span className="align-middle">신용 / 체크 카드</span>
             </label>
-            {/* <label>
-              <input
-                type="radio"
-                name="payment"
-                value="VIRTUAL_ACCOUNT"
-                className="align-middle"
-                onChange={handleInput}
-              />
-              <span className="align-middle">무통장입금</span>
-            </label> */}
             <label>
               <input
                 type="radio"

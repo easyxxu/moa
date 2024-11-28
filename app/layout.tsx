@@ -4,6 +4,7 @@ import { UserProvider } from "@/contexts/UserContext";
 import { ModalProvider } from "@/contexts/ModalContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { ToastProvider } from "@/contexts/ToastContext";
+import { DirectOrderProvider } from "@/contexts/DirectOrderContext";
 
 export const defaultUrl =
   process.env.NODE_ENV === "production"
@@ -31,17 +32,19 @@ export default function RootLayout({
 }) {
   return (
     <UserProvider>
-      <CartProvider>
-        <html lang="en" className={`${pretendard.variable}`}>
-          <body className="bg-background font-pretendard">
-            <ToastProvider>
-              <ModalProvider>
-                <div className="h-[100vh]">{children}</div>
-              </ModalProvider>
-            </ToastProvider>
-          </body>
-        </html>
-      </CartProvider>
+      <DirectOrderProvider>
+        <CartProvider>
+          <html lang="en" className={`${pretendard.variable}`}>
+            <body className="bg-background font-pretendard">
+              <ToastProvider>
+                <ModalProvider>
+                  <div className="h-[100vh]">{children}</div>
+                </ModalProvider>
+              </ToastProvider>
+            </body>
+          </html>
+        </CartProvider>
+      </DirectOrderProvider>
     </UserProvider>
   );
 }

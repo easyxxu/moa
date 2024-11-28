@@ -1,4 +1,5 @@
 import { CartItem } from "@/contexts/CartContext";
+import { OrderItem } from "@/contexts/DirectOrderContext";
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
@@ -10,7 +11,7 @@ export async function POST(req: Request) {
   const data = await req.json();
 
   try {
-    const { paymentId, order } = data;
+    const { paymentId, order, orderType } = data;
 
     // 1. 포트원 결제내역 단건조회 API 호출
     const paymentResponse = await fetch(
@@ -68,24 +69,26 @@ export async function POST(req: Request) {
               `1-1.주문 테이블의 주문상태와 결제상태 업데이트 실패: ${updatedDataError}`
             );
           }
-
-          // 장바구니에 주문된 아이템 삭제
-          const cartItemIds = order.orderItems.map(
-            (item: CartItem) => item.cartItemId
-          );
-          const { error: deletedError } = await supabase
-            .from("cart_item")
-            .delete()
-            .in("id", cartItemIds);
-          console.log("2.장바구니에 주문된 상품 삭제 성공");
-          if (deletedError) {
-            throw new Error(
-              `2-1.주문완료된 이후 장바구니에 해당 상품 삭제 실패: ${deletedError}`
+          // 장바구니에서 구매한 경우만 장바구니 아이템 삭제
+          if (orderType !== "directOrder") {
+            // 장바구니에 주문된 아이템 삭제
+            const cartItemIds = order.orderItems.map(
+              (item: CartItem) => item.cartItemId
             );
+            const { error: deletedError } = await supabase
+              .from("cart_item")
+              .delete()
+              .in("id", cartItemIds);
+            console.log("2.장바구니에 주문된 상품 삭제 성공");
+            if (deletedError) {
+              throw new Error(
+                `2-1.주문완료된 이후 장바구니에 해당 상품 삭제 실패: ${deletedError}`
+              );
+            }
           }
 
           await Promise.all(
-            order.orderItems.map(async (item: CartItem) => {
+            order.orderItems.map(async (item: CartItem | OrderItem) => {
               // 현재 상품 데이터 가져오기(현재 수량 파악을 위함)
               const { data: productData, error: productDataError } =
                 await supabase
