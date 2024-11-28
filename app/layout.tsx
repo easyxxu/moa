@@ -15,7 +15,14 @@ export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: "MoA",
   description: "귀여운 것들을 모두 모아! 모아에서 귀여운 제품들을 만나보세요!",
-  openGraph: {},
+  openGraph: {
+    images: [
+      {
+        url: "https://github.com/user-attachments/assets/485c6c79-fa9e-415e-b0e1-b4e47f3d3a75",
+        alt: "MoA",
+      },
+    ],
+  },
 };
 
 const pretendard = localFont({
