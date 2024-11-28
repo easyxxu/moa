@@ -59,6 +59,7 @@ export default async function ProductPage({
             <p>배송비: {data.shipping_fee.toLocaleString()} 원</p>
             <ProductPurchaseOptions
               price={data.price}
+              shippingFee={data.shipping_fee}
               likedCnt={data.liked_count}
               likedList={data.liked_list}
             />

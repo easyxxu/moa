@@ -6,12 +6,12 @@ export interface CartItem {
   itemId: number;
   quantity: number;
   price: number;
-  shipping_fee: number;
+  shippingFee: number;
   store: string;
   cartItemId: number;
 }
 
-interface Price {
+export interface Price {
   productsPrice: number;
   shippingFee: number;
   totalPrice: number;
@@ -45,7 +45,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     shippingFee: 0,
     totalPrice: 0,
   });
-
   const uncheckItem = (item: CartItem) => {
     setCheckedItems((prev) => [
       ...prev.filter((prevItem) => prevItem.itemId !== item.itemId),
@@ -82,7 +81,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         acc.push({
           store: cur.store,
           totalPrice: cur.price * cur.quantity,
-          shippingFee: cur.shipping_fee,
+          shippingFee: cur.shippingFee,
         });
       }
 

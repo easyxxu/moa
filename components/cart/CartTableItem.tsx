@@ -73,7 +73,7 @@ export default function CartTableItem({ item, isLastItem }: Props) {
       itemId: item.id!,
       price: item.price,
       quantity: item.quantity,
-      shipping_fee: item.shipping_fee,
+      shippingFee: item.shipping_fee,
       store: item.seller_store,
       cartItemId: item.cartItemId,
     };
@@ -90,7 +90,7 @@ export default function CartTableItem({ item, isLastItem }: Props) {
       itemId: item.id!,
       price: item.price,
       quantity: item.quantity,
-      shipping_fee: item.shipping_fee,
+      shippingFee: item.shipping_fee,
       store: item.seller_store,
       cartItemId: item.cartItemId,
     };

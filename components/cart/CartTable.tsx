@@ -21,7 +21,7 @@ export default function CartTable({ cartItems, cartCount }: Props) {
           itemId: item.id,
           quantity: item.quantity,
           price: item.price,
-          shipping_fee: item.shipping_fee,
+          shippingFee: item.shipping_fee,
           store: store,
           cartItemId: item.cartItemId,
         });
