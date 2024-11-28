@@ -37,7 +37,7 @@ export const getMyQuestions = async (page: number) => {
   } = await supabase
     .from("question")
     .select(`*, product(*)`, { count: "exact" })
-    .eq("writer_id", res.user?.id!)
+    .eq("writer_id", res.data?.id!)
     .range(start, end);
 
   if (error) {
