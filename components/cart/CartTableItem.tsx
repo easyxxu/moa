@@ -9,7 +9,7 @@ import { deleteCartItem, updateQuantity } from "@/api/cartApis";
 import DeleteIcon from "@/public/assets/icon/icon-delete.svg";
 import { useCartCheckItems } from "@/contexts/CartContext";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/contexts/ToastContext";
+// import { useToast } from "@/contexts/ToastContext";
 import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 import Link from "next/link";
 
