@@ -1,6 +1,6 @@
 "use client";
 
-import { getUserInfo } from "@/api/userApis";
+import { getUserInfo, userLogOut } from "@/api/userApis";
 import { User } from "@supabase/supabase-js";
 
 import { createContext, useContext, useEffect, useReducer } from "react";
@@ -111,7 +111,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     await loadUserData();
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await userLogOut();
     dispatch({ type: "LOGOUT" });
   };
 

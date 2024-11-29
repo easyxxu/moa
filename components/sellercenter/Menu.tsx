@@ -65,10 +65,7 @@ export default function Menu() {
         <button
           type="button"
           className="flex items-center gap-2 px-2 py-3 transition-colors duration-200 rounded-sm hover:bg-gray-200"
-          onClick={async () => {
-            await userLogOut();
-            userDispatch?.logout();
-          }}
+          onClick={() => userDispatch?.logout()}
         >
           <Image
             src={LogoutIcon}
