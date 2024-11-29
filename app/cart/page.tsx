@@ -51,7 +51,7 @@ export default async function CartPage() {
           <CartTotalPrice />
           <Link
             href="/order/cartOrder"
-            className="self-center w-1/5 py-4 my-10 text-2xl text-center text-white transition-shadow bg-blue-500 rounded-sm duration-300font-semibold hover:shadow-md "
+            className="self-center w-1/5 py-4 my-10 text-2xl text-center text-white transition-shadow bg-black rounded-sm duration-300font-semibold hover:shadow-md "
           >
             주문하기
           </Link>
