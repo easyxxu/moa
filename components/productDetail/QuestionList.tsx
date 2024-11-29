@@ -93,7 +93,7 @@ export default function QuestionList({ setQas, qas }: Props) {
                           {qa.content}
                         </p>
                       </div>
-                      <p className="px-2 py-1 font-semibold text-center rounded text-nowrap shadow-out text-font-grey-bold bg-primary">
+                      <p className="px-2 py-1 text-center rounded-sm text-nowrap shadow-sm text-white bg-black">
                         {qa.answer_status ? "답변 완료" : "답변 대기"}
                       </p>
                     </div>
