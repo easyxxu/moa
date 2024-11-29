@@ -30,7 +30,7 @@ export default function PostCode({
   return (
     <div
       onClick={handleClickOutSide}
-      className="fixed w-screen h-screen top-0 left-0 bg-[rgba(0,0,0,0.5)] z-10"
+      className="fixed w-screen h-screen top-0 left-0 bg-[rgba(0,0,0,0.5)] z-40"
     >
       <DaumPostCode
         onComplete={(data: DaumAddress) => {
