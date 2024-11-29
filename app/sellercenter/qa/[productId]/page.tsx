@@ -19,7 +19,7 @@ export default async function ProductAnswerPage({
     throw new Error(message);
   }
   return (
-    <div className="w-full p-6 shadow-sm bg-gray-50">
+    <div className="w-full p-6">
       <div className="flex items-center gap-4 p-4 mb-4 bg-white rounded-lg shadow">
         <Image
           src={data?.product.image[0]!}
@@ -56,7 +56,11 @@ export default async function ProductAnswerPage({
                       : `/sellercenter/qa/${productId}/${question.id}/answer`
                   }
                 >
-                  <div className="px-4 py-2 text-blue-500 rounded-md hover:bg-gray-100">
+                  <div
+                    className={`px-4 py-2 text-blue-500 rounded-md hover:bg-gray-100 ${
+                      question.answer_status ? "text-gray-500" : ""
+                    }`}
+                  >
                     {question.answer_status ? "답변확인" : "답변달기"}
                   </div>
                 </Link>

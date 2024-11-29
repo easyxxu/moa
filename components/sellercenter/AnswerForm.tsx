@@ -2,6 +2,7 @@
 
 import { addAnswer } from "@/api/qaApis";
 import { useFormState } from "react-dom";
+import Button from "../common/button/Button";
 
 interface Props {
   questionId: number;
@@ -36,12 +37,9 @@ export default function AnswerForm({ questionId, productId }: Props) {
           readOnly
         />
         <input type="text" hidden value={productId} name="productId" readOnly />
-        <button
-          type="submit"
-          className="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:bg-blue-700"
-        >
+        <Button type="submit" style="point" custom="w-full px-4 py-2">
           답변 제출
-        </button>
+        </Button>
       </form>
     </div>
   );

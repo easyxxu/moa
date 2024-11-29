@@ -3,9 +3,5 @@ export default function QADetailLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="w-full p-6 mx-auto bg-white rounded-lg shadow-md">
-      {children}
-    </div>
-  );
+  return <div className="w-full p-6 mx-auto bg-white">{children}</div>;
 }
