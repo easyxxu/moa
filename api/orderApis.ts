@@ -31,7 +31,9 @@ export const getOrderByUser = async () => {
     )
   `
     )
-    .eq("customer_id", user?.id!);
+    .eq("customer_id", user?.id!)
+    .order("created_at", { ascending: false });
+
   if (getOrdersError) {
     console.error("getOrdersError: ", getOrdersError);
     return {
