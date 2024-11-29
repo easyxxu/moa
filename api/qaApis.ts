@@ -38,7 +38,8 @@ export const getMyQuestions = async (page: number) => {
     .from("question")
     .select(`*, product(*)`, { count: "exact" })
     .eq("writer_id", res.data?.id!)
-    .range(start, end);
+    .range(start, end)
+    .order("created_at", { ascending: false });
 
   if (error) {
     console.error("작성한 문의글을 불러오는 데 실패했습니다.");
