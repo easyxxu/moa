@@ -240,7 +240,7 @@ export const getQuestionsByProductId = async (productId: number) => {
     .from("question")
     .select()
     .eq("product_id", productId)
-    .order("id");
+    .order("answer_status");
 
   if (questionError) {
     console.error("상품별 문의를 불러오는데 실패했습니다.", questionError);
