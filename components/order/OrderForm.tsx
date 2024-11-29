@@ -127,7 +127,7 @@ export default function OrderForm() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} autoComplete="off">
         <p className="my-3 text-2xl font-semibold">주문서 작성</p>
         <div className="flex flex-col mb-3 border-t border-gray-900">
           <label className="order-form-label">
