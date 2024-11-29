@@ -210,10 +210,14 @@ export const getSellerProductsWithQuestions = async () => {
     return { status: 404, message: ERROR_MESSAGE.serverError };
   }
 
+  const sortedProducts = products.sort(
+    (a, b) => b.question.length - a.question.length
+  );
+
   return {
     status: 200,
     message: "데이터를 불러오는데 성공했습니다.",
-    data: products,
+    data: sortedProducts,
   };
 };
 
