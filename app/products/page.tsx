@@ -3,6 +3,7 @@ import ProductOrderSelector from "@/components/product/ProductOrderSelector";
 import FilterCharacter from "@/components/product/FilterCharacter";
 import { getProducts } from "@/api/productApis";
 import FilterProduct from "@/components/product/FilterProduct";
+import FilterProductList from "@/components/product/FilterProductList";
 
 export default async function ProductsPage(props: {
   searchParams?: {
@@ -33,7 +34,7 @@ export default async function ProductsPage(props: {
           <FilterProduct />
           <ProductOrderSelector />
         </div>
-        <CardList initialProducts={data?.products!} />
+        <FilterProductList initialProducts={data?.products || []} />
       </div>
     </div>
   );

@@ -42,16 +42,6 @@ export async function updateProduct(formData: any, productId: number) {
 
   return error;
 }
-/**
- * 상품 GET
- *
- * @param page - 요청 데이터 페이지 번호
- * @param character - opt. 상품 캐릭터별
- * @param category - opt. 상품 유형별
- * @param order - opt. 상품 정렬 순서
- *
- * @returns 상품 데이터 배열 또는 에러 메세지
- */
 
 export const getProducts = async (
   page: number = 1,
@@ -61,8 +51,9 @@ export const getProducts = async (
   order: string = "mostOrders"
 ) => {
   const supabase = createClient();
-  const start = (page - 1) * 20;
-  const end = start + 19;
+  const start = Math.max((page - 1) * 15, 0);
+  const end = start + 14;
+
   // default
   let query = supabase.rpc("get_product_with_order_count").range(start, end);
 
@@ -100,7 +91,7 @@ export const getProducts = async (
     }
   }
 
-  const { data: products, error, status, count } = await query;
+  const { data: products, error, status } = await query;
 
   if (error) {
     console.error("getProduct ERROR", error);
@@ -112,7 +103,6 @@ export const getProducts = async (
     message: "상품을 불러오는 데 성공했습니다.",
     data: {
       products,
-      totalCount: count,
     },
   };
 };
