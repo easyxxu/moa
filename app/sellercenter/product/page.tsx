@@ -57,7 +57,7 @@ export default function ProductDashboard() {
       setProductData(data!);
     };
     if (userId) fetchProduct();
-  }, []);
+  }, [userId]);
 
   return (
     <div className="mb-14">
