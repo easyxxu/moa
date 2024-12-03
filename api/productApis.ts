@@ -20,10 +20,6 @@ interface ProductForm {
 
 export async function addProduct(formData: ProductForm) {
   const supabase = createClient();
-
-  // const image = formData.image;
-  // console.log("#입력된 formData: ", formData);
-
   const { error } = await supabase.from("product").insert({ ...formData });
 
   if (error) {
