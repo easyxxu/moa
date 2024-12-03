@@ -43,7 +43,7 @@ export default function LikePage() {
       {products.length === 0 ? (
         <NoLikedProducts />
       ) : (
-        <CardList initialProducts={products!} />
+        <CardList products={products!} />
       )}
     </>
   );

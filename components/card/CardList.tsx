@@ -1,22 +1,23 @@
+import { Tables } from "@/types/database.types";
 import CardItem from "./CardItem";
 import Link from "next/link";
 
-interface CardListProps {
-  products: {
-    id: number;
-    name: string;
-    price: number;
-    image: string[];
-    category: string;
-    character_name: string;
-    created_at: string;
-    liked_count: number;
-    liked_list: string[];
-    order_count: number;
-  }[];
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string[];
+  category: string;
+  character_name: string;
+  created_at: string;
+  liked_count: number;
+  liked_list: string[];
+  order_count?: number;
 }
-
-export default function CardList({ products }: CardListProps) {
+interface Props {
+  products: Product[] | Tables<"product">[];
+}
+export default function CardList({ products }: Props) {
   return (
     <div>
       <ul className="grid grid-cols-3 px-2 gap-7 md:grid-cols-4 lg:grid-cols-5">
