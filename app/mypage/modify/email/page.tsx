@@ -1,43 +1,64 @@
 "use client";
 
-import { ErrorMsg, updateEmail } from "@/api/userApis";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useFormState } from "react-dom";
+import { updateEmail } from "@/api/userApis";
+import Button from "@/components/common/button/Button";
 import InputLabel from "@/components/common/InputLabel";
 import { useToast } from "@/contexts/ToastContext";
 import { useUserState } from "@/contexts/UserContext";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
-import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
-import { useFormState, useFormStatus } from "react-dom";
-
-const SubmitButton = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      disabled={pending}
-      className="w-full py-2 mb-2 bg-primary shadow-out rounded-2xl"
-    >
-      {pending ? "대기중... " : "이메일 인증"}
-    </button>
-  );
-};
 
 export default function ModifyEmail() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const { openToast } = useToast();
   const nowEmail = useUserState().moreUserData?.email || "";
   const [state, formAction] = useFormState(updateEmail, {
     status: 0,
     message: "",
   });
+  const [pending, setPending] = useState(false);
 
-  if (state.status >= 400 && state.status < 500) {
-    openToast({ type: "ERROR", content: ERROR_MESSAGE.serverError });
-  }
-  if (state.status === 200) {
-    openToast({
-      type: "SUCCESS",
-      content: TOAST_MESSAGE.MYPAGE.PROFILE.EMAIL_CHANGE,
-    });
-  }
+  useEffect(() => {
+    if (state.status === 500) {
+      openToast({ type: "ERROR", content: ERROR_MESSAGE.serverError });
+    }
+    if (state.status === 202) {
+      setPending(true);
+    }
+  }, [state]);
+
+  useEffect(() => {
+    const verifyEmail = async () => {
+      const code = searchParams.get("code");
+      if (code) {
+        try {
+          const res = await fetch(`/mypage/modify/email?code=${code}`);
+          if (res.status === 200) {
+            openToast({
+              type: "SUCCESS",
+              content: "이메일 인증에 성공하였습니다.",
+            });
+            router.push("/mypage");
+          } else {
+            openToast({
+              type: "ERROR",
+              content: "이메일 인증에 실패하였습니다.",
+            });
+          }
+        } catch (error) {
+          openToast({
+            type: "ERROR",
+            content: "서버와의 통신 중 오류가 발생했습니다.",
+          });
+        }
+      }
+    };
+
+    verifyEmail();
+  }, [searchParams]);
   return (
     <div className="w-full">
       <h2 className="mb-6 text-center">이메일 변경</h2>
@@ -60,9 +81,17 @@ export default function ModifyEmail() {
             labelText="새 이메일"
             style="box"
             custom="flex-grow"
-            error={(state.error as ErrorMsg)?.email}
+            // error={(state.error as ErrorMsg)?.email}
           />
-          <SubmitButton />
+          {/* <SubmitButton /> */}
+          <Button
+            type="submit"
+            style="point"
+            disable={pending}
+            custom={`py-2 ${pending ? "bg-gray-300" : ""}`}
+          >
+            {pending ? "이메일 인증을 해주세요." : "변경하기"}
+          </Button>
         </div>
       </form>
     </div>

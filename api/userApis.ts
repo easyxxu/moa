@@ -202,17 +202,20 @@ export const updateEmail = async (
   }
   // auth update
   const { data: authData, error: authUserError } =
-    await supabase.auth.updateUser({
-      email: newEmail,
-      data: {
+    await supabase.auth.updateUser(
+      {
         email: newEmail,
+        data: {
+          email: newEmail,
+        },
       },
-    });
+      { emailRedirectTo: `${defaultUrl}/mypage/modify/email` }
+    );
 
   if (authUserError?.code === "email_exists") {
     errorMsg.email = ERROR_MESSAGE.emailAlreadyExists;
     return {
-      status: 404,
+      status: 409,
       message: ERROR_MESSAGE.serverError,
       error: errorMsg,
     };
@@ -220,30 +223,16 @@ export const updateEmail = async (
 
   if (authUserError) {
     return {
-      status: 404,
+      status: 500,
       message: ERROR_MESSAGE.serverError,
       error: authUserError,
     };
   }
 
-  // user update
-  const { data: userData, error: userError } = await supabase
-    .from("user")
-    .update({
-      email: newEmail,
-    })
-    .eq("id", authData.user?.id);
-
-  if (userError) {
-    return {
-      status: 404,
-      message: ERROR_MESSAGE.serverError,
-      error: userError,
-    };
-  }
-  console.log("user update success: ", userData);
-
-  redirect("/mypage");
+  return {
+    status: 202,
+    message: "메일함에서 이메일을 인증해주세요.",
+  };
 };
 
 export const checkEmailConfirm = async (email: string) => {
