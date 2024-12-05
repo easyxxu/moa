@@ -58,6 +58,35 @@
 - 주문 완료 시 주문한 제품과 주문 정보가 담긴 페이지로 이동합니다.
   <img width="1437" alt="주문 완료 페이지" src="https://github.com/user-attachments/assets/0230c11b-b1d0-4959-bb2c-234b0306baee">
 
+### 마이페이지 for Buyer
+
+- 구매자로 로그인한 사용자는 마이페이지를 통해 주문, 리뷰, 문의 내역을 확인할 수 있습니다.
+  <br/>
+
+**[주문조회]**
+
+- 가장 최근 주문부터 확인이 가능합니다.
+  <img width="1000" alt="주문조회" src="https://github.com/user-attachments/assets/e1949a76-f447-4807-a9f2-2a7e3f23624b">
+
+- 주문상세내역에서 작성하기 버튼을 통해 리뷰작성이 가능합니다.
+  <img width="1000" alt="주문상세내역" src="https://github.com/user-attachments/assets/54f88d8d-f923-469c-bf48-78b77e9ce727">
+  <br/>
+
+**[리뷰조회]**
+
+- 작성한 리뷰를 확인하고 수정과 삭제가 가능합니다.
+  <img width="1000" alt="리뷰조회" src="https://github.com/user-attachments/assets/ad63912f-f72d-474d-ba38-11c7abcce589">
+  <br/>
+
+**[개인정보수정]**
+<img width="1000" alt="스크린샷 2024-12-05 오후 9 49 15" src="https://github.com/user-attachments/assets/83221965-b178-4d47-b986-22665676b21f">
+
+**[상품 Q/A]**
+
+- 상품별로 작성한 문의를 확인하고 삭제가 가능합니다.
+  <img width="1000" alt="상품Q/A내역" src="https://github.com/user-attachments/assets/4350061f-73b9-4665-99fc-2fd68dbdb747">
+  <img width="1000" alt="스크린샷 2024-11-29 오후 2 46 34" src="https://github.com/user-attachments/assets/326eb911-c049-41d2-bb2d-f9e827ffecd9">
+
 ### 판매자센터
 
 **[홈]**
@@ -86,32 +115,6 @@
 - 답변이 이미 달렸다면 답변을 확인할 수 있는 페이지로, 답변이 달리지 않았다면 답변을 달 수 있는 페이지로 이동합니다.
   <img width="1000" alt="문의답변 작성" src="https://github.com/user-attachments/assets/77ccb524-222e-4fe4-a725-91c8c5033d23">
   <img width="1000" alt="문의답변 확인" src="https://github.com/user-attachments/assets/7c450c3d-2784-4ec3-a659-bdf14380db2e">
-
-### 마이페이지 for Buyer
-
-- 구매자로 로그인한 사용자는 마이페이지를 통해 주문, 리뷰, 문의 내역을 확인할 수 있습니다.
-  <br/>
-
-**[주문조회]**
-
-- 가장 최근 주문부터 확인이 가능합니다.
-  <img width="1000" alt="주문조회" src="https://github.com/user-attachments/assets/e1949a76-f447-4807-a9f2-2a7e3f23624b">
-
-- 주문상세내역에서 작성하기 버튼을 통해 리뷰작성이 가능합니다.
-  <img width="1000" alt="주문상세내역" src="https://github.com/user-attachments/assets/54f88d8d-f923-469c-bf48-78b77e9ce727">
-  <br/>
-
-**[리뷰조회]**
-
-- 작성한 리뷰를 확인하고 수정과 삭제가 가능합니다.
-  <img width="1000" alt="리뷰조회" src="https://github.com/user-attachments/assets/ad63912f-f72d-474d-ba38-11c7abcce589">
-  <br/>
-
-**[상품 Q/A]**
-
-- 상품별로 작성한 문의를 확인하고 삭제가 가능합니다.
-  <img width="1000" alt="상품Q/A내역" src="https://github.com/user-attachments/assets/4350061f-73b9-4665-99fc-2fd68dbdb747">
-  <img width="1000" alt="스크린샷 2024-11-29 오후 2 46 34" src="https://github.com/user-attachments/assets/326eb911-c049-41d2-bb2d-f9e827ffecd9">
 
 ### 추후 개발 예정
 
