@@ -7,6 +7,7 @@ import { useUserState } from "@/contexts/UserContext";
 import { likeProduct } from "@/api/productApis";
 import { useModal } from "@/contexts/ModalContext";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface Props {
   id: number;
@@ -29,6 +30,9 @@ export default function CardItem({
   const userState = useUserState();
   const userId = userState.id;
   const { showModal, closeModal } = useModal();
+  const [isLiked, setIsLiked] = useState(likedList?.includes(userId!));
+  const [isLikedCnt, setIsLikedCnt] = useState(likedCnt || 0);
+
   const handleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     // 로그인 여부 체크
@@ -54,8 +58,16 @@ export default function CardItem({
       return;
     }
     const res = await likeProduct(id);
-    console.log("#like res: ", res);
+    setIsLiked(res.liked);
+    setIsLikedCnt((prev) => {
+      return res.liked ? prev + 1 : prev - 1;
+    });
   };
+
+  useEffect(() => {
+    setIsLiked(likedList?.includes(userId!)!);
+    setIsLikedCnt(likedCnt!);
+  }, [userId, likedCnt]);
 
   return (
     <div className="w-full transition duration-300 ease-in-out delay-75 rounded-sm shadow-md hover:shadow-lg hover:scale-105 ">
@@ -74,11 +86,8 @@ export default function CardItem({
         {!pathname.includes("mypage") && !pathname.includes("order") && (
           <div className="flex-shrink-0">
             <button type="button" onClick={handleLike}>
-              <Image
-                src={likedList?.includes(userId!) ? HeartIcon : UnHeartIcon}
-                alt="좋아요"
-              />
-              <p className="text-center text-font-grey">{likedCnt}</p>
+              <Image src={isLiked ? HeartIcon : UnHeartIcon} alt="좋아요" />
+              <p className="text-center text-font-grey">{isLikedCnt}</p>
             </button>
           </div>
         )}
