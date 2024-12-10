@@ -96,7 +96,7 @@ export default function CartTableItem({ item, isLastItem }: Props) {
     };
     allUncheck();
     checkItem(itemForOneOrder);
-    router.push(`/order`);
+    router.push(`/order/cartOrder`);
   };
 
   useEffect(() => {
