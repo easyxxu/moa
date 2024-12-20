@@ -70,7 +70,7 @@ export default function CardItem({
   }, [userId, likedCnt]);
 
   return (
-    <div className="w-full transition duration-300 ease-in-out delay-75 rounded-sm shadow-md hover:shadow-lg hover:scale-105 ">
+    <div className="w-full h-full transition duration-300 ease-in-out delay-75 rounded-sm shadow-md hover:shadow-lg hover:scale-105 ">
       <Image
         src={src}
         alt={name}

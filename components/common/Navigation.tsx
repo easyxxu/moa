@@ -21,7 +21,8 @@ interface Props {
 
 export default function Navigation({ isLogin, isSeller }: Props) {
   const userDispatch = useUserDispatch();
-  const linkCss = "w-12 h-12 flex justify-center rounded-md hover:bg-gray-100";
+  const linkCss =
+    "w-8 h-8 flex justify-center rounded-md hover:bg-gray-100 sm:w-12 sm:h-12";
   return (
     <nav>
       <ul className="z-20 flex gap-2">

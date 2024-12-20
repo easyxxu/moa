@@ -39,7 +39,7 @@ export default function ProductNav() {
   }, []);
   return (
     <div
-      className={`bg-white sticky top-[87px] z-20 ${
+      className={`bg-white sticky top-[81.26px] z-20 sm:top-[87px]${
         isScrolled && !isProductDetailPage ? "shadow-md" : ""
       }`}
     >
@@ -52,7 +52,7 @@ export default function ProductNav() {
             setIsDropDownVisible(false);
             // setCategory(null);
           }}
-          className="flex gap-4 px-2 pb-2 text-2xl cursor-pointer font-extralight"
+          className="flex gap-4 px-2 pb-2 text-xl cursor-pointer sm:text-2xl font-extralight"
         >
           {CATEGORYS.map((category, i) => (
             <li
