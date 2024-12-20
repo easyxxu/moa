@@ -14,9 +14,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = (await params).productId;
-
   const res = await loadProductById(+id);
-
   const productImage = res.data?.image[0] || "";
 
   return {
@@ -38,16 +36,16 @@ export default async function ProductPage({
 
   return (
     <div className="px-2 space-y-4">
-      <div className="flex gap-12">
+      <div className="flex flex-col w-full gap-6 sm:gap-12 sm:flex-row">
         <Image
           src={data.image[0]}
           alt={data.name}
           width={300}
           height={300}
-          className="w-2/5 rounded-sm"
+          className="w-full rounded-sm aspect-square sm:w-2/5"
         />
-        <div className="flex flex-col justify-between w-3/5">
-          <div>
+        <div className="flex flex-col justify-between sm:w-3/5">
+          <div className="mb-2">
             <div className="flex gap-2 mb-2">
               <Image src={ShopIcon} alt="샵 아이콘" width={20} height={20} />
               {data.seller_store}
