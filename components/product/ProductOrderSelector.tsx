@@ -62,7 +62,9 @@ export default function ProductOrderSelector() {
             <li
               key={option.name}
               onClick={() => handleSelectOrder(option.name)}
-              className="px-5 py-2 cursor-pointer text-nowrap hover:text-blue-400"
+              className={`px-5 py-2 cursor-pointer text-nowrap hover:bg-gray-200 ${
+                selectedOrderText === option.text ? "bg-gray-200" : ""
+              }`}
             >
               {option.text}
             </li>
