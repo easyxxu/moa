@@ -24,7 +24,7 @@ export default function Form({ children, formType, onSubmit }: FormProps) {
           <Image src={MoaLogo} alt="모아 로고" className="w-64" />
         </Link>
       </h1>
-      <div className="max-w-[550px] rounded-sm shadow-lg px-16 py-14 bg-white flex gap-4 flex-col items-center justify-center">
+      <div className="max-w-[550px] sm:rounded-sm sm:shadow-lg px-16 py-14 bg-white flex gap-4 flex-col items-center justify-center">
         <div className="space-y-4">
           <h2 className="text-center text-font-grey-bold">
             {formType === "join" ? "회원가입" : "로그인"}
