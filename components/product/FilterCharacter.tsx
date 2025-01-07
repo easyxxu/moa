@@ -21,14 +21,14 @@ export default function FilterCharacter() {
   };
 
   return (
-    <div className="text-nowrap w-36">
-      <p className="text-2xl px-1 py-0.5 font-semibold border-b-4 border-gray-900">
+    <div className="border-gray-900 border-y sm:border-none text-nowrap sm:w-36">
+      <p className="hidden sm:block text-2xl px-1 py-0.5 font-semibold border-b-4 border-gray-900">
         캐릭터
       </p>
 
-      <ul className="py-2 px-1">
+      <ul className="flex px-1 py-2 sm:flex-col">
         {CHARACTER_OPTIONS.map((item, i) => (
-          <li key={i} className="py-1.5">
+          <li key={i} className="px-2 sm:py-1.5">
             <button
               onClick={() => handleFilter("character", item.name)}
               className={`${

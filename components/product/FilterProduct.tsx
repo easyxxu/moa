@@ -21,7 +21,7 @@ export default function FilterProduct() {
     <div>
       <ul className="flex text-nowrap">
         {CATEGORY_OPTIONS.map((item, i) => (
-          <li key={i} className="px-4 border-r border-r-gray-500">
+          <li key={i} className="px-4 sm:border-r sm:border-r-gray-500">
             <button
               onClick={() => handleFilter("category", item.name)}
               className={`${

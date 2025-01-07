@@ -27,10 +27,10 @@ export default async function ProductsPage(props: {
   }
 
   return (
-    <div className="flex gap-8 px-2">
+    <div className="flex flex-col sm:px-2 sm:gap-8 sm:flex-row">
       <FilterCharacter />
       <div className="flex flex-col w-full gap-4">
-        <div className="flex items-center justify-between border border-gray-500 rounded-sm">
+        <div className="flex items-center justify-between border-b border-gray-900 rounded-sm sm:border sm:border-gray-900">
           <FilterProduct />
           <ProductOrderSelector />
         </div>

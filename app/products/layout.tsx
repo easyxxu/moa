@@ -9,9 +9,11 @@ export default function ProductLayout({
 }) {
   return (
     <div className="relative">
-      <Header />
-      <Category />
-      <main className="mt-4 mb-10">{children}</main>
+      <div className="sticky top-0 z-10">
+        <Header />
+        <Category />
+      </div>
+      <main className="mb-10">{children}</main>
       <Footer />
     </div>
   );

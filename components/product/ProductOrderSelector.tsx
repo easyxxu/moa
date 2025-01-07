@@ -40,7 +40,7 @@ export default function ProductOrderSelector() {
     }
   }, [currentFilter]);
   return (
-    <div className="relative border-l border-l-gray-500">
+    <div className="relative border-l border-l-gray-900">
       <button
         type="button"
         onClick={() => setIsSelectBoxOpen((prev) => !prev)}
@@ -57,7 +57,7 @@ export default function ProductOrderSelector() {
       </button>
 
       {isSelectBoxOpen && (
-        <ul className="absolute right-0 z-10 w-full mt-1 bg-white rounded-sm shadow-lg">
+        <ul className="absolute w-full bg-white border rounded-b-sm border-x-gray-900 border-b-gray-900">
           {ORDER_OPTIONS.map((option) => (
             <li
               key={option.name}
