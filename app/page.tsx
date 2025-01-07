@@ -11,7 +11,7 @@ export default async function Index() {
     throw new Error(message);
   }
   return (
-    <>
+    <div>
       <div className="sticky top-0">
         <Header />
         <Category />
@@ -20,6 +20,6 @@ export default async function Index() {
         <FilterProductList initialProducts={data?.products || []} />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
