@@ -21,14 +21,14 @@ export default function SearchInput() {
   };
 
   return (
-    <form className="min-w-48 mr-4 sm:mr-0 sm:w-80">
-      <div className="rounded-full bg-gray-100 py-2 pl-4 pr-4 flex gap-2">
+    <form className="mr-4 min-w-48 sm:mr-0 sm:w-80">
+      <div className="flex gap-2 px-3 py-1 bg-gray-100 rounded-full sm:px-4 sm:py-2">
         <label className="w-full">
           <input
             type="text"
             name="search"
             placeholder="상품을 검색해보세요!"
-            className="bg-inherit font-regular align-middle w-full"
+            className="w-full text-sm sm:text-base sm:align-middle bg-inherit"
             onChange={(e) => setSerachKeyword(e.target.value)}
             defaultValue={searchParams.get("searchKeyword")?.toString()}
           />
