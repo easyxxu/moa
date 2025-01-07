@@ -25,7 +25,7 @@ export default function Navigation({ isLogin, isSeller }: Props) {
     "w-7 h-7 flex justify-center rounded-md hover:bg-gray-100 sm:w-12 sm:h-12";
   return (
     <nav>
-      <ul className="z-20 flex gap-2">
+      <ul className="flex gap-2">
         {!isLogin ? (
           <>
             <li>
