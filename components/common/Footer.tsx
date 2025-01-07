@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="py-10 text-gray-700 border-t border-border-grey shadow-borderBottom mt-44">
+    <footer className="py-10 mt-10 text-gray-700 border-t border-border-grey shadow-borderBottom">
       <div className="grid grid-cols-1 gap-8 px-2 mx-auto my-0 max-w-7xl md:grid-cols-3">
         {/* 회사 정보 */}
         <div>
