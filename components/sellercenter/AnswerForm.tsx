@@ -38,7 +38,7 @@ export default function AnswerForm({ questionId, productId }: Props) {
         />
         <input type="text" hidden value={productId} name="productId" readOnly />
         <Button type="submit" style="point" custom="w-full px-4 py-2">
-          답변 제출
+          답변 저장
         </Button>
       </form>
     </div>
