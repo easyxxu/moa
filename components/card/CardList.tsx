@@ -19,7 +19,7 @@ interface Props {
 }
 export default function CardList({ products }: Props) {
   return (
-    <ul className="grid grid-cols-3 gap-4 px-2 sm:gap-7 md:grid-cols-4 lg:grid-cols-5">
+    <ul className="grid grid-cols-3 gap-4 px-0 sm:px-2 sm:gap-7 md:grid-cols-4 lg:grid-cols-5">
       {products.map((product) => (
         <li key={product.id} className="">
           <Link href={`/products/${product.id}`}>
