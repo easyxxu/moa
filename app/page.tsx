@@ -11,13 +11,15 @@ export default async function Index() {
     throw new Error(message);
   }
   return (
-    <div className="">
-      <Header />
-      <Category />
-      <main className="mt-4 mb-10">
+    <>
+      <div className="sticky top-0">
+        <Header />
+        <Category />
+      </div>
+      <main>
         <FilterProductList initialProducts={data?.products || []} />
       </main>
       <Footer />
-    </div>
+    </>
   );
 }

@@ -22,15 +22,15 @@ export default function Header() {
   return (
     <>
       {!isSellerCenter ? (
-        <header className="sticky top-0 z-30 bg-white">
-          <div className="flex items-center justify-between px-2 py-5 mx-auto my-0 max-w-7xl">
+        <header className="bg-white">
+          <div className="flex items-center justify-between px-2 pt-3 mx-auto my-0 max-w-7xl">
             <div className="flex items-center gap-4 sm:gap-9">
               <h1>
                 <Link href="/">
                   <Image
                     src={MoaLogo}
                     alt="모아 로고"
-                    className="min-w-16 sm:w-32"
+                    className="min-w-16 sm:w-28"
                   />
                 </Link>
               </h1>
