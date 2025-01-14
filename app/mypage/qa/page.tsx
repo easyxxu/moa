@@ -42,7 +42,7 @@ export default function QAPage() {
   }, [page]);
 
   return (
-    <div className="space-y-4">
+    <div className="h-full space-y-4">
       <h2 className="text-2xl font-bold text-center">상품 Q/A</h2>
       {isLoading ? (
         <Loading />
@@ -54,44 +54,39 @@ export default function QAPage() {
           </p>
         </div>
       ) : (
-        <>
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-gray-200">
+        <div className="border-b border-gray-900">
+          <table className="w-full border-collapse">
+            <thead className="text-center border-t-4 border-gray-900 border-y text-nowrap">
+              <tr>
                 {headers.map((header) => (
-                  <th
-                    key={header}
-                    className="px-4 py-3 text-center text-gray-700"
-                  >
+                  <th key={header} className="px-4 py-3">
                     {header}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-sm text-center sm:text-base">
               {data.questions.map((question) => (
                 <tr key={question.id} className="border-b">
-                  <td className="flex items-center px-4 py-4 space-x-4">
+                  <td className="flex flex-col gap-4 px-4 py-4 sm:items-center sm:flex-row">
                     <Image
                       src={question.product?.image[0]!}
                       alt={`${question.product?.name} 이미지`}
-                      width={80}
-                      height={80}
+                      width={100}
+                      height={100}
                       className="rounded-md shadow"
                     />
-                    <span className="font-medium">
-                      {question.product?.name}
-                    </span>
+                    <span className="text-left">{question.product?.name}</span>
                   </td>
-                  <td className="px-4 py-4 text-center ">
+                  <td className="px-4 py-4">
                     {answerTitleMap[question?.title!]}
                   </td>
-                  <td className="px-4 py-4 text-center ">
+                  <td className="px-4 py-4 text-center">
                     {new Date(question.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-4 text-center">
                     <Link href={`/mypage/qa/${question.id}`}>
-                      <p className="px-3 py-2 text-blue-400 underline transition-transform duration-200 ease-out underline-offset-4 hover:-translate-y-1">
+                      <p className="px-3 py-2 text-blue-400 underline transition-transform duration-200 ease-out text-nowrap underline-offset-4 hover:-translate-y-1">
                         더보기
                       </p>
                     </Link>
@@ -105,7 +100,7 @@ export default function QAPage() {
               <Pagination total={data?.count} setPage={setPage} page={page} />
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );

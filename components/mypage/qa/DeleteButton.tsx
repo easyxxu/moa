@@ -27,7 +27,7 @@ export default function DeleteButton({ questionId }: Props) {
   return (
     <button
       type="button"
-      className="px-3 py-2 font-semibold text-white bg-gray-300 rounded-lg shadow hover:bg-gray-400"
+      className="px-2 py-1.5 font-semibold text-nowrap text-white bg-gray-400 rounded-lg shadow hover:bg-gray-900"
       onClick={() => handleDelete()}
     >
       삭제

@@ -12,12 +12,12 @@ export default async function MyQuestionDetailPage({
   const question = res.data;
 
   return (
-    <div className="w-full">
+    <div className="w-full px-2 mt-2 space-y-4">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 mb-4">
-          <h1 className="text-2xl font-bold">문의 내역</h1>
+        <div className="flex items-center gap-2">
+          <h1 className="text-xl font-bold text-nowrap">문의 내역</h1>
           <p
-            className={`px-3 py-1 rounded-full font-semibold text-sm ${
+            className={`px-3 py-1 rounded-full mr-2 font-semibold text-nowrap text-sm ${
               question?.answer_status
                 ? "bg-green-200 text-green-700"
                 : "bg-red-200 text-red-700"
@@ -28,7 +28,7 @@ export default async function MyQuestionDetailPage({
         </div>
         <DeleteButton questionId={questionId} />
       </div>
-      <div className="mb-6">
+      <div>
         <p className="mb-2 font-semibold text-gray-800">
           [{answerTitleMap[question?.title!]}]{" "}
           <span className="text-sm font-light">
@@ -38,7 +38,7 @@ export default async function MyQuestionDetailPage({
         <p className="text-gray-800 whitespace-pre-wrap">{question?.content}</p>
       </div>
 
-      <div className="pt-6 mt-10 border-t border-gray-200">
+      <div className="pt-4 border-t border-gray-200">
         <h2 className="mb-2 text-lg font-bold text-gray-700">문의 답변</h2>
         {question?.answer ? (
           <p className="text-gray-800 whitespace-pre-wrap">
