@@ -33,6 +33,9 @@ module.exports = {
         in: "inset 3px 3px 5px rgba(0,0,0,0.2), inset -1.5px -1.5px 1px rgba(255,255,255)",
         borderBottom: "0 1px 1px rgba(255,255,255)",
       },
+      animation: {
+        "slow-spin": "spin 3s linear infinite",
+      },
     },
   },
   plugins: [],
