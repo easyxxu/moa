@@ -8,7 +8,7 @@ import { useState } from "react";
 export default function SearchInput() {
   const { replace } = useRouter();
   const searchParams = useSearchParams();
-  const [searchKeyword, setSerachKeyword] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   const handleSearch = (keyword: string) => {
     const params = new URLSearchParams(searchParams);
@@ -29,7 +29,7 @@ export default function SearchInput() {
             name="search"
             placeholder="상품을 검색해보세요!"
             className="w-full text-sm sm:text-base sm:align-middle bg-inherit"
-            onChange={(e) => setSerachKeyword(e.target.value)}
+            onChange={(e) => setSearchKeyword(e.target.value)}
             defaultValue={searchParams.get("searchKeyword")?.toString()}
           />
         </label>
