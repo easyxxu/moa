@@ -21,8 +21,8 @@ export default function SearchInput() {
   };
 
   return (
-    <form className="mr-4 min-w-48 sm:mr-0 sm:w-80">
-      <div className="flex gap-2 px-3 py-1 bg-gray-100 rounded-full sm:px-4 sm:py-2">
+    <form className="mr-4 sm:mr-0">
+      <div className="flex gap-3 px-3 py-1 bg-gray-100 rounded-full sm:px-4 sm:py-1.5">
         <label className="w-full">
           <input
             type="text"
