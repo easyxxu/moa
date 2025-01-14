@@ -1,7 +1,7 @@
 import Footer from "@/components/common/Footer";
 import Header from "@/components/common/Header";
+import MobileNavigation from "@/components/common/MobileNavigation";
 import ProductNav from "@/components/common/ProductNav";
-import { CartProvider } from "@/contexts/CartContext";
 
 export default function CartLayout({
   children,
@@ -9,11 +9,12 @@ export default function CartLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div>
       <Header />
       <ProductNav />
       <main>{children}</main>
       <Footer />
-    </>
+      <MobileNavigation />
+    </div>
   );
 }

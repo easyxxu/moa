@@ -1,5 +1,6 @@
 import Footer from "@/components/common/Footer";
 import Header from "@/components/common/Header";
+import MobileNavigation from "@/components/common/MobileNavigation";
 import Category from "@/components/common/ProductNav";
 
 export default function ProductLayout({
@@ -15,6 +16,7 @@ export default function ProductLayout({
       </div>
       <main className="mb-10">{children}</main>
       <Footer />
+      <MobileNavigation />
     </div>
   );
 }

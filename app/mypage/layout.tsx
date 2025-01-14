@@ -1,5 +1,6 @@
 import Footer from "@/components/common/Footer";
 import Header from "@/components/common/Header";
+import MobileNavigation from "@/components/common/MobileNavigation";
 import ProductNav from "@/components/common/ProductNav";
 import Link from "next/link";
 
@@ -57,6 +58,7 @@ export default function MyPageLayout({
         </section>
       </main>
       <Footer />
+      <MobileNavigation />
     </>
   );
 }
