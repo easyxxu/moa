@@ -34,7 +34,10 @@ export default function QuestionForm({ setIsOpenQForm, setQas }: Props) {
     if (state.status >= 400 && state.status < 500) {
       openToast({ type: "ERROR", content: state.message });
     } else if (state.status === 200) {
-      openToast({ type: "SUCCESS", content: TOAST_MESSAGE.MYPAGE.QUETION.ADD });
+      openToast({
+        type: "SUCCESS",
+        content: TOAST_MESSAGE.MYPAGE.QUESTION.ADD,
+      });
       setIsOpenQForm(false);
       setQas((prev) => ({
         ...prev,

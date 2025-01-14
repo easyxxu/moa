@@ -20,7 +20,7 @@ export default function DeleteButton({ questionId }: Props) {
     }
     openToast({
       type: "SUCCESS",
-      content: TOAST_MESSAGE.MYPAGE.QUETION.DELETE,
+      content: TOAST_MESSAGE.MYPAGE.QUESTION.DELETE,
     });
     router.push("/mypage/qa");
   };

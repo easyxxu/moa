@@ -12,7 +12,7 @@ export const TOAST_MESSAGE = {
       MODIFY: "리뷰가 수정되었습니다.",
       DELETE: "리뷰가 삭제되었습니다.",
     },
-    QUETION: {
+    QUESTION: {
       ADD: "문의가 작성되었습니다.",
       DELETE: "문의가 삭제되었습니다.",
     },
