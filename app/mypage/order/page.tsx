@@ -18,7 +18,7 @@ export default async function MyOrder() {
 
   return (
     <div>
-      <h2 className="mb-8 text-center">주문배송조회</h2>
+      <h2 className="mb-6 text-xl text-center sm:text-2xl">주문조회</h2>
       {orders?.length === 0 ? (
         <p className="text-center">주문 내역이 없습니다.</p>
       ) : (
@@ -32,10 +32,10 @@ export default async function MyOrder() {
                     <OrderItem order={order} />
                   </Link>
                 </td>
-                <td className="text-center">
+                <td className="text-sm text-center sm:text-base">
                   {order.total_price.toLocaleString()} 원
                 </td>
-                <td className="text-center">
+                <td className="text-sm text-center sm:text-base">
                   <StatusChip status={order.order_status} />
                 </td>
               </tr>

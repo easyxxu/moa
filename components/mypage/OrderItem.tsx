@@ -23,12 +23,12 @@ interface Props {
 
 export default function OrderItem({ order }: Props) {
   return (
-    <div className="px-2 py-3">
-      <div className="flex items-center gap-2 mb-4">
-        <p className="text-lg font-medium">
-          {new Date(order.created_at).toLocaleString()}
-        </p>
-      </div>
+    <div className="px-2 py-2 sm:py-3">
+      {/* 주문 일자 */}
+      <p className="text-sm font-medium sm:text-lg">
+        {new Date(order.created_at).toLocaleString()}
+      </p>
+      {/* 주문한 제품 내역 */}
       <ul>
         {order.order_item.map((item) => (
           <li key={item.id}>
