@@ -12,7 +12,6 @@ import ShopIcon from "@/public/assets/icon/icon-shop.svg";
 import LikeIcon from "@/public/assets/icon/icon-like.svg";
 
 import { useUserDispatch } from "@/contexts/UserContext";
-import { userLogOut } from "@/api/userApis";
 
 interface Props {
   isLogin: boolean;
@@ -22,9 +21,9 @@ interface Props {
 export default function Navigation({ isLogin, isSeller }: Props) {
   const userDispatch = useUserDispatch();
   const linkCss =
-    "w-7 h-7 flex justify-center rounded-md hover:bg-gray-100 sm:w-12 sm:h-12";
+    "w-7 h-7 flex justify-center rounded-md hover:bg-gray-100 sm:w-10 sm:h-10";
   return (
-    <nav>
+    <nav className="hidden sm:block">
       <ul className="flex gap-2">
         {!isLogin ? (
           <>
