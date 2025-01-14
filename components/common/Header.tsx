@@ -27,11 +27,9 @@ export default function Header() {
             <div className="flex items-center gap-4 sm:gap-9">
               <h1>
                 <Link href="/">
-                  <Image
-                    src={MoaLogo}
-                    alt="모아 로고"
-                    className="min-w-16 sm:w-28"
-                  />
+                  <div className="min-w-24 max-w-28">
+                    <Image src={MoaLogo} alt="모아 로고" />
+                  </div>
                 </Link>
               </h1>
               <Suspense>
