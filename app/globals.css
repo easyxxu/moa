@@ -9,7 +9,7 @@
     --icon: #505050;
   }
   h2 {
-    @apply font-semibold text-2xl;
+    @apply font-semibold text-xl sm:text-2xl;
   }
   input::placeholder {
     @apply text-font-grey;
