@@ -2,7 +2,7 @@ interface ButtonProps {
   type: "submit" | "button";
   style: "point" | "line" | "none";
   custom?: string;
-  onClick: React.MouseEventHandler;
+  onClick?: React.MouseEventHandler;
   children: React.ReactNode;
   disable?: boolean;
 }
