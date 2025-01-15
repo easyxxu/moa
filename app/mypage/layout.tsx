@@ -16,7 +16,7 @@ export default function MyPageLayout({
         <ProductNav />
       </div>
       <main className="flex sm:py-8 sm:px-2 sm:gap-7">
-        <aside className="w-48 hidden sm:block">
+        <aside className="hidden w-48 sm:block">
           <h2 className="mb-6 text-2xl font-bold ">마이페이지</h2>
           <nav>
             <SideMenu />

@@ -18,7 +18,7 @@ export default async function MyOrder() {
 
   return (
     <div>
-      <h2 className="mb-4 text-xl text-center sm:text-2xl sm:mb-6">주문조회</h2>
+      <h2 className="mb-4 text-center">주문조회</h2>
       {orders?.length === 0 ? (
         <p className="text-center">주문 내역이 없습니다.</p>
       ) : (

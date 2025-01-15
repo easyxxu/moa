@@ -37,10 +37,10 @@ export default async function OrderDetailPage({
     return;
   }
   return (
-    <div className="px-2 flex flex-col w-full gap-6 ">
+    <div className="flex flex-col w-full gap-6 px-2 ">
       {/* 주문 상세 정보 */}
       <section className="space-y-2">
-        <h3 className="pb-2 text-2xl font-semibold border-b-4 border-gray-900">
+        <h3 className="pb-2 text-xl font-semibold border-b-4 border-gray-900 sm:text-2xl">
           주문상세내역
         </h3>
         <p className="text-sm text-gray-700">
@@ -55,7 +55,7 @@ export default async function OrderDetailPage({
 
       {/* 주문 상품 정보 */}
       <section className="space-y-2">
-        <h4 className="text-xl font-semibold">주문상품정보</h4>
+        <h4 className="text-lg font-semibold sm:text-xl">주문상품정보</h4>
         <div className="border-b border-gray-900 ">
           <table className="w-full">
             <TableHeader headers={HEADER_TITLES} />
@@ -103,7 +103,7 @@ export default async function OrderDetailPage({
 
       {/* 주문자 정보 */}
       <section className="space-y-2">
-        <h4 className="text-xl font-semibold">주문자정보</h4>
+        <h4 className="text-lg font-semibold sm:text-xl">주문자정보</h4>
         <table className="w-full text-left border border-gray-900">
           <tbody>
             <tr>
