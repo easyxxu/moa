@@ -40,8 +40,10 @@ export default function ModifyMyInfo() {
   }, [state, openToast]);
   return (
     <div className="w-full">
-      <h2 className="mb-8 text-center">정보 수정하기</h2>
-      <form action={formAction} className="w-full">
+      <h2 className="pb-4 mb-4 text-center border-b-4 border-gray-900">
+        정보 수정
+      </h2>
+      <form action={formAction} className="w-full px-2 sm:px-0">
         <InputLabel
           type="text"
           fieldId="name"
