@@ -105,11 +105,11 @@ export default function CartTableItem({ item, isLastItem }: Props) {
       ? setIsChecked(true)
       : setIsChecked(false);
   }, [checkItem]);
-  // console.log("#item: ", item);
+
   return (
     <tr
       key={item.id}
-      className={`relative b-4 *:p-4 ${
+      className={`relative *:p-2 sm:*:p-4 ${
         isLastItem ? "border-b border-gray-200" : ""
       }`}
     >
@@ -126,14 +126,14 @@ export default function CartTableItem({ item, isLastItem }: Props) {
         />
       </td>
       <td>
-        <div className="flex gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row">
           <Link href={`/products/${item.id}`}>
             <Image
               src={item.image[0]}
               alt={item.name}
               width={200}
               height={200}
-              className="rounded"
+              className="rounded w-[100px] sm:w-[200px]"
             />
           </Link>
           <div className="text-start">
@@ -151,7 +151,7 @@ export default function CartTableItem({ item, isLastItem }: Props) {
           <Button
             type="button"
             style="line"
-            custom="px-6 py-2 font-semibold"
+            custom="text-nowrap px-3 py-1 sm:px-6 sm:py-2 font-semibold"
             onClick={handleOpenQuantityModal}
           >
             수정
@@ -170,7 +170,7 @@ export default function CartTableItem({ item, isLastItem }: Props) {
             onClick={handleOrderOneProduct}
             type="button"
             style="point"
-            custom="px-10 py-2 font-semibold"
+            custom="text-nowrap px-3 py-1 sm:px-10 sm:py-2 font-semibold"
           >
             주문하기
           </Button>

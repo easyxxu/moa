@@ -3,6 +3,7 @@ import CartNoBuyer from "@/components/cart/CartNoBuyer";
 import CartNoItem from "@/components/cart/CartNoItem";
 import CartTable from "@/components/cart/CartTable";
 import CartTotalPrice from "@/components/cart/CartTotalPrice";
+import MobileCartTotalPrice from "@/components/cart/MobileCartTotalPrice";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 
@@ -49,9 +50,10 @@ export default async function CartPage() {
             <CartTable cartItems={cartItem.cart} cartCount={cartItem.count!} />
           </table>
           <CartTotalPrice />
+          <MobileCartTotalPrice />
           <Link
             href="/order/cartOrder"
-            className="self-center w-1/5 py-4 my-10 text-2xl text-center text-white transition-shadow bg-black rounded-sm duration-300font-semibold hover:shadow-md "
+            className="self-center w-1/3 py-2 my-10 text-2xl text-center text-white transition-shadow bg-black rounded-sm sm:py-4 sm:w-1/5 text-nowrap duration-300font-semibold hover:shadow-md "
           >
             주문하기
           </Link>

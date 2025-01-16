@@ -9,7 +9,7 @@ export default function CartTotalPrice() {
   const { price } = useCartCheckItems();
 
   return (
-    <div className="w-full flex border border-gray-900 shadow-md rounded-sm justify-around *:py-12">
+    <div className="w-full hidden sm:flex border border-gray-900 shadow-md rounded-sm justify-around *:py-12">
       <div className="total-price-box">
         <p>총 상품금액</p>
         <p>
