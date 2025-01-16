@@ -7,20 +7,23 @@ import { useRouter } from "next/navigation";
 import Form from "@/components/authForm/Form";
 import InputLabel from "@/components/common/InputLabel";
 
-import { useUserDispatch } from "@/contexts/UserContext";
+import { useUserDispatch, useUserState } from "@/contexts/UserContext";
 import { userLogin } from "@/api/userApis";
 
 export default function Login() {
   const [state, formAction] = useFormState(userLogin, {
     status: 0,
+    redirectUrl: "",
+    errorMsg: {},
   });
   const userDispatch = useUserDispatch();
+  const userType = useUserState().userType;
   const router = useRouter();
 
   useEffect(() => {
-    if (state.status === 200) {
+    if (state.status === 200 && "redirectUrl" in state) {
       userDispatch?.login();
-      router.push("/");
+      router.push(state?.redirectUrl);
     }
   }, [state.status]);
 
@@ -41,7 +44,9 @@ export default function Login() {
           type="password"
           style="line"
         />
-        <p className="text-sm text-red-400">{state.errorMsg?.login}</p>
+        {"errorMsg" in state && (
+          <p className="text-sm text-red-400">{state.errorMsg.login}</p>
+        )}
       </Form>
     </div>
   );

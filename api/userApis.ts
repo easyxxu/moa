@@ -94,12 +94,12 @@ export async function userJoin(
   };
 }
 
-export type LoginState = State & {
-  status: number;
-};
+export type LoginState =
+  | { status: number; errorMsg: ErrorMsg } // 에러가 발생했을 때
+  | { status: number; redirectUrl: string }; // 에러가 발생하지 않았을 때
 
 export async function userLogin(
-  prevState: State,
+  prevState: LoginState,
   formData: FormData
 ): Promise<LoginState> {
   const email = formData.get("email") as string;
@@ -143,6 +143,7 @@ export async function userLogin(
 
   return {
     status: 200,
+    redirectUrl: userType === "BUYER" ? "/" : "/sellercenter",
   };
 }
 
