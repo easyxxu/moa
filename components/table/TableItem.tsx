@@ -36,7 +36,7 @@ export default TableCell;
 // 하위 컴포넌트
 function TextWithImgCell({ src, text, quantity, price }: TextWithImgProps) {
   return (
-    <td className="flex items-center justify-start gap-5 px-4 py-4">
+    <td className="flex flex-col justify-start gap-2 px-4 py-4 sm:items-center sm:gap-5 sm:flex-row">
       <Image
         src={src}
         alt={text as string}
@@ -45,7 +45,7 @@ function TextWithImgCell({ src, text, quantity, price }: TextWithImgProps) {
         className="w-16 h-16 shadow-sm"
       />
       <div>
-        <p>{text}</p>
+        <p className="break-keep">{text}</p>
         {quantity && price && (
           <>
             <p>{quantity} 개</p>
@@ -68,7 +68,7 @@ function ButtonCell({ text, onClick }: ButtonProps) {
         type="button"
         style="line"
         onClick={onClick}
-        custom="px-4 py-2 mx-auto"
+        custom="px-1.5 py-1 sm:px-4 sm:py-2 mx-auto text-nowrap"
       >
         {text}
       </Button>
