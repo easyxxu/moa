@@ -4,6 +4,9 @@ import { usePathname } from "next/navigation";
 import { useUserState } from "@/contexts/UserContext";
 import ShopIcon from "@/public/assets/icon/icon-seller-shop.svg";
 import Image from "next/image";
+import HamburgerIcon from "@/public/assets/icon/icon-hamburger.svg";
+
+import { Dispatch, SetStateAction } from "react";
 const HeaderPath: Record<string, string> = {
   "/sellercenter/product": "상품관리",
   "/sellercenter/order": "주문관리",
@@ -13,7 +16,11 @@ const HeaderPath: Record<string, string> = {
   "/sellercenter": "홈",
 };
 
-export default function SellerHeader() {
+interface Props {
+  isMenuOpen: boolean;
+  setIsMenuOpen: Dispatch<SetStateAction<boolean>>;
+}
+export default function SellerHeader({ isMenuOpen, setIsMenuOpen }: Props) {
   const currentPath = usePathname();
   const userInfo = useUserState();
   const headerText = (() => {
@@ -32,6 +39,15 @@ export default function SellerHeader() {
         <Image src={ShopIcon} alt="샵 아이콘" width={30} height={30} />
         <p className="text-lg">{userInfo.name}</p>
       </div>
+      <button
+        type="button"
+        className="w-8 h-8 sm:hidden"
+        onMouseOver={() => setIsMenuOpen(true)}
+        onMouseLeave={() => setIsMenuOpen(false)}
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+      >
+        <Image src={HamburgerIcon} alt="메뉴" />
+      </button>
     </header>
   );
 }

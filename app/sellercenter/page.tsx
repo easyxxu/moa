@@ -40,16 +40,16 @@ export default async function SellerCenter() {
       ).length)
   );
   return (
-    <div className="px-4 py-4 space-y-10">
-      <div className="flex gap-10">
-        <div className="w-1/2 px-2 py-2 border rounded-sm">
+    <div className="px-4 pt-4 pb-20 space-y-10 sm:pb-4">
+      <div className="flex flex-col gap-10 sm:flex-row">
+        <div className="w-full px-2 py-2 border rounded-sm sm:w-1/2">
           <LineChart
             chartTitle="매출현황"
             labels={data.labels}
             totalPriceData={data.totalPriceData}
           />
         </div>
-        <div className="w-1/2 px-2 py-2 border rounded-sm">
+        <div className="w-full px-2 py-2 border rounded-sm sm:w-1/2">
           <BarChart
             chartTitle="주문건수"
             labels={data.labels}
@@ -59,8 +59,8 @@ export default async function SellerCenter() {
       </div>
       <div className="space-y-1">
         <p className="mb-2 text-lg font-semibold">주요현황</p>
-        <div className="flex w-full gap-10">
-          <div className="w-1/2 border rounded-sm">
+        <div className="flex flex-col w-full gap-10 sm:flex-row">
+          <div className="w-full border rounded-sm sm:w-1/2">
             <div className="px-4 py-3 space-y-2">
               <div className="flex justify-between">
                 <Image
@@ -115,7 +115,7 @@ export default async function SellerCenter() {
             </div>
           </div>
 
-          <div className="w-1/2 border rounded-sm ">
+          <div className="w-full border rounded-sm sm:w-1/2 ">
             <div className="px-4 py-3 space-y-2">
               <div className="flex justify-between">
                 <Image
