@@ -33,11 +33,15 @@ export default function SellerHeader({ isMenuOpen, setIsMenuOpen }: Props) {
   })();
 
   return (
-    <header className="flex justify-between w-full px-4 py-3 text-2xl font-semibold border-b">
+    <header className="flex items-center justify-between w-full px-3 py-2 text-xl font-semibold border-b sm:px-4 sm:py-3 sm:text-2xl">
       <p>{headerText}</p>
       <div className="flex items-center gap-1">
-        <Image src={ShopIcon} alt="샵 아이콘" width={30} height={30} />
-        <p className="text-lg">{userInfo.name}</p>
+        <Image
+          src={ShopIcon}
+          alt="샵 아이콘"
+          className="w-5 h-5 sm:w-7 sm:h-7"
+        />
+        <p className="text-base sm:text-lg">{userInfo.name}</p>
       </div>
       <button
         type="button"
