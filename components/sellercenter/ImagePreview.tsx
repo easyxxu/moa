@@ -55,7 +55,7 @@ export default function ImagePreview({
           <button
             type="button"
             onClick={() => onDelete(idx)}
-            className="absolute top-0 right-0 -translate-x-2 translate-y-2 rounded-sm hover:bg-gray-100"
+            className="absolute top-0 right-0 w-1/6 -translate-x-1 translate-y-1 rounded-sm hover:bg-gray-100 h-1/6"
           >
             <Image src={DeleteIcon} alt="이미지 삭제" />
           </button>

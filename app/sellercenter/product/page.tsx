@@ -62,7 +62,7 @@ export default function ProductDashboard() {
   return (
     <div className="mb-14">
       <Link href="/sellercenter/product/add">
-        <div className="flex items-center justify-center gap-2 px-3 py-4 font-semibold transition-colors border-black hover:bg-gray-200">
+        <div className="flex items-center justify-center gap-2 py-2 font-semibold transition-colors border-black sm:py-4 hover:bg-gray-200">
           <Image
             src={PlusIcon}
             alt="상품 등록 아이콘"
@@ -78,7 +78,7 @@ export default function ProductDashboard() {
           등록된 상품이 없습니다.
         </div>
       ) : (
-        <table className="w-full">
+        <table className="w-full text-sm sm:text-base">
           <TableHeader headers={listHeaders} />
           <tbody>
             {productData.map((product) => (

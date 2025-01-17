@@ -237,16 +237,16 @@ export default function ProductManagement({
   }, []);
 
   return (
-    <div className="w-full px-4 py-5 mb-20">
+    <div className="w-full px-4 pt-5 pb-24">
       <form className="flex flex-col gap-1" onSubmit={handleSubmit}>
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-3xl font-semibold">
+          <h3 className="text-2xl font-semibold sm:text-3xl">
             상품 {operationMode === "add" ? "등록" : "수정"}
           </h3>
           <div className="flex gap-2">
             <Button
               type="button"
-              custom="px-3 py-2 text-lg font-semibold"
+              custom="px-3 py-2 sm:text-lg text-base font-semibold"
               style="line"
               onClick={() => router.push("/sellercenter/product")}
             >
@@ -254,7 +254,7 @@ export default function ProductManagement({
             </Button>
             <Button
               type="submit"
-              custom="px-3 py-2 text-lg font-semibold"
+              custom="px-3 py-2 sm:text-lg text-base font-semibold"
               style="point"
             >
               {operationMode === "add" ? "등록" : "수정"}
