@@ -28,7 +28,7 @@ export default function SellerLayout({ children }: Props) {
       <div
         onMouseOver={() => setIsMenuOpen(true)}
         onMouseLeave={() => setIsMenuOpen(false)}
-        className={`absolute top-0 right-0 h-full shadow-lg sm:hidden ${
+        className={`absolute top-0 right-0 h-full shadow-lg sm:hidden z-10 ${
           isMenuOpen ? "menu-slide-left" : "menu-slide-right"
         }`}
       >
