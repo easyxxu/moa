@@ -16,7 +16,7 @@ export default function AnswerForm({ questionId, productId }: Props) {
   return (
     <div>
       <form className="space-y-4" action={formAction}>
-        <p className="pb-2 text-xl font-semibold text-gray-800 border-b">
+        <p className="pb-2 text-xl font-semibold border-b-2 border-gray-900">
           답변 작성
         </p>
         <label htmlFor="answer" className="block font-medium text-gray-700">
@@ -26,7 +26,7 @@ export default function AnswerForm({ questionId, productId }: Props) {
           id="answer"
           name="answer"
           rows={5}
-          className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+          className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-900"
           placeholder="답변을 작성하세요."
         ></textarea>
         <input

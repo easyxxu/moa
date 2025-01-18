@@ -7,7 +7,7 @@ interface Props {
 export default function QuestionContent({ question }: Props) {
   return (
     <div className="mb-6">
-      <p className="pb-2 mb-4 text-xl font-semibold text-gray-800 border-b">
+      <p className="pb-2 mb-4 text-xl font-semibold border-b-2 border-gray-900">
         문의 내역
       </p>
       <p className="mb-2 text-gray-700">
