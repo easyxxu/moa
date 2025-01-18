@@ -19,8 +19,8 @@ export default async function ProductAnswerPage({
     throw new Error(message);
   }
   return (
-    <div className="w-full p-6">
-      <div className="flex items-center gap-4 p-4 mb-4 bg-white rounded-lg shadow">
+    <div className="w-full">
+      <div className="flex items-center gap-4 p-4 bg-white">
         <Image
           src={data?.product.image[0]!}
           alt={`${data?.product.name} 이미지`}
@@ -33,12 +33,14 @@ export default async function ProductAnswerPage({
           <strong className="text-gray-700">{data?.product.name}</strong>
         </p>
       </div>
-      <table className="w-full overflow-hidden bg-white rounded-lg shadow-md">
+      <table className="w-full overflow-hidden bg-white">
         <TableHeader headers={headers} />
         <tbody className="bg-white">
           {data?.questions.map((question) => (
-            <tr key={question.id} className="border-b last:border-none">
-              <TableCell.TextCell text={answerTitleMap[question.title]} />
+            <tr key={question.id} className="border-b">
+              <TableCell.TextCell
+                text={`[${answerTitleMap[question.title]}]`}
+              />
               <td className="py-2 text-center">
                 <p
                   className={`w-5 h-5 mx-auto text-sm text-white rounded-full font-light ${
@@ -57,8 +59,8 @@ export default async function ProductAnswerPage({
                   }
                 >
                   <div
-                    className={`px-4 py-2 text-blue-500 rounded-md hover:bg-gray-100 ${
-                      question.answer_status ? "text-gray-500" : ""
+                    className={`${
+                      question.answer_status ? "text-gray-500" : "text-gray-900"
                     }`}
                   >
                     {question.answer_status ? "답변확인" : "답변달기"}
