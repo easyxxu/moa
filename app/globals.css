@@ -92,33 +92,37 @@
     }
   }
   /* 판매자센터 메뉴 애니메이션 */
-  .menu-slide-left {
-    -webkit-animation: menu-slide-left 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+  .menu-slide-top {
+    -webkit-animation: menu-slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
       both;
-    animation: menu-slide-left 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: menu-slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   }
-  @keyframes menu-slide-left {
+  @keyframes menu-slide-top {
     0% {
-      transform: translateX(100px);
+      -webkit-transform: translateY(0);
+      transform: translateY(0);
     }
     100% {
-      transform: translateX(0px);
+      -webkit-transform: translateY(500px);
+      transform: translateY(500px);
+    }
+  }
+  .menu-slide-bottom {
+    -webkit-animation: menu-slide-bottom 0.5s
+      cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: menu-slide-bottom 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+  @keyframes menu-slide-bottom {
+    0% {
+      -webkit-transform: translateY(500px);
+      transform: translateY(500px);
+    }
+    100% {
+      -webkit-transform: translateY(0px);
+      transform: translateY(0px);
     }
   }
 
-  .menu-slide-right {
-    -webkit-animation: menu-slide-right 0.3s
-      cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-    animation: menu-slide-right 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-  }
-  @keyframes menu-slide-right {
-    0% {
-      transform: translateX(0px);
-    }
-    100% {
-      transform: translateX(170px);
-    }
-  }
   @media (prefers-color-scheme: dark) {
     :root {
       --background: 200 50% 3%;

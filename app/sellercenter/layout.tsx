@@ -19,22 +19,31 @@ export default function SellerLayout({ children }: Props) {
   }, [pathname]);
 
   return (
-    <div className="relative flex h-full overflow-hidden">
+    <div className="relative h-full sm:flex">
       {/* 데스크탑 사이드 메뉴 */}
       <div className="hidden sm:block">
         <Menu />
       </div>
       {/* 모바일 슬라이딩 사이드 메뉴 */}
       <div
-        onMouseOver={() => setIsMenuOpen(true)}
-        onMouseLeave={() => setIsMenuOpen(false)}
-        className={`absolute top-0 right-0 h-full shadow-lg sm:hidden z-10 ${
-          isMenuOpen ? "menu-slide-left" : "menu-slide-right"
+        className={`absolute top-0 w-full h-full bg-background-modal z-10 sm:hidden ${
+          isMenuOpen ? "block" : "hidden"
         }`}
+        role="presentation"
+        onClick={() => setIsMenuOpen(false)}
       >
-        <Menu />
+        <div
+          className={`absolute left-0 bottom-0 w-full sm:hidden ${
+            isMenuOpen ? "menu-slide-bottom" : "menu-slide-top"
+          }`}
+          role="navigation"
+          aria-label="mobile navigation menu"
+          aria-expanded={isMenuOpen ? true : false}
+        >
+          <Menu />
+        </div>
       </div>
-      <div className="w-full h-full">
+      <div className="w-full h-full overflow-hidden">
         <SellerHeader isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         <main className="w-full h-full max-w-full mx-0 overflow-y-auto">
           {children}
