@@ -46,8 +46,6 @@ export default function SellerHeader({ isMenuOpen, setIsMenuOpen }: Props) {
       <button
         type="button"
         className="w-8 h-8 sm:hidden"
-        onMouseOver={() => setIsMenuOpen(true)}
-        onMouseLeave={() => setIsMenuOpen(false)}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
       >
         <Image src={HamburgerIcon} alt="메뉴" />
