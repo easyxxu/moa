@@ -18,10 +18,10 @@ export default function FilterProduct() {
     replace(`${currentPath}?${params.toString()}`);
   };
   return (
-    <div>
-      <ul className="flex text-nowrap">
+    <div className="w-full pr-32">
+      <ul className="flex text-nowrap overflow-y-auto [&::-webkit-scrollbar]:hidden">
         {CATEGORY_OPTIONS.map((item, i) => (
-          <li key={i} className="px-4 sm:border-r sm:border-r-gray-500">
+          <li key={i} className="px-3 py-2 sm:border-r sm:border-r-gray-500">
             <button
               onClick={() => handleFilter("category", item.name)}
               className={`${

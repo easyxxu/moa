@@ -40,37 +40,39 @@ export default function ProductOrderSelector() {
     }
   }, [currentFilter]);
   return (
-    <div className="relative border-l border-l-gray-900">
-      <button
-        type="button"
-        onClick={() => setIsSelectBoxOpen((prev) => !prev)}
-        className="flex items-center justify-between w-32 px-3 py-2 text-gray-700"
-      >
-        {selectedOrderText}
-        <Image
-          src={ArrowIcon}
-          alt="더보기"
-          width={18}
-          height={18}
-          className={isSelectBoxOpen ? "rotate-90" : "-rotate-90"}
-        />
-      </button>
+    <div className="absolute right-0 bg-white">
+      <div className="border-l border-l-gray-900">
+        <button
+          type="button"
+          onClick={() => setIsSelectBoxOpen((prev) => !prev)}
+          className="flex items-center justify-between w-32 px-3 py-2"
+        >
+          {selectedOrderText}
+          <Image
+            src={ArrowIcon}
+            alt="더보기"
+            width={18}
+            height={18}
+            className={isSelectBoxOpen ? "rotate-90" : "-rotate-90"}
+          />
+        </button>
 
-      {isSelectBoxOpen && (
-        <ul className="absolute w-full bg-white border rounded-b-sm border-x-gray-900 border-b-gray-900">
-          {ORDER_OPTIONS.map((option) => (
-            <li
-              key={option.name}
-              onClick={() => handleSelectOrder(option.name)}
-              className={`px-5 py-2 cursor-pointer text-nowrap hover:bg-gray-200 ${
-                selectedOrderText === option.text ? "bg-gray-200" : ""
-              }`}
-            >
-              {option.text}
-            </li>
-          ))}
-        </ul>
-      )}
+        {isSelectBoxOpen && (
+          <ul className="absolute w-full bg-white border rounded-b-sm border-x-gray-900 border-b-gray-900">
+            {ORDER_OPTIONS.map((option) => (
+              <li
+                key={option.name}
+                onClick={() => handleSelectOrder(option.name)}
+                className={`px-5 py-2 cursor-pointer text-nowrap hover:bg-gray-200 ${
+                  selectedOrderText === option.text ? "bg-gray-200" : ""
+                }`}
+              >
+                {option.text}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
