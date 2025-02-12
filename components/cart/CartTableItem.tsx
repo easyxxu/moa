@@ -176,12 +176,8 @@ export default function CartTableItem({ item, isLastItem }: Props) {
           </Button>
         </div>
       </td>
-      <td>
-        <button
-          onClick={handleOpenDeleteModal}
-          type="button"
-          className="absolute top-4 right-4"
-        >
+      <td className="flex justify-end">
+        <button onClick={handleOpenDeleteModal} type="button" className="">
           <Image src={DeleteIcon} alt="삭제" />
         </button>
       </td>
