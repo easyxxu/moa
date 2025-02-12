@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import SellerHeader from "@/components/common/SellerHeader";
 import Menu from "@/components/sellercenter/Menu";
+import { usePreventScroll } from "@/hooks/usePreventScroll";
 
 interface Props {
   children: React.ReactNode;
@@ -13,6 +14,8 @@ interface Props {
 export default function SellerLayout({ children }: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+
+  usePreventScroll(isMenuOpen);
 
   useEffect(() => {
     setIsMenuOpen(false);
