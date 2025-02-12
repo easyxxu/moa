@@ -239,7 +239,7 @@ export default function ProductManagement({
   return (
     <div className="w-full px-4 pt-5 pb-24">
       <form className="flex flex-col gap-1" onSubmit={handleSubmit}>
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex justify-between mb-2">
           <h3 className="text-2xl font-semibold sm:text-3xl">
             상품 {operationMode === "add" ? "등록" : "수정"}
           </h3>
