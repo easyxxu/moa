@@ -43,7 +43,7 @@ export default function QAPage() {
 
   return (
     <div className="h-full space-y-4">
-      <h2 className="text-2xl font-bold text-center">상품 Q/A</h2>
+      <h2 className="text-center">상품 Q/A</h2>
       {isLoading ? (
         <Loading />
       ) : data.count === 0 ? (

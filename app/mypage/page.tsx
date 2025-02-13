@@ -10,9 +10,7 @@ export default async function MyPage() {
 
   return (
     <div className="px-2">
-      <h2 className="mb-2 text-2xl font-bold text-center sm:hidden">
-        마이페이지
-      </h2>
+      <h2 className="mb-2 text-center sm:hidden">마이페이지</h2>
       <p className="mb-3 text-sm sm:text-xl sm:mt-2">
         <strong className="text-base sm:text-2xl">
           {user?.user_metadata.name}
