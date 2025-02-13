@@ -13,9 +13,11 @@ export default async function ReviewWrite({
   }
 
   return (
-    <div className="w-full">
-      <h2>리뷰 작성하기</h2>
-      <p className="mb-2 text-xl font-medium text-center">상품은 어떠셨나요?</p>
+    <div className="w-full px-2">
+      <h2 className="">리뷰 작성하기</h2>
+      <p className="mb-2 text-lg font-medium text-center sm:text-xl">
+        상품은 어떠셨나요?
+      </p>
       <div className="flex flex-col items-center w-full gap-8">
         <div className="w-64">
           <CardItem
