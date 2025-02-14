@@ -2,7 +2,7 @@ import { getProducts } from "@/api/productApis";
 
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
-import Category from "@/components/common/ProductNav";
+import ProductNav from "@/components/common/ProductNav";
 import MobileNavigation from "@/components/common/MobileNavigation";
 import FilterProductList from "@/components/product/FilterProductList";
 
@@ -13,9 +13,9 @@ export default async function Index() {
   }
   return (
     <div>
-      <div className="sticky top-0">
+      <div className="sticky top-0 z-10">
         <Header />
-        <Category />
+        <ProductNav />
       </div>
       <main>
         <FilterProductList initialProducts={data?.products || []} />

@@ -39,8 +39,8 @@ export default function ProductNav() {
   }, []);
   return (
     <div
-      className={`bg-white sticky z-20 ${
-        isScrolled && !isProductDetailPage ? " shadow-md" : ""
+      className={`bg-white ${
+        isScrolled && !isProductDetailPage ? "shadow-md" : ""
       }`}
     >
       <div className="mx-auto max-w-7xl">
