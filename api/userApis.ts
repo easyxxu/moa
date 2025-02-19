@@ -5,7 +5,7 @@ import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { emailRegex, passwordRegex } from "@/utils/constants/validation";
 import { createClient } from "@/utils/supabase/server";
 import { Provider } from "@supabase/supabase-js";
-import { defaultUrl } from "@/app/layout";
+import { DEFAULT_URL } from "@/utils/constants/defaultUrl";
 
 export type ErrorMsg = {
   email?: string;
@@ -166,7 +166,7 @@ export const signInWithOAuth = async (provider: Provider) => {
         access_type: "offline",
         prompt: "consent",
       },
-      redirectTo: `${defaultUrl}/auth/callback`,
+      redirectTo: `${DEFAULT_URL}/auth/callback`,
     },
   });
 
@@ -210,7 +210,7 @@ export const updateEmail = async (
           email: newEmail,
         },
       },
-      { emailRedirectTo: `${defaultUrl}/mypage/modify/email` }
+      { emailRedirectTo: `${DEFAULT_URL}/mypage/modify/email` }
     );
 
   if (authUserError?.code === "email_exists") {

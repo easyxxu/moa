@@ -5,14 +5,10 @@ import { ModalProvider } from "@/contexts/ModalContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { ToastProvider } from "@/contexts/ToastContext";
 import { DirectOrderProvider } from "@/contexts/DirectOrderContext";
-
-export const defaultUrl =
-  process.env.NODE_ENV === "production"
-    ? process.env.NEXT_PUBLIC_SITE_URL || `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000";
+import { DEFAULT_URL } from "@/utils/constants/defaultUrl";
 
 export const metadata = {
-  metadataBase: new URL(defaultUrl),
+  metadataBase: new URL(DEFAULT_URL),
   title: "MoA",
   description: "귀여운 것들을 모두 모아! 모아에서 귀여운 제품들을 만나보세요!",
   openGraph: {
@@ -45,7 +41,7 @@ export default function RootLayout({
             <body className="bg-background font-pretendard">
               <ToastProvider>
                 <ModalProvider>
-                  <div className="h-[100vh]">{children}</div>
+                  <div className="h-[100dvh]">{children}</div>
                 </ModalProvider>
               </ToastProvider>
             </body>
