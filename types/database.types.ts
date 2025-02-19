@@ -122,6 +122,8 @@ export type Database = {
           id: number
           order_name: string
           order_status: string
+          order_type: string | null
+          payment_id: string | null
           payment_method: string
           payment_status: string
           total_price: number
@@ -137,6 +139,8 @@ export type Database = {
           id?: number
           order_name: string
           order_status: string
+          order_type?: string | null
+          payment_id?: string | null
           payment_method: string
           payment_status: string
           total_price: number
@@ -152,6 +156,8 @@ export type Database = {
           id?: number
           order_name?: string
           order_status?: string
+          order_type?: string | null
+          payment_id?: string | null
           payment_method?: string
           payment_status?: string
           total_price?: number
