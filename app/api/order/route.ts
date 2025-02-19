@@ -8,14 +8,17 @@ export async function POST(req: Request) {
   const supabase = createClient();
 
   try {
-    const data = await req.json();
+    const { formData, paymentId, orderType } = await req.json();
 
     // 동일 주문서 여부 확인(주문서 재생성을 막기 위함)
     const {
       status,
       data: existOrderData,
       error: existOrderError,
-    } = await supabase.from("order").select().eq("order_name", data.orderName);
+    } = await supabase
+      .from("order")
+      .select()
+      .eq("order_name", formData.orderName);
 
     if (existOrderError) {
       console.error(
@@ -44,16 +47,18 @@ export async function POST(req: Request) {
     } = await supabase
       .from("order")
       .insert({
-        order_name: data.orderName,
+        order_name: formData.orderName,
         order_status: "PAYMENT_PENDING",
-        customer_name: data.name,
-        customer_email: data.email,
-        customer_phone: data.phone,
-        customer_address: `${data.postCode}, ${data.defaultAddress} ${data.detailAddress}`,
-        customer_delivery_message: data.deliveryMessage,
+        customer_name: formData.name,
+        customer_email: formData.email,
+        customer_phone: formData.phone,
+        customer_address: `${formData.postCode}, ${formData.defaultAddress} ${formData.detailAddress}`,
+        customer_delivery_message: formData.deliveryMessage,
         payment_status: "PAYMENT_IN_PROCESS",
-        payment_method: data.payment,
-        total_price: data.totalPrice,
+        payment_method: formData.payment,
+        total_price: formData.totalPrice,
+        payment_id: paymentId,
+        order_type: orderType,
       })
       .select();
 
@@ -70,7 +75,7 @@ export async function POST(req: Request) {
     const orderId = orderData[0].id;
 
     const orderItemResults = await Promise.all(
-      data.orderItems.map(async (item: CartItem | OrderItem) => {
+      formData.orderItems.map(async (item: CartItem | OrderItem) => {
         try {
           const { status, error: orderItemError } = await supabase
             .from("order_item")
@@ -119,7 +124,7 @@ export async function POST(req: Request) {
           message: "Some order items failed to insert",
           failedItems,
         },
-        { status: 400 } 
+        { status: 400 }
       );
     }
 

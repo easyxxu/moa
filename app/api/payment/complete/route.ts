@@ -1,5 +1,6 @@
 import { CartItem } from "@/contexts/CartContext";
 import { OrderItem } from "@/contexts/DirectOrderContext";
+import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
   const data = await req.json();
 
   try {
-    const { paymentId, order, orderType } = data;
+    const { paymentId } = data;
 
     // 1. 포트원 결제내역 단건조회 API 호출
     const paymentResponse = await fetch(
@@ -21,113 +22,181 @@ export async function POST(req: Request) {
 
     if (!paymentResponse.ok) {
       const errorResponse = await paymentResponse.json();
-      throw new Error(`paymentResponse: ${JSON.stringify(errorResponse)}`);
+      console.log("포트원 결제내역 단건조회 API 호출 실패 => ", errorResponse);
+      return NextResponse.json(
+        {
+          message: "결제 오류가 발생했습니다.",
+        },
+        { status: 400 }
+      );
+      // throw new Error(`paymentResponse: ${JSON.stringify(errorResponse)}`);
     }
 
     const payment = await paymentResponse.json();
-
+    console.log("포트원 결제 정보 => ", payment);
     // 2. 고객사 내부 주문 데이터의 가격과 실제 지불된 금액을 비교
-    const { data: orderData, error: orderDataError } = await supabase
+    const {
+      status: orderStatus,
+      data: orderData,
+      error: orderDataError,
+    } = await supabase
       .from("order")
-      .select("total_price")
-      .eq("order_name", order.orderName)
+      .select("*")
+      .eq("order_name", payment.orderName)
       .single();
 
+    console.log("orderData => ", orderData);
     if (orderDataError) {
+      console.log("orderDataError", orderDataError);
+      return NextResponse.json(
+        { status: "failed", message: ERROR_MESSAGE.serverError },
+        { status: orderStatus }
+      );
       throw new Error(
         `주문 데이터를 불러오는데 실패했습니다. ${orderDataError}`
       );
     }
+    // order의 order_item.id 값 가져오기
+    const {
+      status: orderItemStatus,
+      data: orderItemData,
+      error: orderItemError,
+    } = await supabase
+      .from("order_item")
+      .select("id, item_id, quantity")
+      .eq("order_id", orderData.id);
+    if (orderItemError) {
+      console.log(orderItemError, orderItemStatus);
+      return NextResponse.json(
+        {
+          message: ERROR_MESSAGE.serverError,
+        },
+        { status: orderItemStatus }
+      );
+    }
+    // const orderItemId = orderItemData?.map((item) => item.item_id);
     if (orderData.total_price === payment.amount.total) {
       switch (payment.status) {
-        case "VIRTUAL_ACCOUNT_ISSUED": {
-          const paymentMethod = payment.paymentMethod;
-          // 가상 계좌가 발급된 상태입니다.
-          // 계좌 정보를 이용해 원하는 로직을 구성하세요.
-          return NextResponse.json({
-            message: "Virtual account issued",
-            accountInfo: paymentMethod,
-          });
-        }
         case "PAID": {
-          // 모든 금액을 지불했습니다! 완료 시 원하는 로직을 구성하세요.
+          // 모든 금액이 지불됨
           // Order Table의 order_status, payment_status 업데이트
-          const { data: updatedData, error: updatedDataError } = await supabase
-            .from("order")
-            .update({
-              order_status: "PAYMENT_COMPLETED",
-              payment_status: payment.status,
-            })
-            .eq("order_name", order.orderName)
-            .select();
-          console.log(
-            "1.주문 테이블의 주문상태와 결제상태 업데이트 성공: ",
-            updatedData
-          );
+          const { error: updatedDataError, status: updatedDataStatus } =
+            await supabase
+              .from("order")
+              .update({
+                order_status: "PAYMENT_COMPLETED",
+                payment_status: payment.status,
+              })
+              .eq("order_name", payment.orderName)
+              .select();
           if (updatedDataError) {
-            throw new Error(
-              `1-1.주문 테이블의 주문상태와 결제상태 업데이트 실패: ${updatedDataError}`
+            console.log("주문 상태를 업데이트하는 데 실패했습니다.");
+            return NextResponse.json(
+              {
+                message: ERROR_MESSAGE.serverError,
+              },
+              { status: updatedDataStatus }
             );
           }
           // 장바구니에서 구매한 경우만 장바구니 아이템 삭제
-          if (orderType !== "directOrder") {
-            // 장바구니에 주문된 아이템 삭제
-            const cartItemIds = order.orderItems.map(
-              (item: CartItem) => item.cartItemId
+          if (orderData.order_type !== "directOrder") {
+            const {
+              status: cartStatus,
+              data: cartData,
+              error: cartError,
+            } = await supabase.from("cart").select("id").single();
+            if (cartError) {
+              console.log("장바구니 불러오는 데 실패");
+              return NextResponse.json(
+                {
+                  message: ERROR_MESSAGE.serverError,
+                },
+                { status: cartStatus }
+              );
+            }
+            const orderItemsId = orderItemData.map(
+              (orderItem) => orderItem.item_id
             );
-            const { error: deletedError } = await supabase
+            console.log("삭제할 상품 id => ", orderItemsId);
+            console.log("삭제할 cart id => ", cartData);
+            const {
+              status: deletedStatus,
+              data: deletedData,
+              error: deletedError,
+            } = await supabase
               .from("cart_item")
               .delete()
-              .in("id", cartItemIds);
-            console.log("2.장바구니에 주문된 상품 삭제 성공");
+              .eq("cart_id", cartData.id)
+              .in("product_id", orderItemsId)
+              .select();
+            console.log("*Deleted item => ", deletedData);
             if (deletedError) {
-              throw new Error(
-                `2-1.주문완료된 이후 장바구니에 해당 상품 삭제 실패: ${deletedError}`
+              console.log(
+                "주문완료 후 장바구니에서 해당 상품을 삭제하는 데 실패했습니다.",
+                deletedError
+              );
+              return NextResponse.json(
+                {
+                  message: ERROR_MESSAGE.serverError,
+                },
+                { status: deletedStatus }
               );
             }
           }
 
           await Promise.all(
-            order.orderItems.map(async (item: CartItem | OrderItem) => {
-              // 현재 상품 데이터 가져오기(현재 수량 파악을 위함)
-              const { data: productData, error: productDataError } =
-                await supabase
+            orderItemData.map(
+              async (item: { item_id: number; quantity: number }) => {
+                // 현재 상품 데이터 가져오기(현재 수량 파악을 위함)
+                const {
+                  data: productData,
+                  error: productDataError,
+                  status: productDataStatus,
+                } = await supabase
                   .from("product")
                   .select("stock")
-                  .eq("id", item.itemId)
+                  .eq("id", item.item_id)
                   .single();
-              console.log(
-                "3.주문완료 후 수량 체크를 위한 상품 데이터 가져오기 성공: ",
-                productData
-              );
-              if (productDataError) {
-                throw new Error(
-                  `3-1.주문완료 후 수량 체크를 위한 상품 데이터 가져오기 실패: ${productDataError}`
-                );
-              }
-              const newStock = productData?.stock - item.quantity;
-              // 수량 업데이트
-              const { data: updatedData, error: updatedError } = await supabase
-                .from("product")
-                .update({ stock: newStock })
-                .eq("id", item.itemId)
-                .select()
-                .single();
 
-              console.log(
-                "4.주문완료 후 상품 재고 업데이트 성공: ",
-                updatedData
-              );
-              if (updatedError) {
-                throw new Error(
-                  `4-1.주문완료 후 상품 재고 업데이트 실패: ${updatedError}`
-                );
+                if (productDataError) {
+                  console.log(
+                    "주문완료 후 수량 업데이트를 위한 상품 데이터 가져오기 실패"
+                  );
+                  return NextResponse.json(
+                    {
+                      message: ERROR_MESSAGE.serverError,
+                    },
+                    {
+                      status: productDataStatus,
+                    }
+                  );
+                }
+
+                const newStock = productData?.stock - item.quantity;
+                // 수량 업데이트
+                const { error: updatedError, status: updatedStatus } =
+                  await supabase
+                    .from("product")
+                    .update({ stock: newStock })
+                    .eq("id", item.item_id)
+                    .select()
+                    .single();
+
+                if (updatedError) {
+                  console.log("주문완료 후 상품 재고 업데이트 실패");
+                  return NextResponse.json(
+                    {
+                      message: ERROR_MESSAGE.serverError,
+                    },
+                    { status: updatedStatus }
+                  );
+                }
               }
-            })
+            )
           );
 
           return NextResponse.redirect(
-            `${origin}/order/complete/${order.orderName}`
+            `${origin}/order/complete/${payment.orderName}`
           );
         }
       }
@@ -135,7 +204,7 @@ export async function POST(req: Request) {
       // 결제 금액이 불일치하여 위/변조 시도가 의심됩니다.
       return NextResponse.json(
         {
-          message: "Payment amount mismatch",
+          message: "결제 금액이 일치하지 않습니다.",
         },
         { status: 400 }
       );

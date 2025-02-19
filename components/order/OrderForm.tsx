@@ -13,6 +13,8 @@ import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { createOrderName } from "@/utils/createOrderName";
 import PortOne, { PaymentRequest } from "@portone/browser-sdk/v2";
 import { updateOrderStatus } from "@/api/orderApis";
+import { DEFAULT_URL } from "@/utils/constants/defaultUrl";
+import { v4 } from "uuid";
 
 export default function OrderForm() {
   const pathname = usePathname();
@@ -63,6 +65,7 @@ export default function OrderForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const paymentId = v4();
 
     // 주문서 생성
     const res = await fetch("/api/order", {
@@ -70,10 +73,9 @@ export default function OrderForm() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({ formData, paymentId, orderType }),
     });
 
-    const paymentId = `${crypto.randomUUID()}`;
     const paymentRequest: PaymentRequest = {
       storeId: "store-09c98e73-7dff-49ce-8683-6b5c6330d392",
       channelKey:
@@ -90,12 +92,13 @@ export default function OrderForm() {
         email: formData.email,
         phoneNumber: formData.phone,
       },
+      redirectUrl: `${DEFAULT_URL}/api/payment/redirect`,
     };
 
     if (res.status == 200) {
       // 결제 요청
       const res = await PortOne.requestPayment(paymentRequest);
-
+      console.log("#결제 결과 => ", res);
       if (res?.code != null) {
         // 오류 발생
         openToast({
@@ -115,6 +118,11 @@ export default function OrderForm() {
           orderType,
         }),
       });
+
+      if (completeRes.status !== 200) {
+        openToast({ type: "ERROR", content: ERROR_MESSAGE.serverError });
+        return;
+      }
       router.push(completeRes.url);
     } else {
       console.log(res);
