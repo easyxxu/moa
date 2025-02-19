@@ -1,3 +1,5 @@
+import { v4 } from "uuid";
+
 export const createOrderName = () => {
   const now = new Date();
   const year = now.getFullYear();
@@ -8,7 +10,7 @@ export const createOrderName = () => {
   const seconds = String(now.getSeconds()).padStart(2, "0");
 
   // crypto.randomUUID()로 UUID 생성 후 앞 8자리만 사용
-  const shortUUID = crypto.randomUUID().split("-")[0];
+  const shortUUID = v4().split("-")[0];
 
   const orderName = `${year}${month}${day}_${hours}${minutes}${seconds}_${shortUUID}`;
 
