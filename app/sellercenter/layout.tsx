@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import SellerHeader from "@/components/common/SellerHeader";
+import SellerHeader from "@/components/common/header/SellerHeader";
 import Menu from "@/components/sellercenter/Menu";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
 

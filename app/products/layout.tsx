@@ -1,7 +1,7 @@
 import Footer from "@/components/common/Footer";
-import Header from "@/components/common/Header";
-import MobileNavigation from "@/components/common/MobileNavigation";
-import Category from "@/components/common/ProductNav";
+import Header from "@/components/common/header/Header";
+import MobileNavigation from "@/components/common/header/MobileNavigation";
+import Category from "@/components/common/ProductCategoryList";
 
 export default function ProductLayout({
   children,

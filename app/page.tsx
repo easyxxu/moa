@@ -1,6 +1,6 @@
 import { getProducts } from "@/api/productApis";
 
-import Header from "@/components/common/Header";
+import Header from "@/components/common/header/Header";
 import Footer from "@/components/common/Footer";
 import ProductCategoryList from "@/components/common/ProductCategoryList";
 import MobileNavigation from "@/components/common/header/MobileNavigation";

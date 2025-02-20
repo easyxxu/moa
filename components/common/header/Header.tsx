@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import SearchInput from "../search/SearchInput";
+import SearchInput from "./SearchInput";
 import Navigation from "./Navigation";
 import MoaLogo from "@/public/assets/moa-logo.svg";
 
