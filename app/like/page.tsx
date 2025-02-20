@@ -1,6 +1,6 @@
 "use client";
 
-import CardList from "@/components/card/CardList";
+import CardList from "@/components/common/productCard/CardList";
 import { useUserState } from "@/contexts/UserContext";
 import { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/client";

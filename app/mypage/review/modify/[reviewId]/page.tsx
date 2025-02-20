@@ -1,5 +1,5 @@
 import { getReviewById } from "@/api/reviewApis";
-import CardItem from "@/components/card/CardItem";
+import CardItem from "@/components/common/productCard/CardItem";
 import ReviewForm from "@/components/mypage/reviewWrite/ReviewForm";
 
 export default async function ReviewModify({

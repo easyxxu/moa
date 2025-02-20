@@ -1,5 +1,5 @@
 import { getOrderWithProductInfoByOrderName } from "@/api/orderApis";
-import CardItem from "@/components/card/CardItem";
+import CardItem from "@/components/common/productCard/CardItem";
 import Link from "next/link";
 
 export default async function OrderComplete({

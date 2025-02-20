@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import CardList from "../card/CardList";
+import CardList from "../common/productCard/CardList";
 import { getProducts } from "@/api/productApis";
 import { useEffect, useState } from "react";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";

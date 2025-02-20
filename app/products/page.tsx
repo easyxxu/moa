@@ -1,4 +1,4 @@
-import CardList from "@/components/card/CardList";
+import CardList from "@/components/common/productCard/CardList";
 import ProductOrderSelector from "@/components/product/ProductOrderSelector";
 import FilterCharacter from "@/components/product/FilterCharacter";
 import { getProducts } from "@/api/productApis";
