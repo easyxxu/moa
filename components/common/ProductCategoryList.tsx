@@ -11,7 +11,7 @@ const CATEGORYS = [
   { text: "CHARACTER", src: "" },
 ];
 
-export default function ProductNav() {
+export default function ProductCategoryList() {
   const pathname = usePathname();
   const isProductDetailPage = /^\/products\/\d+$/.test(pathname);
   const { replace } = useRouter();

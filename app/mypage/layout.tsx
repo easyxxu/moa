@@ -1,7 +1,7 @@
 import Footer from "@/components/common/Footer";
-import Header from "@/components/common/Header";
-import MobileNavigation from "@/components/common/MobileNavigation";
-import ProductNav from "@/components/common/ProductNav";
+import Header from "@/components/common/header/Header";
+import MobileNavigation from "@/components/common/header/MobileNavigation";
+import ProductCategoryList from "@/components/common/ProductCategoryList";
 import SideMenu from "@/components/mypage/SideMenu";
 
 export default function MyPageLayout({
@@ -13,7 +13,7 @@ export default function MyPageLayout({
     <>
       <div className="sticky top-0 z-10">
         <Header />
-        <ProductNav />
+        <ProductCategoryList />
       </div>
       <main className="flex sm:py-8 sm:px-2 sm:gap-7">
         <aside className="hidden w-48 sm:block">

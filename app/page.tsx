@@ -2,8 +2,8 @@ import { getProducts } from "@/api/productApis";
 
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
-import ProductNav from "@/components/common/ProductNav";
-import MobileNavigation from "@/components/common/MobileNavigation";
+import ProductCategoryList from "@/components/common/ProductCategoryList";
+import MobileNavigation from "@/components/common/header/MobileNavigation";
 import FilterProductList from "@/components/product/FilterProductList";
 
 export default async function Index() {
@@ -15,7 +15,7 @@ export default async function Index() {
     <div>
       <div className="sticky top-0 z-10">
         <Header />
-        <ProductNav />
+        <ProductCategoryList />
       </div>
       <main>
         <FilterProductList initialProducts={data?.products || []} />

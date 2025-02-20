@@ -1,7 +1,7 @@
 import Footer from "@/components/common/Footer";
-import Header from "@/components/common/Header";
-import MobileNavigation from "@/components/common/MobileNavigation";
-import ProductNav from "@/components/common/ProductNav";
+import Header from "@/components/common/header/Header";
+import MobileNavigation from "@/components/common/header/MobileNavigation";
+import ProductCategoryList from "@/components/common/ProductCategoryList";
 
 export default function LikeLayout({
   children,
@@ -12,7 +12,7 @@ export default function LikeLayout({
     <div>
       <div className="sticky top-0">
         <Header />
-        <ProductNav />
+        <ProductCategoryList />
       </div>
       <main className="mx-auto my-4 max-w-7xl h-4/5">{children}</main>
       <Footer />
