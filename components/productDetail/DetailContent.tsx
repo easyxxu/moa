@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 
-import TabButton from "../common/button/TabButton";
+import TabButton from "./TabButton";
 import Image from "next/image";
 import ProductReviews from "./ProductReviews";
 import QuestionForm from "./QuestionForm";
