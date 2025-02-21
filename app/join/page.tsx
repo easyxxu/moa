@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useFormState } from "react-dom";
 import { useEffect } from "react";
 
-import Form from "@/components/authForm/Form";
+import Form from "@/components/auth/Form";
 import InputLabel from "@/components/common/InputLabel";
 import { userJoin } from "@/api/userApis";
 import { useUserDispatch } from "@/contexts/UserContext";

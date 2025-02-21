@@ -4,7 +4,7 @@ import { useFormState } from "react-dom";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import Form from "@/components/authForm/Form";
+import Form from "@/components/auth/Form";
 import InputLabel from "@/components/common/InputLabel";
 
 import { useUserDispatch, useUserState } from "@/contexts/UserContext";
