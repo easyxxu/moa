@@ -1,6 +1,6 @@
 import { getSellerProductsWithQuestions } from "@/api/qaApis";
-import TableHeader from "@/components/table/TableHeader";
-import TableCell from "@/components/table/TableItem";
+import TableHeader from "@/components/common/table/TableHeader";
+import TableCell from "@/components/common/table/TableItem";
 import Link from "next/link";
 
 const headers = ["상품정보", "문의개수", "답변대기", "답변관리"];

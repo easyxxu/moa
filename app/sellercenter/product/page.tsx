@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import TableHeader from "@/components/table/TableHeader";
-import TableCell from "@/components/table/TableItem";
+import TableHeader from "@/components/common/table/TableHeader";
+import TableCell from "@/components/common/table/TableItem";
 import PlusIcon from "@/public/assets/icon/icon-add-product.svg";
 
 import { useUserState } from "@/contexts/UserContext";

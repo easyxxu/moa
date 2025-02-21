@@ -1,6 +1,6 @@
 import { getQuestionsByProductId } from "@/api/qaApis";
-import TableHeader from "@/components/table/TableHeader";
-import TableCell from "@/components/table/TableItem";
+import TableHeader from "@/components/common/table/TableHeader";
+import TableCell from "@/components/common/table/TableItem";
 import { answerTitleMap } from "@/utils/answerTitleMap";
 import Image from "next/image";
 import Link from "next/link";

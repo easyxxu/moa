@@ -1,7 +1,7 @@
 "use client";
 
 import { useCartCheckItems } from "@/contexts/CartContext";
-import TableCell from "../table/TableItem";
+import TableCell from "../common/table/TableItem";
 import { useEffect, useState } from "react";
 import { loadProductById } from "@/api/productApis";
 import { Tables } from "@/types/database.types";

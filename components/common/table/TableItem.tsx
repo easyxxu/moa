@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import Button from "../common/button/Button";
+import Button from "../button/Button";
 import { MouseEventHandler } from "react";
 
 interface TextProp {
