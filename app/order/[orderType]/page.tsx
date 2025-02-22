@@ -1,7 +1,7 @@
 import OrderForm from "@/components/order/OrderForm";
 import OrderList from "@/components/order/OrderList";
 import OrderTotalPrice from "@/components/order/OrderTotalPrice";
-import TableHeader from "@/components/table/TableHeader";
+import TableHeader from "@/components/common/table/TableHeader";
 
 const ORDER_HEADER = ["상품정보", "할인", "배송비", "주문금액"];
 

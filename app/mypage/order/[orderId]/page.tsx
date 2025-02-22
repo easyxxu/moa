@@ -1,7 +1,7 @@
 import Link from "next/link";
 import OrderProductItem from "@/components/mypage/OrderProductItem";
 import StatusChip from "@/components/mypage/StatusChip";
-import TableHeader from "@/components/table/TableHeader";
+import TableHeader from "@/components/common/table/TableHeader";
 import { createClient } from "@/utils/supabase/server";
 
 const HEADER_TITLES = ["주문정보", "배송비", "주문상태", "리뷰작성"];

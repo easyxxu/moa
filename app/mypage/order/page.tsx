@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import OrderItem from "@/components/mypage/OrderItem";
 import StatusChip from "@/components/mypage/StatusChip";
-import TableHeader from "@/components/table/TableHeader";
+import TableHeader from "@/components/common/table/TableHeader";
 
 import { getOrderByUser } from "@/api/orderApis";
 
