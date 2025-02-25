@@ -45,15 +45,15 @@ export default async function SellerCenter() {
         <div className="w-full px-2 py-2 border rounded-sm sm:w-1/2">
           <LineChart
             chartTitle="매출현황"
-            labels={data.labels}
-            totalPriceData={data.totalPriceData}
+            labels={data.monthLabels}
+            totalPriceData={data.totalOrderPrice}
           />
         </div>
         <div className="w-full px-2 py-2 border rounded-sm sm:w-1/2">
           <BarChart
             chartTitle="주문건수"
-            labels={data.labels}
-            totalCountData={data.totalCountData}
+            labels={data.monthLabels}
+            totalCountData={data.totalOrderCount}
           />
         </div>
       </div>

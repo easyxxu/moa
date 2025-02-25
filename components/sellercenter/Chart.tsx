@@ -51,7 +51,7 @@ export function LineChart({
     },
     plugins: {
       legend: {
-        position: "top" as const,
+        display: false,
       },
       title: {
         display: true,
@@ -76,8 +76,8 @@ export function LineChart({
       x: {
         afterTickToLabelConversion: function (scaleInstance: Scale) {
           scaleInstance.ticks.forEach((tick: Tick) => {
-            if (tick.label) {
-              tick.label += "월";
+            if (typeof tick.label === "string") {
+              tick.label = parseInt(tick.label.split("-")[1]) + "월";
             }
           });
         },
@@ -121,7 +121,7 @@ export function BarChart({
     },
     plugins: {
       legend: {
-        position: "top" as const,
+        display: false,
       },
       title: {
         display: true,
@@ -150,8 +150,8 @@ export function BarChart({
       x: {
         afterTickToLabelConversion: function (scaleInstance: Scale) {
           scaleInstance.ticks.forEach((tick: Tick) => {
-            if (tick.label) {
-              tick.label += "월";
+            if (typeof tick.label === "string") {
+              tick.label = parseInt(tick.label.split("-")[1]) + "월";
             }
           });
         },
@@ -167,7 +167,7 @@ export function BarChart({
     labels,
     datasets: [
       {
-        label: "2024",
+        // label: "2024",
         data: totalCountData,
         borderColor: "#3b82f6",
         backgroundColor: "#3b82f6",

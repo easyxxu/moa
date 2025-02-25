@@ -9,14 +9,19 @@ export const initializeMonthlyStats = (month: number = 6) => {
   const monthlyStats: MonthlyStats = {};
   const currentDate = new Date();
 
-  for (let i = 0; i < 6; i++) {
-    const month =
-      new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() - i,
-        1
-      ).getMonth() + 1;
-    monthlyStats[month] = { totalPrice: 0, totalCount: 0 };
+  for (let i = month - 1; i >= 0; i--) {
+    const date = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() - i,
+      1
+    );
+
+    const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}`; // YYYY-MM 형식
+
+    monthlyStats[key] = { totalPrice: 0, totalCount: 0 };
   }
   return monthlyStats;
 };

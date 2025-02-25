@@ -13,15 +13,15 @@ export default async function AnalyticsDashboard() {
         <div className="w-full">
           <LineChart
             chartTitle="매출현황"
-            labels={data.labels}
-            totalPriceData={data.totalPriceData}
+            labels={data.monthLabels}
+            totalPriceData={data.totalOrderPrice}
           />
         </div>
         <div className="w-full">
           <BarChart
             chartTitle="주문수"
-            labels={data.labels}
-            totalCountData={data.totalCountData}
+            labels={data.monthLabels}
+            totalCountData={data.totalOrderCount}
           />
         </div>
       </div>
