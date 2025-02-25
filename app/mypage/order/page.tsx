@@ -4,12 +4,12 @@ import OrderItem from "@/components/mypage/OrderItem";
 import StatusChip from "@/components/mypage/StatusChip";
 import TableHeader from "@/components/common/table/TableHeader";
 
-import { getOrderByUser } from "@/api/orderApis";
+import { fetchOrderByUser } from "@/api/orderApis";
 
 const HEADER_TITLES = ["주문정보", "총 결제금액", "주문상태"];
 
 export default async function MyOrder() {
-  const { status, message, data } = await getOrderByUser();
+  const { status, message, data } = await fetchOrderByUser();
 
   if (status > 400 && status < 500) {
     throw new Error(message);

@@ -3,22 +3,22 @@
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { createClient } from "@/utils/supabase/server";
 
-export const getOrderByUser = async () => {
+export const fetchOrderByUser = async () => {
   const supabase = createClient();
 
   const {
     data: { user },
-    error: getUserError,
+    error: fetchUserError,
   } = await supabase.auth.getUser();
 
-  if (getUserError) {
-    console.error("getUserError: ", getUserError);
+  if (fetchUserError) {
+    console.error("[ERROR] fetchOrderByUser : ", fetchUserError);
     return { status: 404, message: "유저 정보를 받아오는 데 실패했습니다." };
   }
 
   const {
     data: orders,
-    error: getOrdersError,
+    error: fetchOrdersError,
     status,
   } = await supabase
     .from("order")
@@ -34,8 +34,8 @@ export const getOrderByUser = async () => {
     .eq("customer_id", user?.id!)
     .order("created_at", { ascending: false });
 
-  if (getOrdersError) {
-    console.error("getOrdersError: ", getOrdersError);
+  if (fetchOrdersError) {
+    console.error("[ERROR] fetchOrdersError: ", fetchOrdersError);
     return {
       status,
       message: ERROR_MESSAGE.serverError,
@@ -77,7 +77,7 @@ export const updateOrderStatus = async (
   };
 };
 
-export const getOrderWithProductInfoByOrderName = async (orderName: string) => {
+export const fetchOrderDetail = async (orderName: string) => {
   const supabase = createClient();
 
   const { status, data, error } = await supabase

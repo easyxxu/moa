@@ -1,4 +1,4 @@
-import { getOrderWithProductInfoByOrderName } from "@/api/orderApis";
+import { fetchOrderDetail } from "@/api/orderApis";
 import CardItem from "@/components/common/productCard/CardItem";
 import Link from "next/link";
 
@@ -7,7 +7,7 @@ export default async function OrderComplete({
 }: {
   params: { orderName: string };
 }) {
-  const res = await getOrderWithProductInfoByOrderName(orderName);
+  const res = await fetchOrderDetail(orderName);
   if (res.status !== 200) {
     throw new Error(res.message);
   }
