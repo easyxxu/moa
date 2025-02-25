@@ -1,4 +1,4 @@
-import { getCartId, getCartItem } from "@/api/cartApis";
+import { fetchCartIdByUser, fetchCartItems } from "@/api/cartApis";
 import CartNoBuyer from "@/components/cart/CartNoBuyer";
 import CartNoItem from "@/components/cart/CartNoItem";
 import CartTable from "@/components/cart/CartTable";
@@ -19,7 +19,7 @@ export default async function CartPage() {
   if (!isLogin || isSeller) return <CartNoBuyer />;
 
   // 장바구니 ID 가져오기
-  const { status, message, data } = await getCartId(user!.id);
+  const { status, message, data } = await fetchCartIdByUser(user!.id);
   if (status !== 200) {
     throw new Error(message);
   }
@@ -32,7 +32,7 @@ export default async function CartPage() {
       status: getCartItemStatus,
       message: getCartItemMsg,
       data: cartItemData,
-    } = await getCartItem(cartId);
+    } = await fetchCartItems(cartId);
     if (getCartItemStatus !== 200) {
       throw new Error(getCartItemMsg);
     }

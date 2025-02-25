@@ -6,7 +6,7 @@ import { loadProductById } from "./productApis";
 import { CartItemInfo, GroupedCartItems } from "@/types/cart";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 
-export async function createCart(userId: string) {
+export async function createUserCart(userId: string) {
   const supabase = createClient();
   const { status, data, error } = await supabase
     .from("cart")
@@ -25,7 +25,7 @@ export async function createCart(userId: string) {
   };
 }
 
-export async function getCartId(userId: string) {
+export async function fetchCartIdByUser(userId: string) {
   const supabase = createClient();
   const { status, data, error } = await supabase
     .from("cart")
@@ -52,7 +52,7 @@ export async function getCartId(userId: string) {
   };
 }
 
-export async function addCartItem(
+export async function addProductToCart(
   cartId: number,
   productId: number,
   quantity: number
@@ -68,7 +68,7 @@ export async function addCartItem(
   return { data, error };
 }
 
-export async function checkCartItem(cartId: number, productId: number) {
+export async function isProductInCart(cartId: number, productId: number) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("cart_item")
@@ -81,7 +81,7 @@ export async function checkCartItem(cartId: number, productId: number) {
   }
 }
 
-export async function getCartItem(cartId: number) {
+export async function fetchCartItems(cartId: number) {
   const supabase = createClient();
 
   const {
@@ -151,7 +151,10 @@ export const deleteCartItem = async (productId: number) => {
   return res;
 };
 
-export const updateQuantity = async (productId: number, quantity: number) => {
+export const updateCartItemQuantity = async (
+  productId: number,
+  quantity: number
+) => {
   const supabase = createClient();
   const { data } = await supabase
     .from("cart_item")

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Button from "../common/button/Button";
 import { useModal } from "@/contexts/ModalContext";
 import { useEffect, useState } from "react";
-import { deleteCartItem, updateQuantity } from "@/api/cartApis";
+import { deleteCartItem, updateCartItemQuantity } from "@/api/cartApis";
 import DeleteIcon from "@/public/assets/icon/icon-delete.svg";
 import { useCartCheckItems } from "@/contexts/CartContext";
 import { useRouter } from "next/navigation";
@@ -46,7 +46,7 @@ export default function CartTableItem({ item, isLastItem }: Props) {
   };
 
   const submitModifyQuantity = async (updatedQuantity: number) => {
-    const data = await updateQuantity(item.id!, updatedQuantity);
+    const data = await updateCartItemQuantity(item.id!, updatedQuantity);
     setQuantity(data?.quantity!);
     changeQuantity(item.id!, data?.quantity!);
     closeModal();

@@ -8,10 +8,10 @@ import UnHeartIcon from "@/public/assets/icon/icon-unheart.svg";
 import { useState } from "react";
 import { useUserDispatch, useUserState } from "@/contexts/UserContext";
 import {
-  addCartItem,
-  checkCartItem,
-  createCart,
-  getCartId,
+  addProductToCart,
+  isProductInCart,
+  createUserCart,
+  fetchCartIdByUser,
 } from "@/api/cartApis";
 import { likeProduct } from "@/api/productApis";
 import { useModal } from "@/contexts/ModalContext";
@@ -77,7 +77,11 @@ export default function ProductPurchaseOptions({
       return;
     }
     let cartId;
-    const { status, message, data: cartIdData } = await getCartId(userId!);
+    const {
+      status,
+      message,
+      data: cartIdData,
+    } = await fetchCartIdByUser(userId!);
     if (status >= 400 && status < 500) {
       throw new Error(message);
     }
@@ -87,7 +91,7 @@ export default function ProductPurchaseOptions({
         status: createCartStatus,
         message: createCartMsg,
         data: createCartData,
-      } = await createCart(userId!);
+      } = await createUserCart(userId!);
       if (createCartStatus >= 400 && createCartStatus < 500) {
         throw new Error(createCartMsg);
       }
@@ -105,7 +109,11 @@ export default function ProductPurchaseOptions({
       return;
     }
 
-    const { data, error } = await addCartItem(cartId!, productId, quantity);
+    const { data, error } = await addProductToCart(
+      cartId!,
+      productId,
+      quantity
+    );
     if (!error) {
       showModal({
         type: "CONFIRM",
@@ -116,7 +124,7 @@ export default function ProductPurchaseOptions({
     }
   };
   const checkProductInCart = async (cartId: number) => {
-    const result = await checkCartItem(cartId, productId);
+    const result = await isProductInCart(cartId, productId);
     console.log("result:", result);
     return result;
   };
