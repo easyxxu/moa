@@ -1,8 +1,8 @@
-import { getOrderDataWithChartFormat } from "@/api/chartApis";
+import { fetchOrderChartData } from "@/api/chartApis";
 import { BarChart, LineChart } from "@/components/sellercenter/Chart";
 
 export default async function AnalyticsDashboard() {
-  const { status, message, data } = await getOrderDataWithChartFormat();
+  const { status, message, data } = await fetchOrderChartData();
   if ((status >= 400 && status < 500) || !data) {
     throw new Error(message);
   }

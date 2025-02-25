@@ -3,20 +3,27 @@
 import { createClient } from "@/utils/supabase/server";
 import { getUserInfo } from "./userApis";
 import {
-  getChartDataArrays,
-  getRecentMonthsData,
-  processData,
-} from "@/utils/transformOrderData";
+  initializeMonthlyStats,
+  aggregateOrderDataByMonth,
+  convertStatsToChartData,
+} from "@/utils/processOrderStats";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 
-export const getOrderDataWithChartFormat = async () => {
+export const fetchOrderChartData = async () => {
   const supabase = createClient();
+  const userRes = await getUserInfo();
+  const userId = userRes.data?.id;
 
-  const res = await getUserInfo();
-  const userId = res.data?.id;
+  if (!userId) {
+    return { status: 401, message: "사용자 정보를 가져오지 못했습니다." };
+  }
 
-  const sixMonthsAgo = new Date();
-  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+  // 최근 N개월 전의 날짜를 반환하는 함수
+  const getPastDate = (monthsAgo: number = 6) => {
+    const currentDate = new Date();
+    currentDate.setMonth(currentDate.getMonth() - monthsAgo);
+    return currentDate.toISOString();
+  };
 
   const { status, data, error } = await supabase
     .from("order_item")
@@ -28,23 +35,21 @@ export const getOrderDataWithChartFormat = async () => {
   `
     )
     .eq("product.seller_id", userId!)
-    .gte("order.created_at", sixMonthsAgo.toISOString());
+    .gte("order.created_at", getPastDate());
 
   if (error) {
     console.error("get order_item error", error);
     return { status, message: ERROR_MESSAGE.serverError };
   }
-  if (!data || data.length === 0) {
-    const transformNoData = getRecentMonthsData();
-    const chartNoDataArrays = getChartDataArrays(transformNoData);
-    return { status, message: "주문이 없습니다.", data: chartNoDataArrays };
-  }
-  const transformData = processData(data);
-  const chartDataArrays = getChartDataArrays(transformData);
+
+  const processedData =
+    data?.length > 0
+      ? aggregateOrderDataByMonth(data)
+      : initializeMonthlyStats();
 
   return {
     status,
     message: "주문데이터를 차트 포맷으로 변경하는 데 성공했습니다.",
-    data: chartDataArrays,
+    data: convertStatsToChartData(processedData),
   };
 };

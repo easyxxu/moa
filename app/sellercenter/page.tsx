@@ -5,12 +5,12 @@ import BoxIcon from "@/public/assets/icon/icon-box.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { BarChart, LineChart } from "@/components/sellercenter/Chart";
-import { getOrderDataWithChartFormat } from "@/api/chartApis";
+import { fetchOrderChartData } from "@/api/chartApis";
 import { getStockCount } from "@/api/productApis";
 import { getSellerProductsWithQuestions } from "@/api/qaApis";
 
 export default async function SellerCenter() {
-  const { status, message, data } = await getOrderDataWithChartFormat();
+  const { status, message, data } = await fetchOrderChartData();
   if ((status >= 400 && status < 500) || !data) {
     throw new Error(message);
   }
