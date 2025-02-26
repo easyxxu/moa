@@ -1,4 +1,4 @@
-import { getQuestionById } from "@/api/qaApis";
+import { fetchQuestionsById } from "@/api/qaApis";
 import AnswerContent from "@/components/sellercenter/AnswerContent";
 import QuestionContent from "@/components/sellercenter/QuestionContent";
 
@@ -8,7 +8,7 @@ export default async function QADetailPage({
   params: { questionId: string; productId: string };
 }) {
   const questionId = +params.questionId;
-  const res = await getQuestionById(questionId);
+  const res = await fetchQuestionsById(questionId);
   if (res.status === 404) {
     throw new Error(res.message);
   }

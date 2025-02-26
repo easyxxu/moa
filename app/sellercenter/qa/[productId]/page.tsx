@@ -1,4 +1,4 @@
-import { getQuestionsByProductId } from "@/api/qaApis";
+import { fetchQuestionsByProductId } from "@/api/qaApis";
 import TableHeader from "@/components/common/table/TableHeader";
 import TableCell from "@/components/common/table/TableItem";
 import { answerTitleMap } from "@/utils/answerTitleMap";
@@ -13,7 +13,7 @@ export default async function ProductAnswerPage({
   params: { productId: string };
 }) {
   const productId = +params.productId;
-  const { status, message, data } = await getQuestionsByProductId(productId);
+  const { status, message, data } = await fetchQuestionsByProductId(productId);
 
   if (status === 404) {
     throw new Error(message);

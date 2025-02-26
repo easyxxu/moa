@@ -1,29 +1,16 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getUserInfo } from "./userApis";
 
-/**
- * 작성자의 문의 GET API
- *
- * 로그인 사용자 ID를 기반으로 사용자가 작성한 문의 목록을 불러오는 API입니다.
- * Supabase의 `question` 테이블에서 해당 사용자와 관련된 문의 데이터를 조회합니다.
- *
- * @param page - 요청할 문의 데이터의 페이지 번호
- * @returns 문의 데이터 배열 또는 에러 메시지
- *
- * @example
- * const myQuestions = await getQuestions(page);
- */
-export const getMyQuestions = async (page: number) => {
+export const fetchMyQuestions = async (page: number) => {
   const supabase = createClient();
   const start = (page - 1) * 10;
   const end = start + 9;
-  // 현재 로그인 유저 정보 얻어오기
+
   const res = await getUserInfo();
   if (res.status > 400 && res.status < 500) {
     throw new Error(res.message);
@@ -56,10 +43,7 @@ export const getMyQuestions = async (page: number) => {
   };
 };
 
-/**
- * 상품 상세 페이지에서 문의와 답변을 불러오는 API
- */
-export const getQuestionsWithAnswer = async (
+export const fetchQuestionsWithAnswer = async (
   productId: number,
   page: number
 ) => {
@@ -92,10 +76,8 @@ export const getQuestionsWithAnswer = async (
     },
   };
 };
-/**
- * 문의 작성 API
- */
-export const addQuestion = async (prevState: any, formData: FormData) => {
+
+export const createQuestion = async (prevState: any, formData: FormData) => {
   const supabase = createClient();
   const productId = formData.get("productId") as string;
   const title = formData.get("title") as string;
@@ -144,7 +126,6 @@ export const addQuestion = async (prevState: any, formData: FormData) => {
   };
 };
 
-/** 문의 DELETE API */
 export const deleteQuestion = async (questionId: number) => {
   const supabase = createClient();
 
@@ -183,7 +164,8 @@ export const deleteAnswer = async (answerId: number) => {
     message: "답변을 삭제했습니다.",
   };
 };
-export const getSellerProductsWithQuestions = async () => {
+
+export const fetchSellerProductsWithQuestions = async () => {
   const supabase = createClient();
 
   const { data: userData, error: userError } = await supabase.auth.getUser();
@@ -222,7 +204,7 @@ export const getSellerProductsWithQuestions = async () => {
   };
 };
 
-export const getQuestionsByProductId = async (productId: number) => {
+export const fetchQuestionsByProductId = async (productId: number) => {
   const supabase = createClient();
   const { data: productData, error: productError } = await supabase
     .from("product")
@@ -255,7 +237,7 @@ export const getQuestionsByProductId = async (productId: number) => {
   };
 };
 
-export const getQuestionById = async (questionId: number) => {
+export const fetchQuestionsById = async (questionId: number) => {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("question")
@@ -271,7 +253,7 @@ export const getQuestionById = async (questionId: number) => {
   return { status: 200, message: "데이터를 불러오는 데 성공했습니다.", data };
 };
 
-export const addAnswer = async (
+export const createAnswer = async (
   prevState: any,
   formData: FormData
 ): Promise<any> => {

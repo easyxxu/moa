@@ -8,7 +8,7 @@ import Loading from "@/components/common/Loading";
 import Pagination from "@/components/common/Pagination";
 import { Tables } from "@/types/database.types";
 
-import { getMyQuestions } from "@/api/qaApis";
+import { fetchMyQuestions } from "@/api/qaApis";
 import { answerTitleMap } from "@/utils/answerTitleMap";
 
 interface QuestionWithProduct extends Tables<"question"> {
@@ -29,7 +29,7 @@ export default function QAPage() {
 
   const loadMyQuestions = async () => {
     setIsLoading(true);
-    const res = await getMyQuestions(page);
+    const res = await fetchMyQuestions(page);
     if (res.status > 400 && res.status < 500) {
       throw new Error(res.message);
     }

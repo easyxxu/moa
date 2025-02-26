@@ -7,7 +7,7 @@ import { useFormState } from "react-dom";
 import Button from "../common/button/Button";
 import { useToast } from "@/contexts/ToastContext";
 import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
-import { addQuestion } from "@/api/qaApis";
+import { createQuestion } from "@/api/qaApis";
 import { QAsType } from "./QuestionList";
 
 const selectList = [
@@ -25,7 +25,7 @@ export default function QuestionForm({ setIsOpenQForm, setQas }: Props) {
   const { openToast } = useToast();
   const productId = usePathname().split("/").pop();
   const [selected, setSelected] = useState("");
-  const [state, formAction] = useFormState(addQuestion, {
+  const [state, formAction] = useFormState(createQuestion, {
     status: 0,
     message: "",
   });

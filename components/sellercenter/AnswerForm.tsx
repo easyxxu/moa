@@ -1,6 +1,6 @@
 "use client";
 
-import { addAnswer } from "@/api/qaApis";
+import { createAnswer } from "@/api/qaApis";
 import { useFormState } from "react-dom";
 import Button from "../common/button/Button";
 
@@ -9,7 +9,7 @@ interface Props {
   productId: number;
 }
 export default function AnswerForm({ questionId, productId }: Props) {
-  const [state, formAction] = useFormState(addAnswer, {
+  const [state, formAction] = useFormState(createAnswer, {
     status: 0,
     message: "",
   });

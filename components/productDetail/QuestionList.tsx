@@ -6,7 +6,7 @@ import Pagination from "../common/Pagination";
 import ArrowIcon from "@/public/assets/icon/icon-arrow.svg";
 
 import { Tables } from "@/types/database.types";
-import { getQuestionsWithAnswer } from "@/api/qaApis";
+import { fetchQuestionsWithAnswer } from "@/api/qaApis";
 
 interface QuestionWithAnswer extends Tables<"question"> {
   answer: Tables<"answer"> | null;
@@ -31,7 +31,7 @@ export default function QuestionList({ setQas, qas }: Props) {
   }>({});
 
   const fetchQA = async () => {
-    const res = await getQuestionsWithAnswer(+productId!, page);
+    const res = await fetchQuestionsWithAnswer(+productId!, page);
     if (res.status >= 400 && res.status < 500) {
       throw new Error(res.message);
     }

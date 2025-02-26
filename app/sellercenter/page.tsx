@@ -7,7 +7,7 @@ import Link from "next/link";
 import { BarChart, LineChart } from "@/components/sellercenter/Chart";
 import { fetchOrderChartData } from "@/api/chartApis";
 import { fetchProductStock } from "@/api/productApis";
-import { getSellerProductsWithQuestions } from "@/api/qaApis";
+import { fetchSellerProductsWithQuestions } from "@/api/qaApis";
 
 export default async function SellerCenter() {
   const { status, message, data } = await fetchOrderChartData();
@@ -28,7 +28,7 @@ export default async function SellerCenter() {
     status: productsWithQuestionStatus,
     message: productsWithQuestionMsg,
     data: productsWithQuestionData,
-  } = await getSellerProductsWithQuestions();
+  } = await fetchSellerProductsWithQuestions();
   if (productsWithQuestionStatus === 404) {
     throw new Error(productsWithQuestionMsg);
   }

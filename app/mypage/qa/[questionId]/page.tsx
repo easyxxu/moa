@@ -1,4 +1,4 @@
-import { getQuestionById } from "@/api/qaApis";
+import { fetchQuestionsById } from "@/api/qaApis";
 import DeleteButton from "@/components/mypage/qa/DeleteButton";
 import { answerTitleMap } from "@/utils/answerTitleMap";
 
@@ -8,7 +8,7 @@ export default async function MyQuestionDetailPage({
   params: { questionId: string };
 }) {
   const questionId = +params.questionId;
-  const res = await getQuestionById(questionId);
+  const res = await fetchQuestionsById(questionId);
   const question = res.data;
 
   return (

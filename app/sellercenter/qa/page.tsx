@@ -1,4 +1,4 @@
-import { getSellerProductsWithQuestions } from "@/api/qaApis";
+import { fetchSellerProductsWithQuestions } from "@/api/qaApis";
 import TableHeader from "@/components/common/table/TableHeader";
 import TableCell from "@/components/common/table/TableItem";
 import Link from "next/link";
@@ -6,7 +6,7 @@ import Link from "next/link";
 const headers = ["상품정보", "문의개수", "답변대기", "답변관리"];
 
 export default async function QADashboard() {
-  const { status, message, data } = await getSellerProductsWithQuestions();
+  const { status, message, data } = await fetchSellerProductsWithQuestions();
   if (status === 404) {
     throw new Error(message);
   }
