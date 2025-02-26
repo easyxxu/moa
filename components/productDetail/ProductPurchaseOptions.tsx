@@ -13,7 +13,7 @@ import {
   createUserCart,
   fetchCartIdByUser,
 } from "@/api/cartApis";
-import { likeProduct } from "@/api/productApis";
+import { toggleProductLike } from "@/api/productApis";
 import { useModal } from "@/contexts/ModalContext";
 import { usePathname, useRouter } from "next/navigation";
 import { useDirectOrder } from "@/contexts/DirectOrderContext";
@@ -129,7 +129,7 @@ export default function ProductPurchaseOptions({
     return result;
   };
   const handleLike = async () => {
-    const res = await likeProduct(productId);
+    const res = await toggleProductLike(productId);
     console.log("#res: ", res);
   };
   const handleNowBuy = () => {

@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import CardList from "../common/productCard/CardList";
-import { getProducts } from "@/api/productApis";
+import { fetchProducts } from "@/api/productApis";
 import { useEffect, useState } from "react";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 
@@ -33,7 +33,7 @@ export default function FilterProductList({ initialProducts }: Props) {
   const [pageEnd, setPageEnd] = useState(false);
 
   const loadProducts = async () => {
-    const res = await getProducts(
+    const res = await fetchProducts(
       page,
       searchKeyword,
       character,

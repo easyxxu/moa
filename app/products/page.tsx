@@ -1,7 +1,7 @@
 import CardList from "@/components/common/productCard/CardList";
 import ProductOrderSelector from "@/components/product/ProductOrderSelector";
 import FilterCharacter from "@/components/product/FilterCharacter";
-import { getProducts } from "@/api/productApis";
+import { fetchProducts } from "@/api/productApis";
 import FilterProduct from "@/components/product/FilterProduct";
 import FilterProductList from "@/components/product/FilterProductList";
 
@@ -15,7 +15,7 @@ export default async function ProductsPage(props: {
 }) {
   const { searchKeyword, character, category, order } = props.searchParams!;
 
-  const { status, message, data } = await getProducts(
+  const { status, message, data } = await fetchProducts(
     1,
     searchKeyword,
     character,

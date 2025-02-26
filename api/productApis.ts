@@ -3,7 +3,6 @@
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { getUserInfo } from "./userApis";
 
 interface ProductForm {
@@ -20,26 +19,31 @@ interface ProductForm {
 
 export async function addProduct(formData: ProductForm) {
   const supabase = createClient();
-  const { error } = await supabase.from("product").insert({ ...formData });
+  const { status, error } = await supabase
+    .from("product")
+    .insert({ ...formData });
 
   if (error) {
-    return error;
+    return { status, message: "상품을 등록하는 데 실패했습니다.", error };
   }
-
-  redirect("/sellercenter/product");
+  return { status, message: "상품을 등록했습니다." };
 }
 
-export async function updateProduct(formData: any, productId: number) {
+export async function modifyProduct(formData: ProductForm, productId: number) {
   const supabase = createClient();
-  const { error } = await supabase
+  const { status, error } = await supabase
     .from("product")
     .update({ ...formData })
     .eq("id", productId);
 
-  return error;
+  if (error) {
+    return { status, message: "상품을 수정하는 데 실패했습니다.", error };
+  }
+
+  return { status, message: "상품을 수정했습니다." };
 }
 
-export const getProducts = async (
+export const fetchProducts = async (
   page: number = 1,
   searchKeyword?: string,
   character?: string,
@@ -103,7 +107,7 @@ export const getProducts = async (
   };
 };
 
-export async function loadProductById(productId: number) {
+export async function fetchProductById(productId: number) {
   const supabase = createClient();
   const { data, error, status } = await supabase
     .from("product")
@@ -122,10 +126,9 @@ export async function loadProductById(productId: number) {
 
   return { data };
 }
-export const likeProduct = async (productId: number) => {
-  const supabase = createClient();
 
-  // userId 불러오기
+export const toggleProductLike = async (productId: number) => {
+  const supabase = createClient();
   const {
     data: { user },
     error: userError,
@@ -181,7 +184,7 @@ export const likeProduct = async (productId: number) => {
   }
 };
 
-export const getStockCount = async () => {
+export const fetchProductStock = async () => {
   const supabase = createClient();
 
   const res = await getUserInfo();
@@ -205,13 +208,12 @@ export const getStockCount = async () => {
   );
   const outOfStockProducts = data.filter((product) => product.stock === 0);
 
-  // 결과 반환
   return {
     status: 200,
     message: "상품 수량 정보 조회를 성공했습니다.",
     data: {
-      lowStockCount: lowStockProducts.length,
-      outOfStockCount: outOfStockProducts.length,
+      lowStock: lowStockProducts.length,
+      outOfStock: outOfStockProducts.length,
     },
   };
 };

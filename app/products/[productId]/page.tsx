@@ -6,7 +6,7 @@ import DetailContent from "@/components/productDetail/DetailContent";
 import ProductPurchaseOptions from "@/components/productDetail/ProductPurchaseOptions";
 import StarRating from "@/components/common/StarRating";
 import ShopIcon from "@/public/assets/icon/icon-shop.svg";
-import { loadProductById } from "@/api/productApis";
+import { fetchProductById } from "@/api/productApis";
 
 type Props = {
   params: Promise<{ productId: string }>;
@@ -14,7 +14,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = (await params).productId;
-  const res = await loadProductById(+id);
+  const res = await fetchProductById(+id);
   const productImage = res.data?.image[0] || "";
 
   return {
@@ -31,7 +31,7 @@ export default async function ProductPage({
   params: { productId: string };
 }) {
   const productId = +params.productId;
-  const { data } = await loadProductById(productId);
+  const { data } = await fetchProductById(productId);
   if (!data) return;
 
   return (

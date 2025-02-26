@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BarChart, LineChart } from "@/components/sellercenter/Chart";
 import { fetchOrderChartData } from "@/api/chartApis";
-import { getStockCount } from "@/api/productApis";
+import { fetchProductStock } from "@/api/productApis";
 import { getSellerProductsWithQuestions } from "@/api/qaApis";
 
 export default async function SellerCenter() {
@@ -16,12 +16,12 @@ export default async function SellerCenter() {
   }
   // 매진 임박 상품 개수 알림
   const {
-    status: getStockStatus,
-    message: getStockMsg,
-    data: getStockCountData,
-  } = await getStockCount();
-  if (getStockStatus >= 400 && getStockStatus < 500) {
-    throw new Error(getStockMsg);
+    status: fetchStockStatus,
+    message: fetchStockMessage,
+    data: productStock,
+  } = await fetchProductStock();
+  if (fetchStockStatus >= 400 && fetchStockStatus < 500) {
+    throw new Error(fetchStockMessage);
   }
   // 답변 대기 개수 알림
   const {
@@ -97,7 +97,7 @@ export default async function SellerCenter() {
                     href="/sellercenter/product"
                     className="text-red-400 underline underline-offset-2"
                   >
-                    {getStockCountData?.lowStockCount}
+                    {productStock?.lowStock}
                   </Link>{" "}
                   개
                 </div>
@@ -107,7 +107,7 @@ export default async function SellerCenter() {
                     href="/sellercenter/product"
                     className="text-red-400 underline underline-offset-2"
                   >
-                    {getStockCountData?.outOfStockCount}
+                    {productStock?.outOfStock}
                   </Link>{" "}
                   개
                 </div>

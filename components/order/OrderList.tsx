@@ -3,7 +3,7 @@
 import { useCartCheckItems } from "@/contexts/CartContext";
 import TableCell from "../common/table/TableItem";
 import { useEffect, useState } from "react";
-import { loadProductById } from "@/api/productApis";
+import { fetchProductById } from "@/api/productApis";
 import { Tables } from "@/types/database.types";
 import { useDirectOrder } from "@/contexts/DirectOrderContext";
 import { usePathname } from "next/navigation";
@@ -17,7 +17,7 @@ export default function OrderList() {
   useEffect(() => {
     const getProductData = async () => {
       if (orderType === "directOrder" && orderItem) {
-        const { data } = await loadProductById(orderItem.itemId);
+        const { data } = await fetchProductById(orderItem.itemId);
         if (data) {
           setOrderItems([data]);
         }
@@ -25,7 +25,7 @@ export default function OrderList() {
       }
 
       const fetchData = checkedItems.map(async (item) => {
-        const { data } = await loadProductById(item.itemId);
+        const { data } = await fetchProductById(item.itemId);
         return data;
       });
 

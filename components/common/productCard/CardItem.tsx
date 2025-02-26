@@ -4,7 +4,7 @@ import Image from "next/image";
 import HeartIcon from "@/public/assets/icon/icon-heart.svg";
 import UnHeartIcon from "@/public/assets/icon/icon-unheart.svg";
 import { useUserState } from "@/contexts/UserContext";
-import { likeProduct } from "@/api/productApis";
+import { toggleProductLike } from "@/api/productApis";
 import { useModal } from "@/contexts/ModalContext";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -57,7 +57,7 @@ export default function CardItem({
       });
       return;
     }
-    const res = await likeProduct(id);
+    const res = await toggleProductLike(id);
     setIsLiked(res.liked);
     setIsLikedCnt((prev) => {
       return res.liked ? prev + 1 : prev - 1;

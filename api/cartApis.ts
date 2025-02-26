@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/utils/supabase/server";
-import { loadProductById } from "./productApis";
+import { fetchProductById } from "./productApis";
 import { CartItemInfo, GroupedCartItems } from "@/types/cart";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 
@@ -112,7 +112,7 @@ export async function fetchCartItems(cartId: number) {
   const cartItemsInfo: CartItemInfo[] = await Promise.all(
     cartItems.map(
       async (item: { id: number; product_id: number; quantity: number }) => {
-        const { data: productInfo } = await loadProductById(item.product_id);
+        const { data: productInfo } = await fetchProductById(item.product_id);
         return {
           quantity: item.quantity,
           cartItemId: item.id,

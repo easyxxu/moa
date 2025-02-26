@@ -1,4 +1,4 @@
-import { getProducts } from "@/api/productApis";
+import { fetchProducts } from "@/api/productApis";
 
 import Header from "@/components/common/header/Header";
 import Footer from "@/components/common/Footer";
@@ -7,7 +7,7 @@ import MobileNavigation from "@/components/common/header/MobileNavigation";
 import FilterProductList from "@/components/product/FilterProductList";
 
 export default async function Index() {
-  const { status, message, data } = await getProducts(1);
+  const { status, message, data } = await fetchProducts(1);
   if (status > 400 && status < 500) {
     throw new Error(message);
   }

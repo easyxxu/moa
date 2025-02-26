@@ -7,7 +7,7 @@ import Button from "@/components/common/button/Button";
 import InputLabel from "@/components/common/InputLabel";
 import ImagePreview from "@/components/sellercenter/ImagePreview";
 
-import { addProduct, updateProduct } from "@/api/productApis";
+import { addProduct, modifyProduct } from "@/api/productApis";
 import { createClient } from "@/utils/supabase/client";
 import { usePathname, useRouter } from "next/navigation";
 import { useUserState } from "@/contexts/UserContext";
@@ -127,16 +127,21 @@ export default function ProductManagement({
         uploadedImgUrls = await handleUploadStorage(imgFiles);
       }
 
-      if (!uploadedImgUrls) console.log("상품 이미지 업로드 실패");
-      const error = await addProduct({
+      if (!uploadedImgUrls) {
+        console.log("상품 이미지 업로드 실패");
+        return;
+      }
+      const res = await addProduct({
         ...productInfo,
         seller_store: sellerName,
         image: uploadedImgUrls!,
       });
-      if (error) {
-        console.error("상품 등록 실패", error);
+      if (res.error) {
+        console.error(res);
         openToast({ type: "ERROR", content: ERROR_MESSAGE.serverError });
+        return;
       }
+
       openToast({ type: "SUCCESS", content: TOAST_MESSAGE.SELLER.PRODUCT.ADD });
     }
 
@@ -161,12 +166,13 @@ export default function ProductManagement({
         modifiedImgs[fileIndex] = uploadedImgUrls[i];
       });
 
-      const error = await updateProduct(
-        { ...productInfo, image: modifiedImgs },
+      const res = await modifyProduct(
+        { ...productInfo, seller_store: sellerName, image: modifiedImgs },
         productId
       );
-      if (error) {
-        console.error("상품 수정 실패: ", error);
+
+      if (res.error) {
+        console.error(res);
         openToast({ type: "ERROR", content: ERROR_MESSAGE.serverError });
         return;
       }
@@ -174,8 +180,8 @@ export default function ProductManagement({
         type: "SUCCESS",
         content: TOAST_MESSAGE.SELLER.PRODUCT.MODIFY,
       });
-      router.push("/sellercenter/product");
     }
+    router.push("/sellercenter/product");
   };
 
   const handleUploadStorage = async (files: File[]) => {
