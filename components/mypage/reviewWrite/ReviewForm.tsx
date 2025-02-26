@@ -29,7 +29,7 @@ export default function ReviewForm({ reviewData, productId }: Props) {
   const reviewId = Number(currentPath[4]);
   const multipleImgRef = useRef<HTMLInputElement>(null);
   const [imgFiles, setImgFiles] = useState<File[]>([]);
-  const [imgPreview, setImgPreivew] = useState<string[]>([]);
+  const [imgPreview, setImgPreview] = useState<string[]>([]);
   const [modifiedImgs, setModifiedImgs] = useState<(string | File)[]>([]);
   const [imgLength, setImgLength] = useState(0);
   const [contentLength, setContentLength] = useState(0);
@@ -46,7 +46,7 @@ export default function ReviewForm({ reviewData, productId }: Props) {
     const filesArray = Array.from(files);
     const imgUrl = filesArray.map((file) => URL.createObjectURL(file));
     setImgFiles((prev) => [...prev, ...filesArray].slice(0, 3));
-    setImgPreivew((prev) => [...prev, ...imgUrl].slice(0, 3));
+    setImgPreview((prev) => [...prev, ...imgUrl].slice(0, 3));
     setModifiedImgs((prev) => [...prev, ...filesArray].slice(0, 3));
   };
 
@@ -55,7 +55,7 @@ export default function ReviewForm({ reviewData, productId }: Props) {
     const updatedImgPreview = imgPreview.filter((_, index) => index !== idx);
     const modifiedImg = modifiedImgs.filter((_, index) => index !== idx);
     setImgFiles(updatedImgFiles);
-    setImgPreivew(updatedImgPreview);
+    setImgPreview(updatedImgPreview);
     setModifiedImgs(modifiedImg);
   };
 
@@ -120,7 +120,7 @@ export default function ReviewForm({ reviewData, productId }: Props) {
         starRating: reviewData.star_rating,
       }));
       if (reviewData.images !== null) {
-        setImgPreivew(reviewData.images);
+        setImgPreview(reviewData.images);
         setModifiedImgs(reviewData.images);
       }
     }
