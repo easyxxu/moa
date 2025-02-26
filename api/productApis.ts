@@ -43,6 +43,18 @@ export async function modifyProduct(formData: ProductForm, productId: number) {
   return { status, message: "상품을 수정했습니다." };
 }
 
+export async function deleteProduct(productId: number) {
+  const supabase = createClient();
+  const { error, status } = await supabase
+    .from("product")
+    .delete()
+    .eq("id", productId);
+  if (error) {
+    return { status, message: RESPONSE_MESSAGE.ERROR.PRODUCT.DELETE, error };
+  }
+  return { status, message: RESPONSE_MESSAGE.SUCCESS.PRODUCT.DELETE };
+}
+
 export const fetchProducts = async (
   page: number = 1,
   searchKeyword?: string,
@@ -200,7 +212,7 @@ export const fetchProductStock = async () => {
     .eq("seller_id", res.data.id);
   if (error) {
     console.error("판매자의 상품을 불러오는 데 실패했습니다.", error);
-    return { status, message: ERROR_MESSAGE.serverError };
+    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
   }
 
   const lowStockProducts = data.filter(

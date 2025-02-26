@@ -14,8 +14,7 @@ import { useUserState } from "@/contexts/UserContext";
 import { createClient } from "@/utils/supabase/client";
 import { Tables } from "@/types/database.types";
 import { useToast } from "@/contexts/ToastContext";
-import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
-import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { deleteProduct } from "@/api/productApis";
 
 const listHeaders = ["상품명", "가격", "수량", "수정", "삭제"];
 
@@ -28,17 +27,16 @@ export default function ProductDashboard() {
   const userId = userState.id;
 
   const handleDeleteProduct = async (id: number) => {
-    const { data, error, status } = await supabase
-      .from("product")
-      .delete()
-      .eq("id", id);
-    if (status >= 400 && status < 500) {
-      openToast({ type: "ERROR", content: ERROR_MESSAGE.serverError });
+    const res = await deleteProduct(id);
+    if (res.error) {
+      openToast({ type: "ERROR", content: res.message });
+      return;
     }
+
     setProductData((prev) => [...prev.filter((data) => data.id !== id)]);
     openToast({
       type: "SUCCESS",
-      content: TOAST_MESSAGE.SELLER.PRODUCT.DELETE,
+      content: res.message,
     });
   };
 
