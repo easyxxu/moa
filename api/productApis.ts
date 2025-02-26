@@ -3,7 +3,8 @@
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
-import { getUserInfo } from "./userApis";
+import { fetchUserInfo } from "./userApis";
+import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 
 interface ProductForm {
   name: string;
@@ -187,7 +188,7 @@ export const toggleProductLike = async (productId: number) => {
 export const fetchProductStock = async () => {
   const supabase = createClient();
 
-  const res = await getUserInfo();
+  const res = await fetchUserInfo();
   if (res.status !== 200 || !res.data) {
     return {
       status: res.status,

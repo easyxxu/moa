@@ -6,7 +6,7 @@ import { useFormState } from "react-dom";
 
 import Button from "@/components/common/button/Button";
 import InputLabel from "@/components/common/InputLabel";
-import { updateEmail } from "@/api/userApis";
+import { modifyEmail } from "@/api/userApis";
 import { useToast } from "@/contexts/ToastContext";
 import { useUserState } from "@/contexts/UserContext";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
@@ -17,7 +17,7 @@ export default function EmailModifyForm() {
   const router = useRouter();
   const { openToast } = useToast();
   const nowEmail = useUserState().moreUserData?.email || "";
-  const [state, formAction] = useFormState(updateEmail, {
+  const [state, formAction] = useFormState(modifyEmail, {
     status: 0,
     message: "",
   });

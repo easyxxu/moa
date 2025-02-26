@@ -23,7 +23,8 @@ export type State = {
 export type JoinState = State & {
   status: number;
 };
-export async function userJoin(
+
+export async function signUp(
   prevState: State,
   formData: FormData
 ): Promise<JoinState> {
@@ -98,7 +99,7 @@ export type LoginState =
   | { status: number; errorMsg: ErrorMsg } // 에러가 발생했을 때
   | { status: number; redirectUrl: string }; // 에러가 발생하지 않았을 때
 
-export async function userLogin(
+export async function login(
   prevState: LoginState,
   formData: FormData
 ): Promise<LoginState> {
@@ -147,7 +148,7 @@ export async function userLogin(
   };
 }
 
-export async function userLogOut() {
+export async function logOut() {
   const supabase = createClient();
   const { error } = await supabase.auth.signOut();
   if (error) {
@@ -178,7 +179,7 @@ export const signInWithOAuth = async (provider: Provider) => {
   redirect(data.url);
 };
 
-export const updateEmail = async (
+export const modifyEmail = async (
   prevState: any,
   formData: FormData
 ): Promise<any> => {
@@ -246,7 +247,7 @@ export const checkEmailConfirm = async (email: string) => {
   return { status: 200, message: "이메일 인증이 완료되었습니다." };
 };
 
-export const updateUserInfo = async (
+export const modifyUserInfo = async (
   prevState: any,
   formData: FormData
 ): Promise<any> => {
@@ -312,7 +313,7 @@ export const updateUserInfo = async (
   return { status: 200, message: "회원정보를 수정하였습니다." };
 };
 
-export const updateSellerInfo = async (prevState: any, formData: FormData) => {
+export const modifySellerInfo = async (prevState: any, formData: FormData) => {
   const supabase = createClient();
   const name = formData.get("name") as string;
   const errorMsg: ErrorMsg = {};
@@ -372,7 +373,7 @@ export const updateSellerInfo = async (prevState: any, formData: FormData) => {
   };
 };
 
-export const getUserInfo = async () => {
+export const fetchUserInfo = async () => {
   const supabase = createClient();
   const {
     data: { user },

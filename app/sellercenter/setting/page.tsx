@@ -1,6 +1,6 @@
 "use client";
 
-import { updateSellerInfo } from "@/api/userApis";
+import { modifySellerInfo } from "@/api/userApis";
 import Button from "@/components/common/button/Button";
 import InputLabel from "@/components/common/InputLabel";
 import { useUserDispatch, useUserState } from "@/contexts/UserContext";
@@ -11,7 +11,7 @@ export default function SettingDashboard() {
   const userInfo = useUserState();
   const userDispatch = useUserDispatch();
 
-  const [state, formAction] = useFormState(updateSellerInfo, null);
+  const [state, formAction] = useFormState(modifySellerInfo, null);
 
   useEffect(() => {
     if (state?.status === 200) {

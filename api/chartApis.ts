@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { getUserInfo } from "./userApis";
+import { fetchUserInfo } from "./userApis";
 import {
   initializeMonthlyStats,
   aggregateOrderDataByMonth,
@@ -11,7 +11,7 @@ import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 
 export const fetchOrderChartData = async () => {
   const supabase = createClient();
-  const userRes = await getUserInfo();
+  const userRes = await fetchUserInfo();
   const userId = userRes.data?.id;
 
   if (!userId) {

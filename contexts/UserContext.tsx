@@ -1,6 +1,6 @@
 "use client";
 
-import { getUserInfo, userLogOut } from "@/api/userApis";
+import { fetchUserInfo, logOut } from "@/api/userApis";
 import { User } from "@supabase/supabase-js";
 
 import { createContext, useContext, useEffect, useReducer } from "react";
@@ -38,7 +38,7 @@ type UserAction = LoginAction | LogoutAction | UpdateAction;
 
 async function fetchUserData() {
   try {
-    const { status, message, data } = await getUserInfo();
+    const { status, message, data } = await fetchUserInfo();
     if (status === 200) {
       return data;
     } else {
@@ -112,7 +112,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = async () => {
-    await userLogOut();
+    await logOut();
     dispatch({ type: "LOGOUT" });
   };
 

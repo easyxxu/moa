@@ -1,6 +1,6 @@
 "use client";
 
-import { ErrorMsg, updateUserInfo } from "@/api/userApis";
+import { ErrorMsg, modifyUserInfo } from "@/api/userApis";
 import Button from "@/components/common/button/Button";
 import InputLabel from "@/components/common/InputLabel";
 import { useToast } from "@/contexts/ToastContext";
@@ -15,7 +15,7 @@ export default function ModifyMyInfo() {
   const router = useRouter();
   const userInfo = useUserState();
   const { openToast } = useToast();
-  const [state, formAction] = useFormState(updateUserInfo, {
+  const [state, formAction] = useFormState(modifyUserInfo, {
     status: 0,
     message: "",
   });

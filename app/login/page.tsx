@@ -8,10 +8,10 @@ import Form from "@/components/auth/Form";
 import InputLabel from "@/components/common/InputLabel";
 
 import { useUserDispatch, useUserState } from "@/contexts/UserContext";
-import { userLogin } from "@/api/userApis";
+import { login } from "@/api/userApis";
 
 export default function Login() {
-  const [state, formAction] = useFormState(userLogin, {
+  const [state, formAction] = useFormState(login, {
     status: 0,
     redirectUrl: "",
     errorMsg: {},

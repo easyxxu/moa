@@ -4,14 +4,14 @@ import { createClient } from "@/utils/supabase/server";
 import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { getUserInfo } from "./userApis";
+import { fetchUserInfo } from "./userApis";
 
 export const fetchMyQuestions = async (page: number) => {
   const supabase = createClient();
   const start = (page - 1) * 10;
   const end = start + 9;
 
-  const res = await getUserInfo();
+  const res = await fetchUserInfo();
   if (res.status > 400 && res.status < 500) {
     throw new Error(res.message);
   }

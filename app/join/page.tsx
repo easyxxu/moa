@@ -6,13 +6,13 @@ import { useEffect } from "react";
 
 import Form from "@/components/auth/Form";
 import InputLabel from "@/components/common/InputLabel";
-import { userJoin } from "@/api/userApis";
+import { signUp } from "@/api/userApis";
 import { useUserDispatch } from "@/contexts/UserContext";
 
 export default function Join() {
   const router = useRouter();
   const userDispatch = useUserDispatch();
-  const [state, formAction] = useFormState(userJoin, {
+  const [state, formAction] = useFormState(signUp, {
     status: 0,
   });
 
