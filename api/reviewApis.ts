@@ -6,8 +6,7 @@ import { uploadImgs } from "./imageApis";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-/** 유저의 전체 작성 리뷰 조회 API */
-export const getReviewsWithProductByUser = async () => {
+export const fetchUserReviewsWithProductInfo = async () => {
   const supabase = createClient();
 
   const { data: user, error: getUserError } = await supabase.auth.getUser();
@@ -41,8 +40,7 @@ export const getReviewsWithProductByUser = async () => {
   };
 };
 
-/** orderItemId를 활용해 product 정보도 함께 조회 API */
-export const getOrderItemWithProduct = async (orderItemId: number) => {
+export const fetchProductForReview = async (orderItemId: number) => {
   const supabase = createClient();
 
   const { status, data, error } = await supabase
@@ -59,8 +57,7 @@ export const getOrderItemWithProduct = async (orderItemId: number) => {
   return { status, message: "getOrderWithProduct 성공", data };
 };
 
-/** 리뷰 조회(by reviewId) API */
-export const getReviewById = async (reviewId: number) => {
+export const fetchReviewById = async (reviewId: number) => {
   const supabase = createClient();
 
   const { status, data, error } = await supabase
@@ -69,14 +66,14 @@ export const getReviewById = async (reviewId: number) => {
     .eq("id", reviewId)
     .single();
   if (error) {
-    console.error("getReviewById 에러", error);
+    console.error("fetchReviewById 에러", error);
     return { status, message: ERROR_MESSAGE.serverError };
   }
 
   return { status, message: "리뷰를 가져오는 데 성공했습니다.", data };
 };
 
-export const addReview = async (productId: number, formData: FormData) => {
+export const createReview = async (productId: number, formData: FormData) => {
   const supabase = createClient();
 
   const content = formData.get("content") as string;
@@ -137,11 +134,10 @@ export const addReview = async (productId: number, formData: FormData) => {
       updatedError,
     };
   }
-  console.log("리뷰 작성 완료 ", data);
+  // console.log("리뷰 작성 완료 ", data);
   redirect("/mypage/review");
 };
 
-/** 리뷰 수정 API */
 export const modifyReview = async (reviewId: number, formData: FormData) => {
   const supabase = createClient();
   const content = formData.get("content") as string;
@@ -209,7 +205,6 @@ export const modifyReview = async (reviewId: number, formData: FormData) => {
   };
 };
 
-/** 리뷰 삭제 API */
 export const deleteReview = async (reviewId: number) => {
   const supabase = createClient();
 

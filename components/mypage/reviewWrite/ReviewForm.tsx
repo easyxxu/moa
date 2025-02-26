@@ -9,7 +9,7 @@ import ImageIcon from "@/public/assets/icon/icon-image.svg";
 import DeleteIcon from "@/public/assets/icon/icon-delete.svg";
 import Button from "../../common/button/Button";
 
-import { addReview } from "@/api/reviewApis";
+import { createReview } from "@/api/reviewApis";
 import { Tables } from "@/types/database.types";
 import { modifyReview } from "@/api/reviewApis";
 import { useToast } from "@/contexts/ToastContext";
@@ -76,7 +76,7 @@ export default function ReviewForm({ reviewData, productId }: Props) {
       imgFiles.forEach((file, index) => {
         data.append(`images[${index}]`, file);
       });
-      const res = await addReview(productId!, data);
+      const res = await createReview(productId!, data);
       if (res && res.status! >= 400 && res.status! < 500) {
         openToast({ type: "ERROR", content: res.message });
         return;

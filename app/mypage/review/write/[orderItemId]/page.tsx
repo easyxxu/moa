@@ -1,4 +1,4 @@
-import { getOrderItemWithProduct } from "@/api/reviewApis";
+import { fetchProductForReview } from "@/api/reviewApis";
 import CardItem from "@/components/common/productCard/CardItem";
 import ReviewForm from "@/components/mypage/reviewWrite/ReviewForm";
 
@@ -7,7 +7,7 @@ export default async function ReviewWrite({
 }: {
   params: { orderItemId: number };
 }) {
-  const { status, message, data } = await getOrderItemWithProduct(orderItemId);
+  const { status, message, data } = await fetchProductForReview(orderItemId);
   if (status > 400 && status < 500) {
     throw new Error(message);
   }

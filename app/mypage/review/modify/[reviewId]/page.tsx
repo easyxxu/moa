@@ -1,4 +1,4 @@
-import { getReviewById } from "@/api/reviewApis";
+import { fetchReviewById } from "@/api/reviewApis";
 import CardItem from "@/components/common/productCard/CardItem";
 import ReviewForm from "@/components/mypage/reviewWrite/ReviewForm";
 
@@ -7,7 +7,7 @@ export default async function ReviewModify({
 }: {
   params: { reviewId: number };
 }) {
-  const res = await getReviewById(reviewId);
+  const res = await fetchReviewById(reviewId);
   return (
     <div>
       <h2>리뷰 수정하기</h2>

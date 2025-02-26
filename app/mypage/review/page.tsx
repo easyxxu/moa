@@ -1,9 +1,9 @@
 import MyReviews from "@/components/mypage/review/MyReviews";
 
-import { getReviewsWithProductByUser } from "@/api/reviewApis";
+import { fetchUserReviewsWithProductInfo } from "@/api/reviewApis";
 
 export default async function ReviewPage() {
-  const { status, message, data } = await getReviewsWithProductByUser();
+  const { status, message, data } = await fetchUserReviewsWithProductInfo();
 
   if (status > 400 && status < 500) {
     throw new Error(message);
