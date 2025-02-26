@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/utils/supabase/server";
 import { fetchProductById } from "./productApis";
 import { CartItemInfo, GroupedCartItems } from "@/types/cart";
-import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 
 export async function createUserCart(userId: string) {
   const supabase = createClient();
@@ -16,7 +16,7 @@ export async function createUserCart(userId: string) {
 
   if (error) {
     console.error("createCart Error: ", error);
-    return { status, message: ERROR_MESSAGE.serverError };
+    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
   }
   return {
     status,
@@ -42,7 +42,7 @@ export async function fetchCartIdByUser(userId: string) {
   }
   if (error) {
     console.error("getCartId error: ", error);
-    return { status, message: ERROR_MESSAGE.serverError };
+    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
   }
 
   return {
@@ -96,7 +96,7 @@ export async function fetchCartItems(cartId: number) {
 
   if (error) {
     console.error(error);
-    return { status, message: ERROR_MESSAGE.serverError };
+    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
   }
 
   if (cartItems?.length === 0 || !cartItems)

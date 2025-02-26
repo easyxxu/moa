@@ -10,8 +10,8 @@ import DeleteIcon from "@/public/assets/icon/icon-delete.svg";
 import { useCartCheckItems } from "@/contexts/CartContext";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/contexts/ToastContext";
-import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 import Link from "next/link";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 
 interface Props {
   item: CartItemInfo;
@@ -55,7 +55,10 @@ export default function CartTableItem({ item, isLastItem }: Props) {
   const handleDeleteCartItem = async () => {
     const res = await deleteCartItem(item.id!);
     closeModal();
-    openToast({ type: "SUCCESS", content: TOAST_MESSAGE.CART.DELETE });
+    openToast({
+      type: "SUCCESS",
+      content: RESPONSE_MESSAGE.SUCCESS.CART.DELETE,
+    });
   };
 
   const handleOpenDeleteModal = () => {

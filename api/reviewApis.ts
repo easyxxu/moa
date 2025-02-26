@@ -1,6 +1,6 @@
 "use server";
 
-import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 import { createClient } from "@/utils/supabase/server";
 import { uploadImgs } from "./imageApis";
 import { revalidatePath } from "next/cache";
@@ -13,7 +13,7 @@ export const fetchUserReviewsWithProductInfo = async () => {
 
   if (getUserError) {
     console.error("getUser 에러", getUserError);
-    return { status: 404, message: ERROR_MESSAGE.getUserError };
+    return { status: 404, message: RESPONSE_MESSAGE.ERROR.USER.GET_INFO };
   }
 
   const userId = user.user?.id;
@@ -30,7 +30,7 @@ export const fetchUserReviewsWithProductInfo = async () => {
 
   if (getReviewError) {
     console.error("getReview 에러", getReviewError);
-    return { status, message: ERROR_MESSAGE.serverError };
+    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
   }
 
   return {
@@ -51,7 +51,7 @@ export const fetchProductForReview = async (orderItemId: number) => {
 
   if (error) {
     console.error("getOrderWithProduct 에러", error);
-    return { status, message: ERROR_MESSAGE.serverError };
+    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
   }
 
   return { status, message: "getOrderWithProduct 성공", data };
@@ -67,7 +67,7 @@ export const fetchReviewById = async (reviewId: number) => {
     .single();
   if (error) {
     console.error("fetchReviewById 에러", error);
-    return { status, message: ERROR_MESSAGE.serverError };
+    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
   }
 
   return { status, message: "리뷰를 가져오는 데 성공했습니다.", data };
@@ -194,7 +194,7 @@ export const modifyReview = async (reviewId: number, formData: FormData) => {
     console.error("modifyReview 에러: ", error);
     return {
       status,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
       error,
     };
   }
@@ -217,7 +217,7 @@ export const deleteReview = async (reviewId: number) => {
     console.error("deleteReview Error: ", error);
     return {
       status,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
     };
   }
   revalidatePath("/mypage/review");

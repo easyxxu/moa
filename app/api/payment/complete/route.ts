@@ -1,6 +1,6 @@
 import { CartItem } from "@/contexts/CartContext";
 import { OrderItem } from "@/contexts/DirectOrderContext";
-import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     if (orderDataError) {
       console.log("orderDataError", orderDataError);
       return NextResponse.json(
-        { status: "failed", message: ERROR_MESSAGE.serverError },
+        { status: "failed", message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR },
         { status: orderStatus }
       );
       throw new Error(
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
       console.log(orderItemError, orderItemStatus);
       return NextResponse.json(
         {
-          message: ERROR_MESSAGE.serverError,
+          message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
         },
         { status: orderItemStatus }
       );
@@ -93,7 +93,7 @@ export async function POST(req: Request) {
             console.log("주문 상태를 업데이트하는 데 실패했습니다.");
             return NextResponse.json(
               {
-                message: ERROR_MESSAGE.serverError,
+                message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
               },
               { status: updatedDataStatus }
             );
@@ -109,7 +109,7 @@ export async function POST(req: Request) {
               console.log("장바구니 불러오는 데 실패");
               return NextResponse.json(
                 {
-                  message: ERROR_MESSAGE.serverError,
+                  message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
                 },
                 { status: cartStatus }
               );
@@ -137,7 +137,7 @@ export async function POST(req: Request) {
               );
               return NextResponse.json(
                 {
-                  message: ERROR_MESSAGE.serverError,
+                  message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
                 },
                 { status: deletedStatus }
               );
@@ -164,7 +164,7 @@ export async function POST(req: Request) {
                   );
                   return NextResponse.json(
                     {
-                      message: ERROR_MESSAGE.serverError,
+                      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
                     },
                     {
                       status: productDataStatus,
@@ -186,7 +186,7 @@ export async function POST(req: Request) {
                   console.log("주문완료 후 상품 재고 업데이트 실패");
                   return NextResponse.json(
                     {
-                      message: ERROR_MESSAGE.serverError,
+                      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
                     },
                     { status: updatedStatus }
                   );

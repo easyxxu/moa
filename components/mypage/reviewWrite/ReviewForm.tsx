@@ -13,7 +13,7 @@ import { createReview } from "@/api/reviewApis";
 import { Tables } from "@/types/database.types";
 import { modifyReview } from "@/api/reviewApis";
 import { useToast } from "@/contexts/ToastContext";
-import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 
 interface Props {
   reviewData?: Tables<"review">;
@@ -81,7 +81,10 @@ export default function ReviewForm({ reviewData, productId }: Props) {
         openToast({ type: "ERROR", content: res.message });
         return;
       }
-      openToast({ type: "SUCCESS", content: TOAST_MESSAGE.MYPAGE.REVIEW.ADD });
+      openToast({
+        type: "SUCCESS",
+        content: RESPONSE_MESSAGE.SUCCESS.REVIEW.ADD,
+      });
     } else {
       modifiedImgs.forEach((file, index) => {
         data.append(`images[${index}]`, file);
@@ -93,7 +96,7 @@ export default function ReviewForm({ reviewData, productId }: Props) {
       }
       openToast({
         type: "SUCCESS",
-        content: TOAST_MESSAGE.MYPAGE.REVIEW.MODIFY,
+        content: RESPONSE_MESSAGE.SUCCESS.REVIEW.MODIFY,
       });
       router.push("/mypage/review");
     }

@@ -2,7 +2,7 @@
 
 import { deleteReview } from "@/api/reviewApis";
 import { useToast } from "@/contexts/ToastContext";
-import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 
 interface Props {
   reviewId: number;
@@ -14,7 +14,10 @@ export default function DeleteButton({ reviewId }: Props) {
     if (res.status > 400 && res.status < 500) {
       throw new Error(res.message);
     }
-    openToast({ type: "SUCCESS", content: TOAST_MESSAGE.MYPAGE.REVIEW.DELETE });
+    openToast({
+      type: "SUCCESS",
+      content: RESPONSE_MESSAGE.SUCCESS.REVIEW.DELETE,
+    });
   };
   return (
     <button

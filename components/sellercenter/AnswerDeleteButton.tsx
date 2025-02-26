@@ -2,9 +2,9 @@
 
 import { deleteAnswer } from "@/api/qaApis";
 import { useToast } from "@/contexts/ToastContext";
-import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 import { usePathname, useRouter } from "next/navigation";
 import Button from "../common/button/Button";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 
 interface Props {
   answerId: number;
@@ -18,7 +18,10 @@ export default function AnswerDeleteButton({ answerId }: Props) {
     const res = await deleteAnswer(answerId);
 
     if (res.status > 400 && res.status < 500) {
-      openToast({ type: "ERROR", content: TOAST_MESSAGE.SERVER.ERROR });
+      openToast({
+        type: "ERROR",
+        content: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
+      });
     }
     router.push(`/sellercenter/qa/${productId}`);
   };

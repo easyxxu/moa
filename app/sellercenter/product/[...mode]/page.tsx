@@ -12,8 +12,7 @@ import { createClient } from "@/utils/supabase/client";
 import { usePathname, useRouter } from "next/navigation";
 import { useUserState } from "@/contexts/UserContext";
 import { useToast } from "@/contexts/ToastContext";
-import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
-import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 import {
   CATEGORY_OPTIONS,
   CHARACTER_OPTIONS,
@@ -138,11 +137,17 @@ export default function ProductManagement({
       });
       if (res.error) {
         console.error(res);
-        openToast({ type: "ERROR", content: ERROR_MESSAGE.serverError });
+        openToast({
+          type: "ERROR",
+          content: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
+        });
         return;
       }
 
-      openToast({ type: "SUCCESS", content: TOAST_MESSAGE.SELLER.PRODUCT.ADD });
+      openToast({
+        type: "SUCCESS",
+        content: RESPONSE_MESSAGE.SUCCESS.PRODUCT.ADD,
+      });
     }
 
     if (operationMode === "modify") {
@@ -173,12 +178,15 @@ export default function ProductManagement({
 
       if (res.error) {
         console.error(res);
-        openToast({ type: "ERROR", content: ERROR_MESSAGE.serverError });
+        openToast({
+          type: "ERROR",
+          content: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
+        });
         return;
       }
       openToast({
         type: "SUCCESS",
-        content: TOAST_MESSAGE.SELLER.PRODUCT.MODIFY,
+        content: RESPONSE_MESSAGE.SUCCESS.PRODUCT.MODIFY,
       });
     }
     router.push("/sellercenter/product");

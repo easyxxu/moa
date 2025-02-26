@@ -7,7 +7,7 @@ import {
   aggregateOrderDataByMonth,
   convertStatsToChartData,
 } from "@/utils/processOrderStats";
-import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 
 export const fetchOrderChartData = async () => {
   const supabase = createClient();
@@ -39,7 +39,7 @@ export const fetchOrderChartData = async () => {
 
   if (error) {
     console.error("get order_item error", error);
-    return { status, message: ERROR_MESSAGE.serverError };
+    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
   }
 
   const processedData =

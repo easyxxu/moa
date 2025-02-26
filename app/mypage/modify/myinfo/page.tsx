@@ -5,8 +5,7 @@ import Button from "@/components/common/button/Button";
 import InputLabel from "@/components/common/InputLabel";
 import { useToast } from "@/contexts/ToastContext";
 import { useUserState } from "@/contexts/UserContext";
-import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
-import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
@@ -26,14 +25,14 @@ export default function ModifyMyInfo() {
         type: "ERROR",
         content:
           state.status === 400
-            ? ERROR_MESSAGE.required
-            : ERROR_MESSAGE.serverError,
+            ? RESPONSE_MESSAGE.ERROR.VALIDATION.REQUIRED
+            : RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
       });
     }
     if (state.status === 200) {
       openToast({
         type: "SUCCESS",
-        content: TOAST_MESSAGE.MYPAGE.PROFILE.NAME_CONTACT_CHANGE,
+        content: RESPONSE_MESSAGE.SUCCESS.PROFILE.NAME_CONTACT_CHANGE,
       });
       router.push("/mypage");
     }

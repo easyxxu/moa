@@ -1,10 +1,9 @@
 "use server";
 
-import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { fetchUserInfo } from "./userApis";
-import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 
 interface ProductForm {
   name: string;
@@ -96,7 +95,7 @@ export const fetchProducts = async (
 
   if (error) {
     console.error("getProduct ERROR", error);
-    return { status, message: ERROR_MESSAGE.serverError };
+    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
   }
 
   return {

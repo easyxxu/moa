@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { fetchUserInfo } from "./userApis";
@@ -30,7 +30,7 @@ export const fetchMyQuestions = async (page: number) => {
 
   if (error) {
     console.error("작성한 문의글을 불러오는 데 실패했습니다.");
-    return { status, message: ERROR_MESSAGE.serverError, error };
+    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR, error };
   }
 
   return {
@@ -64,7 +64,7 @@ export const fetchQuestionsWithAnswer = async (
 
   if (error) {
     console.error(error);
-    return { status, message: ERROR_MESSAGE.serverError, error };
+    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR, error };
   }
 
   return {
@@ -86,14 +86,14 @@ export const createQuestion = async (prevState: any, formData: FormData) => {
   if (!content || content.trim().length === 0) {
     return {
       status: 400,
-      message: ERROR_MESSAGE.inputInvalid,
+      message: RESPONSE_MESSAGE.ERROR.VALIDATION.INPUT,
     };
   }
 
   if (content.length < 5) {
     return {
       status: 400,
-      message: ERROR_MESSAGE.questionInvalid,
+      message: RESPONSE_MESSAGE.ERROR.VALIDATION.QUESTION_CONTENT,
     };
   }
 
@@ -112,7 +112,7 @@ export const createQuestion = async (prevState: any, formData: FormData) => {
     console.error("문의 작성 실패", error);
     return {
       status: 404,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
       error,
     };
   }
@@ -155,7 +155,7 @@ export const deleteAnswer = async (answerId: number) => {
 
   if (error) {
     console.error("답변을 삭제하는 데 에러가 발생했습니다.", error);
-    return { status, message: ERROR_MESSAGE.serverError };
+    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
   }
 
   revalidatePath("/sellercenter/qa/[questionId]", "page");
@@ -174,7 +174,7 @@ export const fetchSellerProductsWithQuestions = async () => {
     console.error("유저 정보를 불러오는데 실패했습니다.", userError);
     return {
       status: 404,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
     };
   }
 
@@ -190,7 +190,7 @@ export const fetchSellerProductsWithQuestions = async () => {
 
   if (productError) {
     console.error("판매자의 상품을 불러오는데 실패했습니다.", productError);
-    return { status: 404, message: ERROR_MESSAGE.serverError };
+    return { status: 404, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
   }
 
   const sortedProducts = products.sort(
@@ -216,7 +216,7 @@ export const fetchQuestionsByProductId = async (productId: number) => {
     console.error("상품 정보를 불러오는데 실패했습니다.", productError);
     return {
       status: 404,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
     };
   }
   const { data: questionData, error: questionError } = await supabase
@@ -227,7 +227,7 @@ export const fetchQuestionsByProductId = async (productId: number) => {
 
   if (questionError) {
     console.error("상품별 문의를 불러오는데 실패했습니다.", questionError);
-    return { status: 404, message: ERROR_MESSAGE.serverError };
+    return { status: 404, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
   }
 
   return {
@@ -247,7 +247,7 @@ export const fetchQuestionsById = async (questionId: number) => {
 
   if (error) {
     console.error("문의를 불러오는 데 실패했습니다.", error);
-    return { status: 404, message: ERROR_MESSAGE.serverError, error };
+    return { status: 404, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR, error };
   }
 
   return { status: 200, message: "데이터를 불러오는 데 성공했습니다.", data };
@@ -273,7 +273,7 @@ export const createAnswer = async (
     console.error("문의에 대한 답변을 작성하는 데 실패했습니다.", error);
     return {
       status,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
       error,
     };
   }
@@ -295,7 +295,7 @@ export const createAnswer = async (
     console.error("문의 상태를 업데이트하는 데 실패했습니다.", updateError);
     return {
       status: updateStatus,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
       error: updateError,
     };
   }

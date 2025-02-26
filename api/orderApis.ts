@@ -1,6 +1,6 @@
 "use server";
 
-import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 import { createClient } from "@/utils/supabase/server";
 
 export const fetchOrderByUser = async () => {
@@ -38,7 +38,7 @@ export const fetchOrderByUser = async () => {
     console.error("[ERROR] fetchOrdersError: ", fetchOrdersError);
     return {
       status,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
     };
   }
 
@@ -66,7 +66,7 @@ export const updateOrderStatus = async (
     console.error("주문 상태를 업데이트하는 데 실패했습니다.", error);
     return {
       status,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
     };
   }
 
@@ -87,7 +87,7 @@ export const fetchOrderDetail = async (orderName: string) => {
     .single();
   if (error) {
     console.error("getOrderByOrderName Error", error, status);
-    return { status, message: ERROR_MESSAGE.serverError };
+    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
   }
   return { status, message: "주문 정보를 불러왔습니다.", data };
 };

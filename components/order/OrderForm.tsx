@@ -9,7 +9,7 @@ import PostCode from "./PostCode";
 import { useCartCheckItems } from "@/contexts/CartContext";
 import { useToast } from "@/contexts/ToastContext";
 import { useDirectOrder } from "@/contexts/DirectOrderContext";
-import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 import { createOrderName } from "@/utils/createOrderName";
 import PortOne, { PaymentRequest } from "@portone/browser-sdk/v2";
 import { updateOrderStatus } from "@/api/orderApis";
@@ -120,7 +120,10 @@ export default function OrderForm() {
       });
 
       if (completeRes.status !== 200) {
-        openToast({ type: "ERROR", content: ERROR_MESSAGE.serverError });
+        openToast({
+          type: "ERROR",
+          content: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
+        });
         return;
       }
       router.push(completeRes.url);
@@ -128,7 +131,7 @@ export default function OrderForm() {
       console.log(res);
       openToast({
         type: "ERROR",
-        content: ERROR_MESSAGE.serverError,
+        content: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
       });
     }
   };

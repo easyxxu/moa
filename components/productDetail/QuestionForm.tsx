@@ -6,9 +6,9 @@ import { useFormState } from "react-dom";
 
 import Button from "../common/button/Button";
 import { useToast } from "@/contexts/ToastContext";
-import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
 import { createQuestion } from "@/api/qaApis";
 import { QAsType } from "./QuestionList";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 
 const selectList = [
   { value: "PRODUCT", name: "상품 문의" },
@@ -36,7 +36,7 @@ export default function QuestionForm({ setIsOpenQForm, setQas }: Props) {
     } else if (state.status === 200) {
       openToast({
         type: "SUCCESS",
-        content: TOAST_MESSAGE.MYPAGE.QUESTION.ADD,
+        content: RESPONSE_MESSAGE.SUCCESS.QUESTION.ADD,
       });
       setIsOpenQForm(false);
       setQas((prev) => ({

@@ -9,7 +9,7 @@ import InputLabel from "@/components/common/InputLabel";
 import { modifyEmail } from "@/api/userApis";
 import { useToast } from "@/contexts/ToastContext";
 import { useUserState } from "@/contexts/UserContext";
-import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 
 export default function EmailModifyForm() {
   const searchParams = useSearchParams();
@@ -25,7 +25,10 @@ export default function EmailModifyForm() {
 
   useEffect(() => {
     if (state.status === 500) {
-      openToast({ type: "ERROR", content: ERROR_MESSAGE.serverError });
+      openToast({
+        type: "ERROR",
+        content: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
+      });
     }
     if (state.status === 202) {
       setPending(true);

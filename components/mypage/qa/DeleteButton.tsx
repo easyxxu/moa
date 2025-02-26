@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { deleteQuestion } from "@/api/qaApis";
 import { useToast } from "@/contexts/ToastContext";
-import { TOAST_MESSAGE } from "@/utils/constants/toastMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 
 interface Props {
   questionId: number;
@@ -20,7 +20,7 @@ export default function DeleteButton({ questionId }: Props) {
     }
     openToast({
       type: "SUCCESS",
-      content: TOAST_MESSAGE.MYPAGE.QUESTION.DELETE,
+      content: RESPONSE_MESSAGE.SUCCESS.QUESTION.DELETE,
     });
     router.push("/mypage/qa");
   };

@@ -1,6 +1,6 @@
 import { CartItem } from "@/contexts/CartContext";
 import { OrderItem } from "@/contexts/DirectOrderContext";
-import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
       );
       return NextResponse.json(
         {
-          message: ERROR_MESSAGE.serverError,
+          message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
         },
         { status }
       );

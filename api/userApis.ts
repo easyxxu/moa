@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { ERROR_MESSAGE } from "@/utils/constants/errorMessage";
+import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 import { emailRegex, passwordRegex } from "@/utils/constants/validation";
 import { createClient } from "@/utils/supabase/server";
 import { Provider } from "@supabase/supabase-js";
@@ -37,25 +37,25 @@ export async function signUp(
   const errorMsg: ErrorMsg = {};
   // form validation for user
   if (!email || email.trim().length === 0) {
-    errorMsg.email = ERROR_MESSAGE.required;
+    errorMsg.email = RESPONSE_MESSAGE.ERROR.VALIDATION.REQUIRED;
   }
   if (!password || password.trim().length === 0) {
-    errorMsg.password = ERROR_MESSAGE.required;
+    errorMsg.password = RESPONSE_MESSAGE.ERROR.VALIDATION.REQUIRED;
   }
   if (!name || name.trim().length === 0) {
-    errorMsg.name = ERROR_MESSAGE.required;
+    errorMsg.name = RESPONSE_MESSAGE.ERROR.VALIDATION.REQUIRED;
   }
   if (!phone || phone.trim().length === 0) {
-    errorMsg.phone = ERROR_MESSAGE.required;
+    errorMsg.phone = RESPONSE_MESSAGE.ERROR.VALIDATION.REQUIRED;
   }
   if (!emailRegex.test(email)) {
-    errorMsg.email = ERROR_MESSAGE.emailInvalid;
+    errorMsg.email = RESPONSE_MESSAGE.ERROR.VALIDATION.EMAIL;
   }
   if (!passwordRegex.test(password)) {
-    errorMsg.password = ERROR_MESSAGE.passwordInvalid;
+    errorMsg.password = RESPONSE_MESSAGE.ERROR.VALIDATION.PASSWORD;
   }
   if (isNaN(Number(phone))) {
-    errorMsg.phone = ERROR_MESSAGE.phoneInvalid;
+    errorMsg.phone = RESPONSE_MESSAGE.ERROR.VALIDATION.PHONE;
   }
 
   const { error } = await supabase.auth.signUp({
@@ -71,19 +71,19 @@ export async function signUp(
   });
 
   if (error?.code === "user_already_exists") {
-    errorMsg.email = ERROR_MESSAGE.emailAlreadyExists;
+    errorMsg.email = RESPONSE_MESSAGE.ERROR.AUTH.EMAIL_EXISTS;
   }
   if (error?.code === "weak_password") {
-    errorMsg.password = ERROR_MESSAGE.passwordInvalid;
+    errorMsg.password = RESPONSE_MESSAGE.ERROR.VALIDATION.PASSWORD;
   }
   if (error?.code === "validation_failed") {
-    errorMsg.email = ERROR_MESSAGE.emailInvalid;
+    errorMsg.email = RESPONSE_MESSAGE.ERROR.VALIDATION.EMAIL;
   }
   if (error?.status === 429) {
-    errorMsg.server = ERROR_MESSAGE.tooManyRequests;
+    errorMsg.server = RESPONSE_MESSAGE.ERROR.SERVER.TOO_MANY_REQUESTS;
   }
   if (error?.status?.toString().startsWith("50")) {
-    errorMsg.server = ERROR_MESSAGE.serverError;
+    errorMsg.server = RESPONSE_MESSAGE.ERROR.SERVER.ERROR;
     console.error(`SignUp Server Error(${error.status}): ${error.code}`);
   }
 
@@ -110,10 +110,10 @@ export async function login(
   const errorMsg: ErrorMsg = {};
 
   if (!email || email.trim().length === 0) {
-    errorMsg.email = ERROR_MESSAGE.required;
+    errorMsg.email = RESPONSE_MESSAGE.ERROR.VALIDATION.REQUIRED;
   }
   if (!password || password.trim().length === 0) {
-    errorMsg.password = ERROR_MESSAGE.required;
+    errorMsg.password = RESPONSE_MESSAGE.ERROR.VALIDATION.REQUIRED;
   }
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
@@ -121,7 +121,7 @@ export async function login(
   });
 
   if (error) {
-    errorMsg.login = ERROR_MESSAGE.loginInvalid;
+    errorMsg.login = RESPONSE_MESSAGE.ERROR.AUTH.INVALID_CREDENTIALS;
   }
 
   const {
@@ -131,11 +131,11 @@ export async function login(
   } = await supabase.from("user").select().eq("id", data.user?.id!).single();
 
   if (userError) {
-    errorMsg.login = ERROR_MESSAGE.getUserError;
+    errorMsg.login = RESPONSE_MESSAGE.ERROR.USER.GET_INFO;
   }
 
   if (userData?.user_type !== userType) {
-    errorMsg.login = ERROR_MESSAGE.loginUserType;
+    errorMsg.login = RESPONSE_MESSAGE.ERROR.AUTH.USER_TYPE;
   }
 
   if (Object.keys(errorMsg).length > 0) {
@@ -189,16 +189,16 @@ export const modifyEmail = async (
 
   // email 유효성 검사
   if (!newEmail || newEmail.trim().length === 0) {
-    errorMsg.email = ERROR_MESSAGE.required;
+    errorMsg.email = RESPONSE_MESSAGE.ERROR.VALIDATION.REQUIRED;
   }
   if (!emailRegex.test(newEmail)) {
-    errorMsg.email = ERROR_MESSAGE.emailInvalid;
+    errorMsg.email = RESPONSE_MESSAGE.ERROR.VALIDATION.EMAIL;
   }
 
   if (Object.keys(errorMsg).length > 0) {
     return {
       status: 400,
-      message: ERROR_MESSAGE.inputInvalid,
+      message: RESPONSE_MESSAGE.ERROR.VALIDATION.INPUT,
       error: errorMsg,
     };
   }
@@ -215,10 +215,10 @@ export const modifyEmail = async (
     );
 
   if (authUserError?.code === "email_exists") {
-    errorMsg.email = ERROR_MESSAGE.emailAlreadyExists;
+    errorMsg.email = RESPONSE_MESSAGE.ERROR.AUTH.EMAIL_EXISTS;
     return {
       status: 409,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
       error: errorMsg,
     };
   }
@@ -226,7 +226,7 @@ export const modifyEmail = async (
   if (authUserError) {
     return {
       status: 500,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
       error: authUserError,
     };
   }
@@ -258,16 +258,16 @@ export const modifyUserInfo = async (
 
   // form 유효성 검사
   if (!name || name.trim().length === 0) {
-    errorMsg.name = ERROR_MESSAGE.required;
+    errorMsg.name = RESPONSE_MESSAGE.ERROR.VALIDATION.REQUIRED;
   }
   if (!phone || phone.trim().length === 0) {
-    errorMsg.phone = ERROR_MESSAGE.required;
+    errorMsg.phone = RESPONSE_MESSAGE.ERROR.VALIDATION.REQUIRED;
   }
 
   if (Object.keys(errorMsg).length > 0) {
     return {
       status: 400,
-      message: ERROR_MESSAGE.inputInvalid,
+      message: RESPONSE_MESSAGE.ERROR.VALIDATION.INPUT,
       error: errorMsg,
     };
   }
@@ -285,7 +285,7 @@ export const modifyUserInfo = async (
     console.error("Auth 수정 실패: ", authUserError);
     return {
       status: 404,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
       error: authUserError,
     };
   }
@@ -304,7 +304,7 @@ export const modifyUserInfo = async (
     console.error("회원정보 수정 실패: ", userError);
     return {
       status: 404,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
       error: userError,
     };
   }
@@ -319,7 +319,7 @@ export const modifySellerInfo = async (prevState: any, formData: FormData) => {
   const errorMsg: ErrorMsg = {};
 
   if (!name || name.trim().length === 0) {
-    errorMsg.name = ERROR_MESSAGE.required;
+    errorMsg.name = RESPONSE_MESSAGE.ERROR.VALIDATION.REQUIRED;
   }
   if (Object.keys(errorMsg).length > 0) {
     return {
@@ -340,7 +340,7 @@ export const modifySellerInfo = async (prevState: any, formData: FormData) => {
     console.error("Auth 수정 실패: ", authUserError);
     return {
       status: 404,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
       error: authUserError,
     };
   }
@@ -360,7 +360,7 @@ export const modifySellerInfo = async (prevState: any, formData: FormData) => {
     console.error("판매자정보 수정 실패: ", userError);
     return {
       status: 404,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
       error: userError,
     };
   }
@@ -393,7 +393,7 @@ export const fetchUserInfo = async () => {
     console.error("유저 정보를 불러오는 데 실패했습니다.", error);
     return {
       status: error.status || 404,
-      message: ERROR_MESSAGE.serverError,
+      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
     };
   }
 
