@@ -7,7 +7,7 @@ import Button from "@/components/common/button/Button";
 import InputLabel from "@/components/common/InputLabel";
 import ImagePreview from "@/components/sellercenter/ImagePreview";
 
-import { addProduct, modifyProduct } from "@/api/productApis";
+import { addProduct, updateProduct } from "@/api/productApis";
 import { createClient } from "@/utils/supabase/client";
 import { usePathname, useRouter } from "next/navigation";
 import { useUserState } from "@/contexts/UserContext";
@@ -171,7 +171,7 @@ export default function ProductManagement({
         modifiedImgs[fileIndex] = uploadedImgUrls[i];
       });
 
-      const res = await modifyProduct(
+      const res = await updateProduct(
         { ...productInfo, seller_store: sellerName, image: modifiedImgs },
         productId
       );

@@ -29,7 +29,7 @@ export async function addProduct(formData: ProductForm) {
   return { status, message: "상품을 등록했습니다." };
 }
 
-export async function modifyProduct(formData: ProductForm, productId: number) {
+export async function updateProduct(formData: ProductForm, productId: number) {
   const supabase = createClient();
   const { status, error } = await supabase
     .from("product")
