@@ -7,47 +7,41 @@ import MobileCartTotalPrice from "@/components/cart/MobileCartTotalPrice";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 
+async function loadCartData(userId: string) {
+  try {
+    const cartId = await fetchCartIdByUser(userId);
+    const { data: cartItems } = await fetchCartItems(cartId);
+    return cartItems;
+  } catch (error) {
+    throw new Error(
+      error instanceof Error ? `${error.message}` : `${String(error)}`
+    );
+  }
+}
+
 export default async function CartPage() {
   const supabase = createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const isLogin = user !== null ? true : false;
-  const isSeller = user?.user_metadata.user_type === "SELLER";
+  if (!user || user?.user_metadata.user_type === "SELLER")
+    return <CartNoBuyer />;
 
-  if (!isLogin || isSeller) return <CartNoBuyer />;
-
-  // 장바구니 ID 가져오기
-  const { status, message, data } = await fetchCartIdByUser(user!.id);
-  if (status !== 200) {
-    throw new Error(message);
-  }
-  const cartId = data?.id;
-
-  // 장바구니 아이템 가져오기
-  let cartItem = null;
-  if (cartId) {
-    const {
-      status: getCartItemStatus,
-      message: getCartItemMsg,
-      data: cartItemData,
-    } = await fetchCartItems(cartId);
-    if (getCartItemStatus !== 200) {
-      throw new Error(getCartItemMsg);
-    }
-    cartItem = cartItemData;
-  }
+  const cartItems = await loadCartData(user.id);
 
   return (
     <div className="flex flex-col w-full">
       <h2 className="mb-4 text-center">장바구니</h2>
-      {!cartId || !cartItem || cartItem.count === 0 ? (
+      {!cartItems || cartItems.count === 0 ? (
         <CartNoItem />
       ) : (
         <>
           <table>
-            <CartTable cartItems={cartItem.cart} cartCount={cartItem.count!} />
+            <CartTable
+              cartItems={cartItems.cart}
+              cartCount={cartItems.count!}
+            />
           </table>
           <CartTotalPrice />
           <MobileCartTotalPrice />

@@ -74,31 +74,24 @@ export async function isProductInCart(cartId: number, productId: number) {
 export async function fetchCartItems(cartId: number) {
   const supabase = createClient();
 
-  const {
-    data: cartItems,
-    error,
-    status,
-  } = await supabase
+  const { data: cartItems, error } = await supabase
     .from("cart_item")
     .select()
     .eq("cart_id", cartId)
     .order("product_id");
 
   if (error) {
-    console.error(error);
-    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
+    console.error("ERROR fetchCartItems: ", error);
+    throw new Error(`${error}`);
   }
 
-  if (cartItems?.length === 0 || !cartItems)
+  if (cartItems.length === 0)
     return {
-      status: 200,
       message: "장바구니에 담긴 상품이 없습니다.",
       data: null,
     };
 
-  /**
-   ** 상품정보+수량을 같이 리턴함
-   */
+  /**상품정보+수량을 같이 리턴하는 함수 */
   const cartItemsInfo: CartItemInfo[] = await Promise.all(
     cartItems.map(
       async (item: { id: number; product_id: number; quantity: number }) => {
@@ -124,9 +117,8 @@ export async function fetchCartItems(cartId: number) {
   };
 
   return {
-    status,
     message: "장바구니 아이템을 불러오는 데 성공했습니다.",
-    data: { count: cartItems?.length, cart: groupBySellerStore(cartItemsInfo) },
+    data: { count: cartItems.length, cart: groupBySellerStore(cartItemsInfo) },
   };
 }
 
