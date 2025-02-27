@@ -10,7 +10,6 @@ import { useUserDispatch, useUserState } from "@/contexts/UserContext";
 import {
   addProductToCart,
   isProductInCart,
-  createUserCart,
   fetchCartIdByUser,
 } from "@/api/cartApis";
 import { toggleProductLike } from "@/api/productApis";
@@ -76,38 +75,18 @@ export default function ProductPurchaseOptions({
       });
       return;
     }
-    let cartId;
-    const {
-      status,
-      message,
-      data: cartIdData,
-    } = await fetchCartIdByUser(userId!);
-    if (status >= 400 && status < 500) {
-      throw new Error(message);
-    }
-    cartId = cartIdData?.id;
-    if (!cartId) {
-      const {
-        status: createCartStatus,
-        message: createCartMsg,
-        data: createCartData,
-      } = await createUserCart(userId!);
-      if (createCartStatus >= 400 && createCartStatus < 500) {
-        throw new Error(createCartMsg);
+    try {
+      const cartId = await fetchCartIdByUser(userId!);
+      const isInCart = await checkProductInCart(cartId);
+      if (isInCart) {
+        showModal({
+          type: "CONFIRM",
+          content:
+            "이미 장바구니에 담긴 상품입니다. \n장바구니로 이동하시겠습니까?",
+          onConfirm: () => redirectToCart(),
+        });
+        return;
       }
-      cartId = createCartData?.id;
-    }
-
-    const isInCart = await checkProductInCart(cartId!); // 이미 장바구니에 담긴 물건인지 확인
-    if (isInCart) {
-      showModal({
-        type: "CONFIRM",
-        content:
-          "이미 장바구니에 담긴 상품입니다. \n장바구니로 이동하시겠습니까?",
-        onConfirm: () => redirectToCart(),
-      });
-      return;
-    }
 
     const { data, error } = await addProductToCart(
       cartId!,
@@ -125,12 +104,10 @@ export default function ProductPurchaseOptions({
   };
   const checkProductInCart = async (cartId: number) => {
     const result = await isProductInCart(cartId, productId);
-    console.log("result:", result);
     return result;
   };
   const handleLike = async () => {
     const res = await toggleProductLike(productId);
-    console.log("#res: ", res);
   };
   const handleNowBuy = () => {
     if (!isLogin) {

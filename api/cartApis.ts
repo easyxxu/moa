@@ -6,50 +6,31 @@ import { fetchProductById } from "./productApis";
 import { CartItemInfo, GroupedCartItems } from "@/types/cart";
 import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 
-export async function createUserCart(userId: string) {
-  const supabase = createClient();
-  const { status, data, error } = await supabase
-    .from("cart")
-    .insert({ user_id: userId })
-    .select()
-    .single();
-
-  if (error) {
-    console.error("createCart Error: ", error);
-    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
-  }
-  return {
-    status,
-    message: "장바구니를 생성했습니다.",
-    data: { id: data?.id },
-  };
-}
-
 export async function fetchCartIdByUser(userId: string) {
   const supabase = createClient();
-  const { status, data, error } = await supabase
+  const { data, error } = await supabase
     .from("cart")
     .select("id")
     .eq("user_id", userId)
     .single();
 
-  if (!data && error && error.details === "The result contains 0 rows") {
-    return {
-      status: 200,
-      message: "생성된 장바구니가 없습니다.",
-      data: { id: null },
-    };
-  }
-  if (error) {
-    console.error("getCartId error: ", error);
-    return { status, message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR };
+  if (error && error.details === "The result contains 0 rows") {
+    const { data: createdCart, error: createError } = await supabase
+      .from("cart")
+      .insert({ user_id: userId })
+      .select("id")
+      .single();
+    if (createError) {
+      console.error("ERROR createUserCart ", createError);
+      throw new Error(RESPONSE_MESSAGE.ERROR.SERVER.ERROR);
+    }
+    return createdCart.id;
+  } else if (error) {
+    console.error("ERROR fetchCartIdByUser ", error);
+    throw new Error(RESPONSE_MESSAGE.ERROR.SERVER.ERROR);
   }
 
-  return {
-    status,
-    message: "장바구니 ID를 가져왔습니다.",
-    data: { id: data?.id },
-  };
+  return data.id;
 }
 
 export async function addProductToCart(
