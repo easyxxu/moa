@@ -8,6 +8,8 @@ export const RESPONSE_MESSAGE = {
       PHONE: "전화번호는 숫자만 입력 가능합니다.",
       INPUT: "입력한 내용이 형식에 맞지 않습니다.",
       QUESTION_CONTENT: "5자 이상 적어주세요.",
+      STAR_RATING: "별점을 선택해주세요.",
+      REVIEW_CONTENT: "최소 15자 이상 작성해주세요.",
     },
     AUTH: {
       EMAIL_EXISTS: "이미 사용 중인 이메일입니다.",
@@ -37,9 +39,14 @@ export const RESPONSE_MESSAGE = {
     ORDER: {
       ERROR: "주문이 실패했습니다.",
     },
+    CART: {
+      NO_CART_ID: "생성된 장바구니가 없습니다.",
+      CART: "장바구니를 불러오는 데 문제가 발생했습니다.",
+    },
   },
   SUCCESS: {
     CART: {
+      ADD: "장바구니에 담겼습니다.",
       DELETE: "상품이 장바구니에서 삭제되었습니다.",
     },
     ORDER: {
