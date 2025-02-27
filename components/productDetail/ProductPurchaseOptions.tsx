@@ -16,6 +16,7 @@ import { toggleProductLike } from "@/api/productApis";
 import { useModal } from "@/contexts/ModalContext";
 import { usePathname, useRouter } from "next/navigation";
 import { useDirectOrder } from "@/contexts/DirectOrderContext";
+import { useToast } from "@/contexts/ToastContext";
 
 interface Props {
   price: number;
@@ -45,6 +46,7 @@ export default function ProductPurchaseOptions({
   const [priceByQuantity, setPriceByQuantity] = useState(price);
   const [quantity, setQuantity] = useState(1);
   const userDispatch = useUserDispatch();
+  const { openToast } = useToast();
 
   const redirectToLogin = () => {
     router.push("/login");
@@ -88,18 +90,21 @@ export default function ProductPurchaseOptions({
         return;
       }
 
-    const { data, error } = await addProductToCart(
-      cartId!,
-      productId,
-      quantity
-    );
-    if (!error) {
-      showModal({
-        type: "CONFIRM",
-        content: "장바구니에 담겼습니다. \n장바구니로 이동하시겠습니까?",
-        onConfirm: () => redirectToCart(),
-      });
-      console.log("장바구니 담긴 상품:", data);
+      const { status } = await addProductToCart(cartId!, productId, quantity);
+
+      if (status === 201) {
+        showModal({
+          type: "CONFIRM",
+          content: "장바구니에 담겼습니다. \n장바구니로 이동하시겠습니까?",
+          onConfirm: () => redirectToCart(),
+        });
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        openToast({ type: "ERROR", content: `${e.message}` });
+      } else {
+        openToast({ type: "ERROR", content: `${String(e)}` });
+      }
     }
   };
   const checkProductInCart = async (cartId: number) => {

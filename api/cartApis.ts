@@ -39,14 +39,18 @@ export async function addProductToCart(
   quantity: number
 ) {
   const supabase = createClient();
-  const { data, error } = await supabase
+  const { status, error } = await supabase
     .from("cart_item")
     .insert({ cart_id: cartId, product_id: productId, quantity })
     .select();
 
-  revalidatePath("/cart");
+  if (error) {
+    console.error("ERROR addProductToCart : ", error);
+    throw new Error(RESPONSE_MESSAGE.ERROR.SERVER.ERROR);
+  }
 
-  return { data, error };
+  revalidatePath("/cart");
+  return { status, message: RESPONSE_MESSAGE.SUCCESS.CART.ADD };
 }
 
 export async function isProductInCart(cartId: number, productId: number) {
@@ -56,6 +60,11 @@ export async function isProductInCart(cartId: number, productId: number) {
     .select()
     .eq("cart_id", cartId)
     .eq("product_id", productId);
+
+  if (error) {
+    console.error("ERROR isProductInCart: ", error);
+    throw new Error(`${error}`);
+  }
 
   if (data!.length > 0) {
     return true;
