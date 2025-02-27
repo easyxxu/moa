@@ -11,7 +11,7 @@ import Button from "../../common/button/Button";
 
 import { createReview } from "@/api/reviewApis";
 import { Tables } from "@/types/database.types";
-import { modifyReview } from "@/api/reviewApis";
+import { updateReview } from "@/api/reviewApis";
 import { useToast } from "@/contexts/ToastContext";
 import { RESPONSE_MESSAGE } from "@/utils/constants/responseMessage";
 
@@ -89,14 +89,14 @@ export default function ReviewForm({ reviewData, productId }: Props) {
       modifiedImgs.forEach((file, index) => {
         data.append(`images[${index}]`, file);
       });
-      const { status, message } = await modifyReview(reviewId, data);
-      if (status >= 400 && status < 500) {
-        openToast({ type: "ERROR", content: message });
+      const res = await updateReview(reviewId, data);
+      if (res.error) {
+        openToast({ type: "ERROR", content: res.message });
         return;
       }
       openToast({
         type: "SUCCESS",
-        content: RESPONSE_MESSAGE.SUCCESS.REVIEW.MODIFY,
+        content: res.message,
       });
       router.push("/mypage/review");
     }

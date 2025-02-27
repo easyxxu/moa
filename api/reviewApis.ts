@@ -138,27 +138,28 @@ export const createReview = async (productId: number, formData: FormData) => {
   redirect("/mypage/review");
 };
 
-export const modifyReview = async (reviewId: number, formData: FormData) => {
+export const updateReview = async (reviewId: number, formData: FormData) => {
   const supabase = createClient();
   const content = formData.get("content") as string;
   const starRating = Number(formData.get("starRating")) as number;
   const files: File[] = [];
   const prevImages: string[] = [];
-  console.log("modify", content, content.length);
+
   // form validation
   if (!content || content.trim().length === 0 || content.length < 15) {
     return {
       status: 400,
-      message: "리뷰는 최소 15자 이상 작성해주세요.",
+      message: RESPONSE_MESSAGE.ERROR.VALIDATION.REVIEW_CONTENT,
     };
   }
 
   if (starRating === 0) {
     return {
       status: 400,
-      message: "별점을 선택해주세요.",
+      message: RESPONSE_MESSAGE.ERROR.VALIDATION.STAR_RATING,
     };
   }
+
   for (let i = 0; i < 3; i++) {
     const image = formData.get(`images[${i}]`) as File | string | null;
     if (image instanceof File) {
@@ -191,17 +192,17 @@ export const modifyReview = async (reviewId: number, formData: FormData) => {
     .eq("id", reviewId);
 
   if (error) {
-    console.error("modifyReview 에러: ", error);
+    console.error("ERROR REVIEW UPDATE", error);
     return {
       status,
-      message: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
+      message: RESPONSE_MESSAGE.ERROR.REVIEW.MODIFY,
       error,
     };
   }
   revalidatePath("/mypage/review");
   return {
     status,
-    message: "modifyReview 성공",
+    message: RESPONSE_MESSAGE.SUCCESS.REVIEW.MODIFY,
   };
 };
 
