@@ -42,12 +42,16 @@ export const RESPONSE_MESSAGE = {
     CART: {
       NO_CART_ID: "생성된 장바구니가 없습니다.",
       CART: "장바구니를 불러오는 데 문제가 발생했습니다.",
+      DELETE: "상품을 삭제하는 데 문제가 발생했습니다. 다시 시도해주세요.",
+      QUANTITY:
+        "상품 수량을 수정하는 데 문제가 발생했습니다. 다시 시도해주세요.",
     },
   },
   SUCCESS: {
     CART: {
       ADD: "장바구니에 담겼습니다.",
       DELETE: "상품이 장바구니에서 삭제되었습니다.",
+      QUANTITY: "상품 수량을 수정했습니다.",
     },
     ORDER: {
       SUCCESS: "주문이 완료되었습니다.",

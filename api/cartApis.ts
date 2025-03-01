@@ -14,23 +14,33 @@ export async function fetchCartIdByUser(userId: string) {
     .eq("user_id", userId)
     .single();
 
+  // cart.id가 생성되지 않은 경우
   if (error && error.details === "The result contains 0 rows") {
     const { data: createdCart, error: createError } = await supabase
       .from("cart")
       .insert({ user_id: userId })
       .select("id")
       .single();
+
     if (createError) {
       console.error("ERROR createUserCart ", createError);
       throw new Error(RESPONSE_MESSAGE.ERROR.SERVER.ERROR);
     }
-    return createdCart.id;
+    return {
+      success: true,
+      message: "장바구니 ID를 불러오는 데 성공했습니다.",
+      data: { id: createdCart.id },
+    };
   } else if (error) {
     console.error("ERROR fetchCartIdByUser ", error);
     throw new Error(RESPONSE_MESSAGE.ERROR.SERVER.ERROR);
   }
 
-  return data.id;
+  return {
+    success: true,
+    message: "장바구니 ID를 불러오는 데 성공했습니다.",
+    data: { id: data.id },
+  };
 }
 
 export async function addProductToCart(
@@ -39,7 +49,7 @@ export async function addProductToCart(
   quantity: number
 ) {
   const supabase = createClient();
-  const { status, error } = await supabase
+  const { error } = await supabase
     .from("cart_item")
     .insert({ cart_id: cartId, product_id: productId, quantity })
     .select();
@@ -50,7 +60,7 @@ export async function addProductToCart(
   }
 
   revalidatePath("/cart");
-  return { status, message: RESPONSE_MESSAGE.SUCCESS.CART.ADD };
+  return { success: true, message: RESPONSE_MESSAGE.SUCCESS.CART.ADD };
 }
 
 export async function isProductInCart(cartId: number, productId: number) {
@@ -63,12 +73,13 @@ export async function isProductInCart(cartId: number, productId: number) {
 
   if (error) {
     console.error("ERROR isProductInCart: ", error);
-    throw new Error(`${error}`);
+    throw new Error(RESPONSE_MESSAGE.ERROR.SERVER.ERROR);
   }
 
-  if (data!.length > 0) {
-    return true;
+  if (data!.length === 1) {
+    return { success: true, data: true };
   }
+  return { success: true, data: false };
 }
 
 export async function fetchCartItems(cartId: number) {
@@ -82,11 +93,12 @@ export async function fetchCartItems(cartId: number) {
 
   if (error) {
     console.error("ERROR fetchCartItems: ", error);
-    throw new Error(`${error}`);
+    throw new Error(error.message);
   }
 
   if (cartItems.length === 0)
     return {
+      success: true,
       message: "장바구니에 담긴 상품이 없습니다.",
       data: null,
     };
@@ -117,6 +129,7 @@ export async function fetchCartItems(cartId: number) {
   };
 
   return {
+    success: true,
     message: "장바구니 아이템을 불러오는 데 성공했습니다.",
     data: { count: cartItems.length, cart: groupBySellerStore(cartItemsInfo) },
   };
@@ -124,13 +137,17 @@ export async function fetchCartItems(cartId: number) {
 
 export const deleteCartItem = async (productId: number) => {
   const supabase = createClient();
-  const res = await supabase
+
+  const { error } = await supabase
     .from("cart_item")
     .delete()
     .eq("product_id", productId);
-
+  if (error) {
+    console.error("ERROR deleteCartItem : ", error);
+    throw new Error(RESPONSE_MESSAGE.ERROR.CART.DELETE);
+  }
   revalidatePath("/cart");
-  return res;
+  return { success: true, message: RESPONSE_MESSAGE.SUCCESS.CART.DELETE };
 };
 
 export const updateCartItemQuantity = async (
@@ -138,12 +155,21 @@ export const updateCartItemQuantity = async (
   quantity: number
 ) => {
   const supabase = createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("cart_item")
     .update({ quantity: quantity })
     .eq("product_id", productId)
     .select()
     .single();
+  if (error) {
+    console.error("ERROR updateCartItemQuantity: ", error);
+    throw new Error(error.message);
+  }
+
   revalidatePath("/cart");
-  return data;
+  return {
+    success: true,
+    message: RESPONSE_MESSAGE.SUCCESS.CART.QUANTITY,
+    data,
+  };
 };

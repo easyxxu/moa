@@ -78,8 +78,12 @@ export default function ProductPurchaseOptions({
       return;
     }
     try {
-      const cartId = await fetchCartIdByUser(userId!);
-      const isInCart = await checkProductInCart(cartId);
+      const cartIdRes = await fetchCartIdByUser(userId!);
+      if (!cartIdRes.success || !cartIdRes.data) {
+        throw new Error(cartIdRes.message);
+      }
+
+      const isInCart = await checkProductInCart(cartIdRes.data.id);
       if (isInCart) {
         showModal({
           type: "CONFIRM",
@@ -90,9 +94,13 @@ export default function ProductPurchaseOptions({
         return;
       }
 
-      const { status } = await addProductToCart(cartId!, productId, quantity);
+      const res = await addProductToCart(
+        cartIdRes.data.id!,
+        productId,
+        quantity
+      );
 
-      if (status === 201) {
+      if (res.success) {
         showModal({
           type: "CONFIRM",
           content: "장바구니에 담겼습니다. \n장바구니로 이동하시겠습니까?",
@@ -103,14 +111,24 @@ export default function ProductPurchaseOptions({
       if (e instanceof Error) {
         openToast({ type: "ERROR", content: `${e.message}` });
       } else {
-        openToast({ type: "ERROR", content: `${String(e)}` });
+        openToast({ type: "ERROR", content: `${e}` });
       }
     }
   };
+
   const checkProductInCart = async (cartId: number) => {
-    const result = await isProductInCart(cartId, productId);
-    return result;
+    try {
+      const res = await isProductInCart(cartId, productId);
+      return res?.data;
+    } catch (e) {
+      if (e instanceof Error) {
+        openToast({ type: "ERROR", content: e.message });
+      } else {
+        openToast({ type: "ERROR", content: `${e}` });
+      }
+    }
   };
+
   const handleLike = async () => {
     const res = await toggleProductLike(productId);
   };

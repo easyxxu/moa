@@ -46,19 +46,42 @@ export default function CartTableItem({ item, isLastItem }: Props) {
   };
 
   const submitModifyQuantity = async (updatedQuantity: number) => {
-    const data = await updateCartItemQuantity(item.id!, updatedQuantity);
-    setQuantity(data?.quantity!);
-    changeQuantity(item.id!, data?.quantity!);
+    try {
+      const res = await updateCartItemQuantity(item.id!, updatedQuantity);
+      const data = res.data;
+      setQuantity(data?.quantity!);
+      changeQuantity(item.id!, data?.quantity!);
+    } catch (e) {
+      if (e instanceof Error) {
+        openToast({ type: "ERROR", content: e.message });
+      } else {
+        openToast({
+          type: "ERROR",
+          content: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
+        });
+      }
+    }
     closeModal();
   };
 
   const handleDeleteCartItem = async () => {
-    const res = await deleteCartItem(item.id!);
+    try {
+      const res = await deleteCartItem(item.id);
+      openToast({
+        type: "SUCCESS",
+        content: res.message,
+      });
+    } catch (e) {
+      if (e instanceof Error) {
+        openToast({ type: "ERROR", content: e.message });
+      } else {
+        openToast({
+          type: "ERROR",
+          content: RESPONSE_MESSAGE.ERROR.SERVER.ERROR,
+        });
+      }
+    }
     closeModal();
-    openToast({
-      type: "SUCCESS",
-      content: RESPONSE_MESSAGE.SUCCESS.CART.DELETE,
-    });
   };
 
   const handleOpenDeleteModal = () => {

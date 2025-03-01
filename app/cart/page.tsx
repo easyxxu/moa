@@ -1,17 +1,20 @@
 import { fetchCartIdByUser, fetchCartItems } from "@/api/cartApis";
+import { fetchUserInfo } from "@/api/userApis";
 import CartNoBuyer from "@/components/cart/CartNoBuyer";
 import CartNoItem from "@/components/cart/CartNoItem";
 import CartTable from "@/components/cart/CartTable";
 import CartTotalPrice from "@/components/cart/CartTotalPrice";
 import MobileCartTotalPrice from "@/components/cart/MobileCartTotalPrice";
-import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 
 async function loadCartData(userId: string) {
   try {
-    const cartId = await fetchCartIdByUser(userId);
-    const { data: cartItems } = await fetchCartItems(cartId);
-    return cartItems;
+    const cartIdRes = await fetchCartIdByUser(userId);
+    if (!cartIdRes.data) {
+      throw new Error(cartIdRes.message);
+    }
+    const cartItemsRes = await fetchCartItems(cartIdRes.data.id);
+    return cartItemsRes.data;
   } catch (error) {
     throw new Error(
       error instanceof Error ? `${error.message}` : `${String(error)}`
@@ -20,15 +23,12 @@ async function loadCartData(userId: string) {
 }
 
 export default async function CartPage() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user || user?.user_metadata.user_type === "SELLER")
+  const res = await fetchUserInfo();
+  if (!res.data || res.data.user_metadata.user_type === "SELLER") {
     return <CartNoBuyer />;
+  }
 
-  const cartItems = await loadCartData(user.id);
+  const cartItems = await loadCartData(res.data.id);
 
   return (
     <div className="flex flex-col w-full">
