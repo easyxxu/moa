@@ -24,6 +24,7 @@ export default function ExpandImage({ images, order, onClose }: Props) {
       <div className="flex flex-col items-center justify-center h-full">
         <div className="flex items-center h-3/4">
           <Image
+            key={imageOrder}
             src={images[imageOrder]}
             alt="상품 이미지"
             width={400}
