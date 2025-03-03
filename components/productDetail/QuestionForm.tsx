@@ -48,7 +48,7 @@ export default function QuestionForm({ setIsOpenQForm, setQas }: Props) {
   }, [state, openToast, setIsOpenQForm]);
 
   return (
-    <div className="px-3 py-4 bg-background shadow-out rounded-xl">
+    <div className="px-3 py-4 border-b border-black">
       <form action={formAction}>
         <div className="flex flex-col gap-4">
           <div className="flex gap-4">
@@ -59,7 +59,7 @@ export default function QuestionForm({ setIsOpenQForm, setQas }: Props) {
               value={selected}
               name="title"
               id="title"
-              className="w-full px-3 py-2 bg-white shadow-in rounded-xl"
+              className="w-full px-3 py-2 bg-white border-b border-black"
               onChange={(e) => setSelected(e.target.value)}
               required
             >
@@ -83,7 +83,7 @@ export default function QuestionForm({ setIsOpenQForm, setQas }: Props) {
             <textarea
               name="content"
               id="content"
-              className="w-full h-40 px-3 py-2 shadow-in rounded-xl"
+              className="w-full h-40 px-3 py-2 border-b border-black resize-none"
               placeholder="최소 5자 이상 작성해주세요."
             ></textarea>
           </div>
