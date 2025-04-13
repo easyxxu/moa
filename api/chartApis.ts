@@ -21,7 +21,9 @@ export const fetchOrderChartData = async () => {
   // 최근 N개월 전의 날짜를 반환하는 함수
   const getPastDate = (monthsAgo: number = 6) => {
     const currentDate = new Date();
-    currentDate.setMonth(currentDate.getMonth() - monthsAgo);
+    currentDate.setHours(0, 0, 0, 0);
+    currentDate.setDate(1);
+    currentDate.setMonth(currentDate.getMonth() - monthsAgo + 1);
     return currentDate.toISOString();
   };
 
@@ -30,13 +32,12 @@ export const fetchOrderChartData = async () => {
     .select(
       `
     price,
-    order(created_at),
+    order!inner(created_at),
     product!inner()
   `
     )
     .eq("product.seller_id", userId!)
-    .gte("order.created_at", getPastDate());
-
+    .filter("order.created_at", "gte", getPastDate());
   if (error) {
     console.error("get order_item error", error);
     return { status, message: ERROR_MESSAGE.serverError };
